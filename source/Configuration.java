@@ -468,56 +468,6 @@ class Configuration
 		return m_IDNumber;
 	}
 	
-	public int getMatrixWindowWidth()
-	{
-		return Preferences.userRoot().node(m_ConfigurationRoot).getInt("MatrixWindowWidth", 800);
-	}
-	
-	public void saveMatrixWindowWidth(int Width)
-	{
-		Preferences.userRoot().node(m_ConfigurationRoot).putInt("MatrixWindowWidth", Width);
-	}
-	
-	public int getMatrixWindowHeight()
-	{
-		return Preferences.userRoot().node(m_ConfigurationRoot).getInt("MatrixWindowHeight", 600);
-	}
-	
-	public void saveMatrixWindowHeight(int Height)
-	{
-		Preferences.userRoot().node(m_ConfigurationRoot).putInt("MatrixWindowHeight", Height);
-	}
-	
-	public int getMatrixWindowX()
-	{
-		return Preferences.userRoot().node(m_ConfigurationRoot).getInt("MatrixWindowX", 0);
-	}
-	
-	public void saveMatrixWindowX(int X)
-	{
-		Preferences.userRoot().node(m_ConfigurationRoot).putInt("MatrixWindowX", X);
-	}
-	
-	public int getMatrixWindowY()
-	{
-		return Preferences.userRoot().node(m_ConfigurationRoot).getInt("MatrixWindowY", 0);
-	}
-	
-	public void saveMatrixWindowY(int Y)
-	{
-		Preferences.userRoot().node(m_ConfigurationRoot).putInt("MatrixWindowY", Y);
-	}
-	
-	public boolean getMatrixWindowVisible()
-	{
-		return Preferences.userRoot().node(m_ConfigurationRoot).getBoolean("MatrixWindowVisible", false);
-	}
-	
-	public void saveMatrixWindowVisible(boolean Visible)
-	{
-		Preferences.userRoot().node(m_ConfigurationRoot).putBoolean("MatrixWindowVisible", Visible);
-	}
-	
 	public int getPresetsWindowWidth()
 	{
 		return Preferences.userRoot().node(m_ConfigurationRoot).getInt("PresetsWindowWidth", 350);

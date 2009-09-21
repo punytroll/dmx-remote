@@ -513,24 +513,24 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				{
 					public void componentHidden(ComponentEvent Event)
 					{
-						m_Configuration.saveMatrixWindowVisible(false);
+						PersistentConfiguration.setWindowVisible("matrix", false);
 					}
 					
 					public void componentMoved(ComponentEvent Event)
 					{
-						m_Configuration.saveMatrixWindowX(Event.getComponent().getLocation().x);
-						m_Configuration.saveMatrixWindowY(Event.getComponent().getLocation().y);
+						PersistentConfiguration.setWindowLeft("matrix", Event.getComponent().getLocation().x);
+						PersistentConfiguration.setWindowTop("matrix", Event.getComponent().getLocation().y);
 					}
 					
 					public void componentResized(ComponentEvent Event)
 					{
-						m_Configuration.saveMatrixWindowWidth(Event.getComponent().getSize().width);
-						m_Configuration.saveMatrixWindowHeight(Event.getComponent().getSize().height);
+						PersistentConfiguration.setWindowWidth("matrix", Event.getComponent().getSize().width);
+						PersistentConfiguration.setWindowHeight("matrix", Event.getComponent().getSize().height);
 					}
 					
 					public void componentShown(ComponentEvent Event)
 					{
-						m_Configuration.saveMatrixWindowVisible(true);
+						PersistentConfiguration.setWindowVisible("matrix", true);
 					}
 				}
 				);
@@ -554,9 +554,9 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				scrollPane.setBorder(BorderFactory.createEmptyBorder());
 				m_MatrixWindow.getContentPane().add(m_MatrixNamePanel, BorderLayout.WEST);
 				m_MatrixWindow.getContentPane().add(scrollPane, BorderLayout.CENTER);
-				m_MatrixWindow.setSize(m_Configuration.getMatrixWindowWidth(), m_Configuration.getMatrixWindowHeight());
-				m_MatrixWindow.setLocation(m_Configuration.getMatrixWindowX(), m_Configuration.getMatrixWindowY());
-				m_MatrixWindow.setVisible(m_Configuration.getMatrixWindowVisible());
+				m_MatrixWindow.setSize(PersistentConfiguration.getWindowWidth("matrix"), PersistentConfiguration.getWindowHeight("matrix"));
+				m_MatrixWindow.setLocation(PersistentConfiguration.getWindowLeft("matrix"), PersistentConfiguration.getWindowTop("matrix"));
+				m_MatrixWindow.setVisible(PersistentConfiguration.getWindowVisible("matrix"));
 				m_MatrixWindow.setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
 				m_MatrixWindow.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_T, 0), "transmit");
 				m_MatrixWindow.getActionMap().put("transmit", new AbstractAction()
