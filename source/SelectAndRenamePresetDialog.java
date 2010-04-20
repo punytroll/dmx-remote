@@ -20,7 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-class SelectProgramDialog extends JDialog
+class SelectAndRenamePresetDialog extends JDialog
 {
 	private Configuration m_Configuration;
 	private JComboBox m_Combo;
@@ -28,12 +28,10 @@ class SelectProgramDialog extends JDialog
 	private JButton m_OK;
 	private JButton m_Cancel;
 	
-	public SelectProgramDialog(Configuration Configuration, Frame Owner, boolean Modal)
+	public SelectAndRenamePresetDialog(String Title, Configuration Configuration, Frame Owner, boolean Modal)
 	{
-		super(Owner, Configuration.getString("Save to Preset:"), Modal);
+		super(Owner, Title, Modal);
 		m_Configuration = Configuration;
-		setLocation(PersistentConfiguration.getWindowLeft("save-matrix-to-preset"), PersistentConfiguration.getWindowTop("save-matrix-to-preset"));
-		setSize(PersistentConfiguration.getWindowWidth("save-matrix-to-preset"), PersistentConfiguration.getWindowHeight("save-matrix-to-preset"));
 		getContentPane().setBackground(m_Configuration.getBackgroundColor());
 		
 		JPanel Buttons = new JPanel();
@@ -133,21 +131,6 @@ class SelectProgramDialog extends JDialog
 		Settings.setBorder(new EmptyBorder(20, 20, 20, 20));
 		Buttons.setAlignmentX(LEFT_ALIGNMENT);
 		getContentPane().add(Settings);
-		addComponentListener(new ComponentAdapter()
-		{
-			public void componentMoved(ComponentEvent Event)
-			{
-				PersistentConfiguration.setWindowLeft("save-matrix-to-preset", Event.getComponent().getLocation().x);
-				PersistentConfiguration.setWindowTop("save-matrix-to-preset", Event.getComponent().getLocation().y);
-			}
-			
-			public void componentResized(ComponentEvent Event)
-			{
-				PersistentConfiguration.setWindowWidth("save-matrix-to-preset", Event.getComponent().getSize().width);
-				PersistentConfiguration.setWindowHeight("save-matrix-to-preset", Event.getComponent().getSize().height);
-			}
-		}
-		);
 	}
 	
 	public void addNotify()

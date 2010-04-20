@@ -392,7 +392,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 		}
 		else if(Action.equals(m_Configuration.getString("Save to Preset")) == true)
 		{
-			matrixSaveToPreset();
+			saveMatrixToPreset();
 		}
 		else if(Action.equals(m_Configuration.getString("Clear Matrix")) == true)
 		{
@@ -917,11 +917,28 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 		}
 	}
 	
-	public void matrixSaveToPreset()
+	public void saveMatrixToPreset()
 	{
-		SelectProgramDialog Dialog = new SelectProgramDialog(m_Configuration, this, true);
+		SelectAndRenamePresetDialog Dialog = new SelectAndRenamePresetDialog(m_Configuration.getString("Save to Preset:"), m_Configuration, this, true);
 		
+		Dialog.setLocation(PersistentConfiguration.getWindowLeft("save-matrix-to-preset"), PersistentConfiguration.getWindowTop("save-matrix-to-preset"));
+		Dialog.setSize(PersistentConfiguration.getWindowWidth("save-matrix-to-preset"), PersistentConfiguration.getWindowHeight("save-matrix-to-preset"));
 		Dialog.setVisible(true);
+		Dialog.addComponentListener(new ComponentAdapter()
+		{
+			public void componentMoved(ComponentEvent Event)
+			{
+				PersistentConfiguration.setWindowLeft("save-matrix-to-preset", Event.getComponent().getLocation().x);
+				PersistentConfiguration.setWindowTop("save-matrix-to-preset", Event.getComponent().getLocation().y);
+			}
+			
+			public void componentResized(ComponentEvent Event)
+			{
+				PersistentConfiguration.setWindowWidth("save-matrix-to-preset", Event.getComponent().getSize().width);
+				PersistentConfiguration.setWindowHeight("save-matrix-to-preset", Event.getComponent().getSize().height);
+			}
+		}
+		);
 		if(Dialog.getSelection() != -1)
 		{
 			m_Configuration.saveMatrixToPreset(Dialog.getSelection());
