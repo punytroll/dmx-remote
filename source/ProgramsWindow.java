@@ -113,7 +113,7 @@ class ProgramsWindow extends JInternalFrame implements SelectionListener, Progra
 		{
 			m_Configuration.loadProgramToMatrix(Event.getSelection());
 			m_PresetNumberLabel.setText(String.valueOf(m_SelectedProgram + 1));
-			m_PresetNameLabel.setText(m_Configuration.getProgram(m_SelectedProgram).getName());
+			m_PresetNameLabel.setText(m_Configuration.getPreset(m_SelectedProgram).getName());
 		}
 		catch(MatrixNotSavedException Exception)
 		{
@@ -124,7 +124,7 @@ class ProgramsWindow extends JInternalFrame implements SelectionListener, Progra
 				{
 					m_Configuration.loadProgramToMatrix(Event.getSelection());
 					m_PresetNumberLabel.setText(String.valueOf(m_SelectedProgram + 1));
-					m_PresetNameLabel.setText(m_Configuration.getProgram(m_SelectedProgram).getName());
+					m_PresetNameLabel.setText(m_Configuration.getPreset(m_SelectedProgram).getName());
 				}
 				catch(MatrixNotSavedException Exception2)
 				{
@@ -137,7 +137,7 @@ class ProgramsWindow extends JInternalFrame implements SelectionListener, Progra
 	{
 		if(m_SelectedProgram > -1)
 		{
-			m_PresetNameLabel.setText(m_Configuration.getProgram(m_SelectedProgram).getName());
+			m_PresetNameLabel.setText(m_Configuration.getPreset(m_SelectedProgram).getName());
 		}
 	}
 }

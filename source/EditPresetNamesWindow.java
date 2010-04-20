@@ -98,6 +98,6 @@ class EditPresetNamesWindow extends JInternalFrame implements SelectionListener
 	public void selectionChanged(SelectionEvent Event)
 	{
 		m_SelectedProgram =  Event.getSelection();
-		m_IdentifierField.setText(m_Configuration.getProgram(m_SelectedProgram).getName());
+		m_IdentifierField.setText(m_Configuration.getPreset(m_SelectedProgram).getName());
 	}
 }

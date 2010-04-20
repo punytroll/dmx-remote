@@ -73,7 +73,7 @@ class SelectAndRenamePresetDialog extends JDialog
 		
 		for(int I = 0; I < m_Configuration.getNumberOfPresets(); ++I)
 		{
-			Items.add(String.valueOf(I + 1) + ". " + m_Configuration.getProgram(I).getName());
+			Items.add(String.valueOf(I + 1) + ". " + m_Configuration.getPreset(I).getName());
 		}
 		m_Name = new JTextField();
 		m_Name.setAlignmentX(LEFT_ALIGNMENT);
@@ -102,7 +102,7 @@ class SelectAndRenamePresetDialog extends JDialog
 			{
 				if(m_Combo.getSelectedIndex() > -1)
 				{
-					m_Name.setText(m_Configuration.getProgram(m_Combo.getSelectedIndex()).getName());
+					m_Name.setText(m_Configuration.getPreset(m_Combo.getSelectedIndex()).getName());
 					m_Name.requestFocus();
 					m_Name.setCaretPosition(0);
 					m_Name.moveCaretPosition(m_Name.getText().length());

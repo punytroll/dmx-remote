@@ -168,13 +168,13 @@ class PresetsPanel extends JPanel implements ProgramsListener, MetricListener
 		Graphics2D.setFont(new Font("SansSerif", Font.PLAIN, 9));
 		for(int Name = 0; Name < m_Configuration.getNumberOfPresets() / 2; ++Name)
 		{
-			Graphics2D.drawString(m_Configuration.getProgram(Name).getName(), 2 + m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), 1 + (Name + 1) * (m_Configuration.getCellSize() + 1) - 3);
+			Graphics2D.drawString(m_Configuration.getPreset(Name).getName(), 2 + m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), 1 + (Name + 1) * (m_Configuration.getCellSize() + 1) - 3);
 		}
 		Graphics2D.setClip(OldClip);
 		Graphics2D.clip(new Rectangle(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1, m_Configuration.getIdentifierFieldWidth() - 2, (m_Configuration.getCellSize() + 1) * m_Configuration.getNumberOfPresets()));
 		for(int Name = 0; Name < m_Configuration.getNumberOfPresets() / 2; ++Name)
 		{
-			Graphics2D.drawString(m_Configuration.getProgram(m_Configuration.getNumberOfPresets() / 2 + Name).getName(), m_Configuration.getMatrixPadding() + 2 + 2 * m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), 1 + (Name + 1) * (m_Configuration.getCellSize() + 1) - 3);
+			Graphics2D.drawString(m_Configuration.getPreset(m_Configuration.getNumberOfPresets() / 2 + Name).getName(), m_Configuration.getMatrixPadding() + 2 + 2 * m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), 1 + (Name + 1) * (m_Configuration.getCellSize() + 1) - 3);
 		}
 		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		Graphics2D.setClip(OldClip);
