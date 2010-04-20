@@ -6,16 +6,13 @@ import java.util.prefs.Preferences;
  **/
 class PersistentConfiguration
 {
-	private static final String _applicationString = "dmx-remote";
-	private static final String _configurationVersion = "configuration-version-1.0";
-	
 	private static Preferences _node;
 	
 	private static Preferences _getNode()
 	{
 		if(_node == null)
 		{
-			_node = Preferences.userRoot().node(_applicationString + "/" + _configurationVersion);
+			_node = Preferences.userRoot().node(StaticConfiguration.getConfigurationApplication() + "/" + StaticConfiguration.getConfigurationVersion());
 		}
 		
 		return _node;
