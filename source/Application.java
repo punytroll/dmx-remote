@@ -942,7 +942,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 		if(Dialog.getSelection() != -1)
 		{
 			m_Configuration.saveMatrixToPreset(Dialog.getSelection());
-			m_Configuration.getProgram(Dialog.getSelection()).setName(Dialog.getName());
+			m_Configuration.getPreset(Dialog.getSelection()).setName(Dialog.getName());
 		}
 	}
 	
@@ -1026,7 +1026,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				Data.writeInt(50);
 				for(int ProgramIndex = 0; ProgramIndex < m_Configuration.getNumberOfPresets(); ++ProgramIndex)
 				{
-					Program Program = m_Configuration.getProgram(ProgramIndex);
+					Program Program = m_Configuration.getPreset(ProgramIndex);
 					
 					Data.writeUTF(Program.getName());
 					
@@ -1112,7 +1112,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 			
 			for(int ProgramIndex = 0; ProgramIndex < m_Configuration.getNumberOfPresets(); ++ProgramIndex)
 			{
-				Program Program = m_Configuration.getProgram(ProgramIndex);
+				Program Program = m_Configuration.getPreset(ProgramIndex);
 				
 				UTFData = Data.readUTF();
 				Program.setName(UTFData);

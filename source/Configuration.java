@@ -605,11 +605,6 @@ class Configuration
 		return null;
 	}
 	
-	public Program getProgram(int ProgramIndex)
-	{
-		return getPreset(ProgramIndex);
-	}
-	
 	public void copySourcesToDestinations()
 	{
 		for(int I = 0; I < getSize(); ++I)

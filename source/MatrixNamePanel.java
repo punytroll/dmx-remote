@@ -231,7 +231,7 @@ class MatrixNamePanel extends JPanel implements HoverListener, ProgramListener, 
 		}
 		if(PresetIndex != -1)
 		{
-			m_Preset = m_Configuration.getProgram(PresetIndex);
+			m_Preset = m_Configuration.getPreset(PresetIndex);
 			m_PresetNumberLabel.setText(String.valueOf(PresetIndex + 1));
 			m_PresetNameLabel.setText(m_Preset.getName());
 			m_Preset.addProgramListener(this);
