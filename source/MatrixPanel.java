@@ -191,14 +191,14 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 		Graphics2D.clip(new Rectangle(0, m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 1, m_Configuration.getIdentifierFieldWidth(), (m_Configuration.getCurrentCellSize() + 1) * m_Configuration.getSize()));
 		for(int Name = 0; Name < m_Configuration.getSize(); ++Name)
 		{
-			Graphics2D.drawString(m_Configuration.getSourceName(Name), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth() + 2, m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 1 + (Name + 1) * (m_Configuration.getCurrentCellSize() + 1) - 1 - Drawing.getMatrixTextOffset(m_Configuration));
+			Graphics2D.drawString(m_Configuration.getSourceName(Name), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth() + 2, m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 1 + (Name + 1) * (m_Configuration.getCurrentCellSize() + 1) - 1 - m_Configuration.getCurrentTextOffset());
 		}
 		Graphics2D.setClip(OldClip);
 		Graphics2D.clip(new Rectangle(m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 1, m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth() + 2, (m_Configuration.getCurrentCellSize() + 1) * m_Configuration.getSize(), m_Configuration.getNameFieldWidth()));
 		Graphics2D.rotate(Math.PI / -2.0);
 		for(int Name = 0; Name < m_Configuration.getSize(); ++Name)
 		{
-			Graphics2D.drawString(m_Configuration.getDestinationName(Name), 2 - m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 1 + (Name + 1) * (m_Configuration.getCurrentCellSize() + 1) - 1 - Drawing.getMatrixTextOffset(m_Configuration));
+			Graphics2D.drawString(m_Configuration.getDestinationName(Name), 2 - m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 1 + (Name + 1) * (m_Configuration.getCurrentCellSize() + 1) - 1 - m_Configuration.getCurrentTextOffset());
 		}
 		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		Graphics2D.transform(m_InverseTransform);
