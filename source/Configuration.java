@@ -221,26 +221,12 @@ class Configuration
 		}
 		clearPresets();
 		
-		int WhatChanged = MetricListener.SIZE_CHANGED;
+		Integer WhatChanged = MetricListener.SIZE_CHANGED;
+		Integer CellSize = StaticConfiguration.getCellSize(m_Size);
 		
-		if(m_Size == 12 && m_MatrixCellSize != 23)
+		if(m_MatrixCellSize != CellSize)
 		{
-			m_MatrixCellSize = 23;
-			WhatChanged |= MetricListener.MATRIX_CELL_SIZE_CHANGED;
-		}
-		if(m_Size == 18 && m_MatrixCellSize != 19)
-		{
-			m_MatrixCellSize = 19;
-			WhatChanged |= MetricListener.MATRIX_CELL_SIZE_CHANGED;
-		}
-		if(m_Size == 32 && m_MatrixCellSize != 11)
-		{
-			m_MatrixCellSize = 11;
-			WhatChanged |= MetricListener.MATRIX_CELL_SIZE_CHANGED;
-		}
-		if(m_Size == 64 && m_MatrixCellSize != 11)
-		{
-			m_MatrixCellSize = 11;
+			m_MatrixCellSize = CellSize;
 			WhatChanged |= MetricListener.MATRIX_CELL_SIZE_CHANGED;
 		}
 		fireMetricChanged(WhatChanged);

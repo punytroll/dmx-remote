@@ -281,22 +281,7 @@ class MatrixNamePanel extends JPanel implements HoverListener, ProgramListener, 
 		
 		int iSize = m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding();
 		
-		if(m_Configuration.getSize() == 12)
-		{
-			iSize += 30;
-		}
-		else if(m_Configuration.getSize() == 18)
-		{
-			iSize += 105;
-		}
-		else if(m_Configuration.getSize() == 32)
-		{
-			iSize += 120;
-		}
-		else if(m_Configuration.getSize() == 64)
-		{
-			iSize += 130;
-		}
+		iSize += StaticConfiguration.getStrutHeight(m_Configuration.getSize());
 		m_Strut = Box.createVerticalStrut(iSize);
 		m_VBox.add(m_Strut, 0);
 		validate();
