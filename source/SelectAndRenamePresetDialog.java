@@ -71,7 +71,7 @@ class SelectAndRenamePresetDialog extends JDialog
 		
 		Vector Items = new Vector();
 		
-		for(int I = 0; I < m_Configuration.getNumberOfPresets(); ++I)
+		for(int I = 0; I < StaticConfiguration.getNumberOfPresets(); ++I)
 		{
 			Items.add(String.valueOf(I + 1) + ". " + m_Configuration.getPreset(I).getName());
 		}

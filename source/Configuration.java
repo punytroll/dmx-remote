@@ -12,7 +12,6 @@ class Configuration
 	
 	// old variables
 	private String m_ConfigurationRoot;
-	private int m_NumberOfPresets;
 	private int m_Size;
 	private int m_GroupSize;
 	private int m_CellSize;
@@ -71,7 +70,6 @@ class Configuration
 		m_MIDIListeners = new EventListenerList();
 		m_MatrixListeners = new EventListenerList();
 		m_TransmitModeListeners = new EventListenerList();
-		m_NumberOfPresets = 50;
 		m_Size = 32;
 		m_GroupSize = 4;
 		m_CellSize = 11;
@@ -104,8 +102,8 @@ class Configuration
 		{
 			m_Devices[Device] = new Device();
 		}
-		m_Programs = new Program[getNumberOfPresets()];
-		for(int Program = 0; Program < getNumberOfPresets(); ++Program)
+		m_Programs = new Program[StaticConfiguration.getNumberOfPresets()];
+		for(int Program = 0; Program < StaticConfiguration.getNumberOfPresets(); ++Program)
 		{
 			m_Programs[Program] = new Program();
 			
@@ -409,11 +407,6 @@ class Configuration
 		return (m_HoverSource >= 0) && (m_HoverDestination >= 0) && (m_HoverSource < getSize()) && (m_HoverDestination < getSize());
 	}
 	
-	public int getNumberOfPresets()
-	{
-		return m_NumberOfPresets;
-	}
-	
 	public int getSize()
 	{
 		return m_Size;
@@ -597,7 +590,7 @@ class Configuration
 	
 	public Program getPreset(int presetIndex)
 	{
-		if((presetIndex >= 0) && (presetIndex < getNumberOfPresets()))
+		if((presetIndex >= 0) && (presetIndex < StaticConfiguration.getNumberOfPresets()))
 		{
 			return m_Programs[presetIndex];
 		}
@@ -651,7 +644,7 @@ class Configuration
 	
 	public void clearPresets()
 	{
-		for(int Preset = 0; Preset < getNumberOfPresets(); ++Preset)
+		for(int Preset = 0; Preset < StaticConfiguration.getNumberOfPresets(); ++Preset)
 		{
 			m_Programs[Preset].clear();
 		}
@@ -846,7 +839,7 @@ class Configuration
 		{
 			throw new MatrixNotSavedException();
 		}
-		if((ProgramIndex >= 0) && (ProgramIndex < getNumberOfPresets()))
+		if((ProgramIndex >= 0) && (ProgramIndex < StaticConfiguration.getNumberOfPresets()))
 		{
 			int [] Matrix = m_Programs[ProgramIndex].getMatrix();
 			
@@ -886,7 +879,7 @@ class Configuration
 	
 	public void saveMatrixToPreset(int PresetIndex)
 	{
-		if((PresetIndex < 0) && (PresetIndex >= getNumberOfPresets()))
+		if((PresetIndex < 0) && (PresetIndex >= StaticConfiguration.getNumberOfPresets()))
 		{
 			return;
 		}

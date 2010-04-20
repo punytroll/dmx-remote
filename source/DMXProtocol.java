@@ -105,9 +105,9 @@ class DMXProtocol implements ConnectionListener, BatchListener
 				Command = new SysexMessage();
 				
 				System.out.println("Size: " + m_Configuration.getSize() + " x " + m_Configuration.getSize());
-				System.out.println("Presets: " + m_Configuration.getNumberOfPresets());
+				System.out.println("Presets: " + StaticConfiguration.getNumberOfPresets());
 				
-				int ArrayLength = 5 + 1 + 2 * 16 * m_Configuration.getSize() + 1 + m_Configuration.getNumberOfPresets() * (1 + 16 + 1 + 3 * m_Configuration.getSize() + 1) + 1;
+				int ArrayLength = 5 + 1 + 2 * 16 * m_Configuration.getSize() + 1 + StaticConfiguration.getNumberOfPresets() * (1 + 16 + 1 + 3 * m_Configuration.getSize() + 1) + 1;
 				
 				System.out.println("ArrayLength: " + ArrayLength);
 				
@@ -151,8 +151,8 @@ class DMXProtocol implements ConnectionListener, BatchListener
 						}
 					}
 				}
-				Message[iIndex++] = (byte)m_Configuration.getNumberOfPresets();
-				for(int iPreset = 0; iPreset < m_Configuration.getNumberOfPresets(); ++iPreset)
+				Message[iIndex++] = StaticConfiguration.getNumberOfPresets().byteValue();
+				for(int iPreset = 0; iPreset < StaticConfiguration.getNumberOfPresets(); ++iPreset)
 				{
 					Message[iIndex++] = (byte)iPreset;
 					for(int iCharacter = 0; iCharacter < 16; ++iCharacter)
@@ -230,9 +230,9 @@ class DMXProtocol implements ConnectionListener, BatchListener
 				Command = new SysexMessage();
 				
 				System.out.println("Size: " + m_Configuration.getSize() + " x " + m_Configuration.getSize());
-				System.out.println("Presets: " + m_Configuration.getNumberOfPresets());
+				System.out.println("Presets: " + StaticConfiguration.getNumberOfPresets());
 				
-				int ArrayLength = 5 + 1 + 2 * 16 * m_Configuration.getSize() + 1 + m_Configuration.getNumberOfPresets() * (1 + 16 + 1 + m_Configuration.getSize() + 1) + 1;
+				int ArrayLength = 5 + 1 + 2 * 16 * m_Configuration.getSize() + 1 + StaticConfiguration.getNumberOfPresets() * (1 + 16 + 1 + m_Configuration.getSize() + 1) + 1;
 				
 				System.out.println("ArrayLength: " + ArrayLength);
 				
@@ -276,8 +276,8 @@ class DMXProtocol implements ConnectionListener, BatchListener
 						}
 					}
 				}
-				Message[iIndex++] = (byte)m_Configuration.getNumberOfPresets();
-				for(int iPreset = 0; iPreset < m_Configuration.getNumberOfPresets(); ++iPreset)
+				Message[iIndex++] = StaticConfiguration.getNumberOfPresets().byteValue();
+				for(int iPreset = 0; iPreset < StaticConfiguration.getNumberOfPresets(); ++iPreset)
 				{
 					Message[iIndex++] = (byte)iPreset;
 					for(int iCharacter = 0; iCharacter < 16; ++iCharacter)

@@ -72,7 +72,7 @@ class EditPresetNamesWindow extends JInternalFrame implements SelectionListener
 		{
 			public void update(DocumentEvent Event)
 			{
-				if((m_SelectedProgram > -1) && (m_SelectedProgram < m_Configuration.getNumberOfPresets()))
+				if((m_SelectedProgram > -1) && (m_SelectedProgram < StaticConfiguration.getNumberOfPresets()))
 				{
 					m_Configuration.getPreset(m_SelectedProgram).setName(m_IdentifierField.getText());
 				}
