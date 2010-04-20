@@ -1024,7 +1024,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					Data.writeUTF(m_Configuration.getDestinationName(Name));
 				}
 				Data.writeInt(50);
-				for(int ProgramIndex = 0; ProgramIndex < m_Configuration.getNumberOfPresets(); ++ProgramIndex)
+				for(int ProgramIndex = 0; ProgramIndex < StaticConfiguration.getNumberOfPresets(); ++ProgramIndex)
 				{
 					Program Program = m_Configuration.getPreset(ProgramIndex);
 					
@@ -1103,14 +1103,14 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				m_Configuration.setDestinationName(Name, UTFData);
 			}
 			IntData = Data.readInt();
-			if(IntData > m_Configuration.getNumberOfPresets())
+			if(IntData > StaticConfiguration.getNumberOfPresets())
 			{
-				System.out.println("More than " + m_Configuration.getNumberOfPresets() + " data sets in file, so I will truncate at " + m_Configuration.getNumberOfPresets() + ".");
+				System.out.println("More than " + StaticConfiguration.getNumberOfPresets().toString() + " data sets in file, so I will truncate at " + StaticConfiguration.getNumberOfPresets().toString() + ".");
 			}
 			
 			int [] Matrix = new int[m_Configuration.getSize()];
 			
-			for(int ProgramIndex = 0; ProgramIndex < m_Configuration.getNumberOfPresets(); ++ProgramIndex)
+			for(int ProgramIndex = 0; ProgramIndex < StaticConfiguration.getNumberOfPresets(); ++ProgramIndex)
 			{
 				Program Program = m_Configuration.getPreset(ProgramIndex);
 				

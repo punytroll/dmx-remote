@@ -15,6 +15,20 @@ class StaticConfiguration
 		new MatrixConfiguration(32, 11, 120),
 		new MatrixConfiguration(64, 11, 130)
 	};
+	private static final Integer _numberOfPresets = 50;
+	
+	public static Integer getCellSize(Integer matrixSize)
+	{
+		for(MatrixConfiguration matrixConfiguration : _matrixConfigurations)
+		{
+			if(matrixConfiguration.getMatrixSize() == matrixSize)
+			{
+				return matrixConfiguration.getCellSize();
+			}
+		}
+		
+		throw new IllegalArgumentException("The matrix size \"" + matrixSize.toString() + "\" is not defined.");
+	}
 	
 	public static String getConfigurationApplication()
 	{
@@ -38,17 +52,9 @@ class StaticConfiguration
 		return result;
 	}
 	
-	public static Integer getCellSize(Integer matrixSize)
+	public static Integer getNumberOfPresets()
 	{
-		for(MatrixConfiguration matrixConfiguration : _matrixConfigurations)
-		{
-			if(matrixConfiguration.getMatrixSize() == matrixSize)
-			{
-				return matrixConfiguration.getCellSize();
-			}
-		}
-		
-		throw new IllegalArgumentException("The matrix size \"" + matrixSize.toString() + "\" is not defined.");
+		return _numberOfPresets;
 	}
 	
 	public static Integer getStrutHeight(Integer matrixSize)
