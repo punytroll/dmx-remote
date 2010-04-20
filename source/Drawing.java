@@ -7,9 +7,9 @@ import java.lang.Integer;
 
 class Drawing
 {
-	static public int getMatrixTextOffset(Configuration Configuration, boolean Matrix)
+	static public int getMatrixTextOffset(Configuration Configuration)
 	{
-		int CellSize = ((Matrix == true) ? (Configuration.getMatrixCellSize()) : (Configuration.getCellSize()));
+		int CellSize = Configuration.getCurrentCellSize();
 		
 		if(CellSize == 23)
 		{
@@ -27,9 +27,9 @@ class Drawing
 		return 2;
 	}
 	
-	static public void draw(Configuration Configuration, Graphics Graphics, int X, int Y, boolean TextHorizontal, boolean Matrix)
+	static public void draw(Configuration Configuration, Graphics Graphics, int X, int Y, boolean TextHorizontal)
 	{
-		int CellSize = ((Matrix == true) ? (Configuration.getMatrixCellSize()) : (Configuration.getCellSize()));
+		int CellSize = Configuration.getCurrentCellSize();
 		
 		Graphics.setColor(new Color(0.78f, 0.79f, 0.80f));
 		for(int Block = 0; Block <= Configuration.getSize() / (2 * Configuration.getGroupSize()); ++Block)
@@ -80,7 +80,7 @@ class Drawing
 		{
 			for(int Name = 0; Name < Configuration.getSize(); ++Name)
 			{
-				Graphics2D.drawString(Integer.toString(Name + 1), X + 2, Y + 1 + (Name + 1) * (CellSize + 1) - 1 - getMatrixTextOffset(Configuration, Matrix));
+				Graphics2D.drawString(Integer.toString(Name + 1), X + 2, Y + 1 + (Name + 1) * (CellSize + 1) - 1 - getMatrixTextOffset(Configuration));
 			}
 		}
 		else
@@ -88,7 +88,7 @@ class Drawing
 			Graphics2D.rotate(Math.PI / -2.0);
 			for(int Name = 0; Name < Configuration.getSize(); ++Name)
 			{
-				Graphics2D.drawString(Integer.toString(Name + 1), Y + 2 - Configuration.getIdentifierFieldWidth() + Configuration.getNameFieldWidth() + 2, X + 1 + (Name + 1) * (CellSize + 1) - 1 - getMatrixTextOffset(Configuration, Matrix));
+				Graphics2D.drawString(Integer.toString(Name + 1), Y + 2 - Configuration.getIdentifierFieldWidth() + Configuration.getNameFieldWidth() + 2, X + 1 + (Name + 1) * (CellSize + 1) - 1 - getMatrixTextOffset(Configuration));
 			}
 		}
 		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
