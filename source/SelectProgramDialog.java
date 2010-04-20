@@ -32,8 +32,8 @@ class SelectProgramDialog extends JDialog
 	{
 		super(Owner, Configuration.getString("Save to Preset:"), Modal);
 		m_Configuration = Configuration;
-		setSize(m_Configuration.getMatrixSaveToPresetWindowWidth(), m_Configuration.getMatrixSaveToPresetWindowHeight());
-		setLocation(m_Configuration.getMatrixSaveToPresetWindowX(), m_Configuration.getMatrixSaveToPresetWindowY());
+		setLocation(PersistentConfiguration.getWindowLeft("save-matrix-to-preset"), PersistentConfiguration.getWindowTop("save-matrix-to-preset"));
+		setSize(PersistentConfiguration.getWindowWidth("save-matrix-to-preset"), PersistentConfiguration.getWindowHeight("save-matrix-to-preset"));
 		getContentPane().setBackground(m_Configuration.getBackgroundColor());
 		
 		JPanel Buttons = new JPanel();
@@ -137,14 +137,14 @@ class SelectProgramDialog extends JDialog
 		{
 			public void componentMoved(ComponentEvent Event)
 			{
-				m_Configuration.saveMatrixSaveToPresetWindowX(Event.getComponent().getLocation().x);
-				m_Configuration.saveMatrixSaveToPresetWindowY(Event.getComponent().getLocation().y);
+				PersistentConfiguration.setWindowLeft("save-matrix-to-preset", Event.getComponent().getLocation().x);
+				PersistentConfiguration.setWindowTop("save-matrix-to-preset", Event.getComponent().getLocation().y);
 			}
 			
 			public void componentResized(ComponentEvent Event)
 			{
-				m_Configuration.saveMatrixSaveToPresetWindowWidth(Event.getComponent().getSize().width);
-				m_Configuration.saveMatrixSaveToPresetWindowHeight(Event.getComponent().getSize().height);
+				PersistentConfiguration.setWindowWidth("save-matrix-to-preset", Event.getComponent().getSize().width);
+				PersistentConfiguration.setWindowHeight("save-matrix-to-preset", Event.getComponent().getSize().height);
 			}
 		}
 		);
