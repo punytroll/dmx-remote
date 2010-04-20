@@ -61,14 +61,14 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 		{
 			public void componentMoved(ComponentEvent Event)
 			{
-				m_Configuration.saveMainWindowX(Event.getComponent().getLocation().x);
-				m_Configuration.saveMainWindowY(Event.getComponent().getLocation().y);
+				PersistentConfiguration.setWindowLeft("main", Event.getComponent().getLocation().x);
+				PersistentConfiguration.setWindowTop("main", Event.getComponent().getLocation().y);
 			}
 			
 			public void componentResized(ComponentEvent Event)
 			{
-				m_Configuration.saveMainWindowWidth(Event.getComponent().getSize().width);
-				m_Configuration.saveMainWindowHeight(Event.getComponent().getSize().height);
+				PersistentConfiguration.setWindowWidth("main", Event.getComponent().getSize().width);
+				PersistentConfiguration.setWindowHeight("main", Event.getComponent().getSize().height);
 			}
 		}
 		);
@@ -369,8 +369,8 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				//~ }
 			//~ }
 		//~ }
-		setLocation(m_Configuration.getMainWindowX(), m_Configuration.getMainWindowY());
-		setSize(m_Configuration.getMainWindowWidth(), m_Configuration.getMainWindowHeight());
+		setLocation(PersistentConfiguration.getWindowLeft("main"), PersistentConfiguration.getWindowTop("main"));
+		setSize(PersistentConfiguration.getWindowWidth("main"), PersistentConfiguration.getWindowHeight("main"));
 		setVisible(true);
 	}
 	
@@ -600,24 +600,24 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				{
 					public void componentHidden(ComponentEvent Event)
 					{
-						m_Configuration.saveEditPresetNamesWindowVisible(false);
+						PersistentConfiguration.setWindowVisible("edit-preset-names", false);
 					}
 					
 					public void componentMoved(ComponentEvent Event)
 					{
-						m_Configuration.saveEditPresetNamesWindowX(Event.getComponent().getLocation().x);
-						m_Configuration.saveEditPresetNamesWindowY(Event.getComponent().getLocation().y);
+						PersistentConfiguration.setWindowLeft("edit-preset-names", Event.getComponent().getLocation().x);
+						PersistentConfiguration.setWindowTop("edit-preset-names", Event.getComponent().getLocation().y);
 					}
 					
 					public void componentResized(ComponentEvent Event)
 					{
-						m_Configuration.saveEditPresetNamesWindowWidth(Event.getComponent().getSize().width);
-						m_Configuration.saveEditPresetNamesWindowHeight(Event.getComponent().getSize().height);
+						PersistentConfiguration.setWindowWidth("edit-preset-names", Event.getComponent().getSize().width);
+						PersistentConfiguration.setWindowWidth("edit-preset-names", Event.getComponent().getSize().height);
 					}
 					
 					public void componentShown(ComponentEvent Event)
 					{
-						m_Configuration.saveEditPresetNamesWindowVisible(true);
+						PersistentConfiguration.setWindowVisible("edit-preset-names", true);
 					}
 				}
 				);
@@ -634,9 +634,9 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					}
 				}
 				);
-				m_EditPresetNamesWindow.setSize(m_Configuration.getEditPresetNamesWindowWidth(), m_Configuration.getEditPresetNamesWindowHeight());
-				m_EditPresetNamesWindow.setLocation(m_Configuration.getEditPresetNamesWindowX(), m_Configuration.getEditPresetNamesWindowY());
-				m_EditPresetNamesWindow.setVisible(m_Configuration.getEditPresetNamesWindowVisible());
+				m_EditPresetNamesWindow.setSize(PersistentConfiguration.getWindowWidth("edit-preset-names"), PersistentConfiguration.getWindowHeight("edit-preset-names"));
+				m_EditPresetNamesWindow.setLocation(PersistentConfiguration.getWindowLeft("edit-preset-names"), PersistentConfiguration.getWindowTop("edit-preset-names"));
+				m_EditPresetNamesWindow.setVisible(PersistentConfiguration.getWindowVisible("edit-preset-names"));
 				m_EditPresetNamesWindow.setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
 			}
 		}
@@ -648,24 +648,24 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				{
 					public void componentHidden(ComponentEvent Event)
 					{
-						m_Configuration.saveDeviceWindowVisible(false);
+						PersistentConfiguration.setWindowVisible("edit-device-names", false);
 					}
 					
 					public void componentMoved(ComponentEvent Event)
 					{
-						m_Configuration.saveDeviceWindowX(Event.getComponent().getLocation().x);
-						m_Configuration.saveDeviceWindowY(Event.getComponent().getLocation().y);
+						PersistentConfiguration.setWindowLeft("edit-device-names", Event.getComponent().getLocation().x);
+						PersistentConfiguration.setWindowTop("edit-device-names", Event.getComponent().getLocation().y);
 					}
 					
 					public void componentResized(ComponentEvent Event)
 					{
-						m_Configuration.saveDeviceWindowWidth(Event.getComponent().getSize().width);
-						m_Configuration.saveDeviceWindowHeight(Event.getComponent().getSize().height);
+						PersistentConfiguration.setWindowWidth("edit-device-names", Event.getComponent().getSize().width);
+						PersistentConfiguration.setWindowWidth("edit-device-names", Event.getComponent().getSize().height);
 					}
 					
 					public void componentShown(ComponentEvent Event)
 					{
-						m_Configuration.saveDeviceWindowVisible(true);
+						PersistentConfiguration.setWindowVisible("edit-device-names", true);
 					}
 				}
 				);
@@ -682,9 +682,9 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					}
 				}
 				);
-				m_DevicesWindow.setSize(m_Configuration.getDeviceWindowWidth(), m_Configuration.getDeviceWindowHeight());
-				m_DevicesWindow.setLocation(m_Configuration.getDeviceWindowX(), m_Configuration.getDeviceWindowY());
-				m_DevicesWindow.setVisible(m_Configuration.getDeviceWindowVisible());
+				m_DevicesWindow.setSize(PersistentConfiguration.getWindowWidth("edit-device-names"), PersistentConfiguration.getWindowHeight("edit-device-names"));
+				m_DevicesWindow.setLocation(PersistentConfiguration.getWindowLeft("edit-device-names"), PersistentConfiguration.getWindowTop("edit-device-names"));
+				m_DevicesWindow.setVisible(PersistentConfiguration.getWindowVisible("edit-device-names"));
 				m_DevicesWindow.setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
 			}
 		}
