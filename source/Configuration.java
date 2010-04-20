@@ -468,56 +468,6 @@ class Configuration
 		return m_IDNumber;
 	}
 	
-	public int getPresetsWindowWidth()
-	{
-		return Preferences.userRoot().node(m_ConfigurationRoot).getInt("PresetsWindowWidth", 350);
-	}
-	
-	public void savePresetsWindowWidth(int Width)
-	{
-		Preferences.userRoot().node(m_ConfigurationRoot).putInt("PresetsWindowWidth", Width);
-	}
-	
-	public int getPresetsWindowHeight()
-	{
-		return Preferences.userRoot().node(m_ConfigurationRoot).getInt("PresetsWindowHeight", 500);
-	}
-	
-	public void savePresetsWindowHeight(int Height)
-	{
-		Preferences.userRoot().node(m_ConfigurationRoot).putInt("PresetsWindowHeight", Height);
-	}
-	
-	public int getPresetsWindowX()
-	{
-		return Preferences.userRoot().node(m_ConfigurationRoot).getInt("PresetsWindowX", 0);
-	}
-	
-	public void savePresetsWindowX(int X)
-	{
-		Preferences.userRoot().node(m_ConfigurationRoot).putInt("PresetsWindowX", X);
-	}
-	
-	public int getPresetsWindowY()
-	{
-		return Preferences.userRoot().node(m_ConfigurationRoot).getInt("PresetsWindowY", 0);
-	}
-	
-	public void savePresetsWindowY(int Y)
-	{
-		Preferences.userRoot().node(m_ConfigurationRoot).putInt("PresetsWindowY", Y);
-	}
-	
-	public boolean getPresetsWindowVisible()
-	{
-		return Preferences.userRoot().node(m_ConfigurationRoot).getBoolean("PresetsWindowVisible", false);
-	}
-	
-	public void savePresetsWindowVisible(boolean Visible)
-	{
-		Preferences.userRoot().node(m_ConfigurationRoot).putBoolean("PresetsWindowVisible", Visible);
-	}
-	
 	/* save and get status for EditPresetNames window */
 	public int getEditPresetNamesWindowWidth()
 	{

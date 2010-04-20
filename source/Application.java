@@ -578,24 +578,24 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				{
 					public void componentHidden(ComponentEvent Event)
 					{
-						m_Configuration.savePresetsWindowVisible(false);
+						PersistentConfiguration.setWindowVisible("presets", false);
 					}
 					
 					public void componentMoved(ComponentEvent Event)
 					{
-						m_Configuration.savePresetsWindowX(Event.getComponent().getLocation().x);
-						m_Configuration.savePresetsWindowY(Event.getComponent().getLocation().y);
+						PersistentConfiguration.setWindowLeft("presets", Event.getComponent().getLocation().x);
+						PersistentConfiguration.setWindowTop("presets", Event.getComponent().getLocation().y);
 					}
 					
 					public void componentResized(ComponentEvent Event)
 					{
-						m_Configuration.savePresetsWindowWidth(Event.getComponent().getSize().width);
-						m_Configuration.savePresetsWindowHeight(Event.getComponent().getSize().height);
+						PersistentConfiguration.setWindowWidth("presets", Event.getComponent().getSize().width);
+						PersistentConfiguration.setWindowHeight("presets", Event.getComponent().getSize().height);
 					}
 					
 					public void componentShown(ComponentEvent Event)
 					{
-						m_Configuration.savePresetsWindowVisible(true);
+						PersistentConfiguration.setWindowVisible("presets", true);
 					}
 				}
 				);
@@ -612,9 +612,9 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					}
 				}
 				);
-				m_PresetsWindow.setSize(m_Configuration.getPresetsWindowWidth(), m_Configuration.getPresetsWindowHeight());
-				m_PresetsWindow.setLocation(m_Configuration.getPresetsWindowX(), m_Configuration.getPresetsWindowY());
-				m_PresetsWindow.setVisible(m_Configuration.getPresetsWindowVisible());
+				m_PresetsWindow.setSize(PersistentConfiguration.getWindowWidth("presets"), PersistentConfiguration.getWindowHeight("presets"));
+				m_PresetsWindow.setLocation(PersistentConfiguration.getWindowLeft("presets"), PersistentConfiguration.getWindowTop("presets"));
+				m_PresetsWindow.setVisible(PersistentConfiguration.getWindowVisible("presets"));
 				m_PresetsWindow.setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
 			}
 		}
