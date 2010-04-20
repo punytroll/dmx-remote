@@ -307,39 +307,13 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 						m_Configuration.setSize(Integer.valueOf(Action).intValue());
 					}
 				};
-				
-				JRadioButtonMenuItem RadioButton = new JRadioButtonMenuItem("12");
-				
-				RadioButton.addActionListener(SelectSystemSize);
-				m_SystemSizeButtonGroup.add(RadioButton);
-				SystemSizeMenu.add(RadioButton);
-				if(m_Configuration.getSize() == 12)
+				for(Integer systemSize : StaticConfiguration.getMatrixSizes())
 				{
-					m_SystemSizeButtonGroup.setSelected(RadioButton.getModel(), true);
-				}
-				RadioButton = new JRadioButtonMenuItem("18");
-				RadioButton.addActionListener(SelectSystemSize);
-				m_SystemSizeButtonGroup.add(RadioButton);
-				SystemSizeMenu.add(RadioButton);
-				if(m_Configuration.getSize() == 18)
-				{
-					m_SystemSizeButtonGroup.setSelected(RadioButton.getModel(), true);
-				}
-				RadioButton = new JRadioButtonMenuItem("32");
-				RadioButton.addActionListener(SelectSystemSize);
-				m_SystemSizeButtonGroup.add(RadioButton);
-				SystemSizeMenu.add(RadioButton);
-				if(m_Configuration.getSize() == 32)
-				{
-					m_SystemSizeButtonGroup.setSelected(RadioButton.getModel(), true);
-				}
-				RadioButton = new JRadioButtonMenuItem("64");
-				RadioButton.addActionListener(SelectSystemSize);
-				m_SystemSizeButtonGroup.add(RadioButton);
-				SystemSizeMenu.add(RadioButton);
-				if(m_Configuration.getSize() == 64)
-				{
-					m_SystemSizeButtonGroup.setSelected(RadioButton.getModel(), true);
+					JRadioButtonMenuItem RadioButton = new JRadioButtonMenuItem(systemSize.toString());
+					
+					RadioButton.addActionListener(SelectSystemSize);
+					m_SystemSizeButtonGroup.add(RadioButton);
+					SystemSizeMenu.add(RadioButton);
 				}
 			}
 			
