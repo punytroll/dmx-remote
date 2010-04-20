@@ -14,8 +14,6 @@ class Configuration
 	private String m_ConfigurationRoot;
 	private int m_Size;
 	private int m_GroupSize;
-	private int m_CellSize;
-	private int m_MatrixCellSize;
 	private int m_MatrixPadding;
 	private int m_IdentifierFieldWidth;
 	private int m_NameFieldWidth;
@@ -72,8 +70,6 @@ class Configuration
 		m_TransmitModeListeners = new EventListenerList();
 		m_Size = 32;
 		m_GroupSize = 4;
-		m_CellSize = 11;
-		m_MatrixCellSize = 11;
 		m_MatrixPadding = 8;
 		m_IdentifierFieldWidth = 100;
 		m_NameFieldWidth = 80;
@@ -218,16 +214,7 @@ class Configuration
 			m_Devices[Device] = new Device();
 		}
 		clearPresets();
-		
-		Integer WhatChanged = MetricListener.SIZE_CHANGED;
-		Integer CellSize = StaticConfiguration.getCellSize(m_Size);
-		
-		if(m_MatrixCellSize != CellSize)
-		{
-			m_MatrixCellSize = CellSize;
-			WhatChanged |= MetricListener.MATRIX_CELL_SIZE_CHANGED;
-		}
-		fireMetricChanged(WhatChanged);
+		fireMetricChanged(MetricListener.SIZE_CHANGED | MetricListener.MATRIX_CELL_SIZE_CHANGED);
 		setMatrixChanged();
 		setDevicesChanged();
 		setPresetsChanged();
@@ -412,19 +399,14 @@ class Configuration
 		return m_Size;
 	}
 	
+	public Integer getCurrentCellSize()
+	{
+		return StaticConfiguration.getCellSize(getSize());
+	}
+	
 	public int getGroupSize()
 	{
 		return m_GroupSize;
-	}
-	
-	public int getCellSize()
-	{
-		return m_CellSize;
-	}
-	
-	public int getMatrixCellSize()
-	{
-		return m_MatrixCellSize;
 	}
 	
 	public int getMatrixPadding()
