@@ -9,11 +9,11 @@ class StaticConfiguration
 	private static final String _configurationApplication = "dmx-remote";
 	private static final String _configurationVersion = "configuration-version-1.0";
 	private static final MatrixConfiguration[] _matrixConfigurations = { 
-		new MatrixConfiguration(12, 23, 40),
-		new MatrixConfiguration(16, 19, 70),
-		new MatrixConfiguration(18, 19, 110),
-		new MatrixConfiguration(32, 11, 120),
-		new MatrixConfiguration(64, 11, 130)
+		new MatrixConfiguration(12, 23, 40, 8),
+		new MatrixConfiguration(16, 19, 70, 6),
+		new MatrixConfiguration(18, 19, 110, 6),
+		new MatrixConfiguration(32, 11, 120, 2),
+		new MatrixConfiguration(64, 11, 130, 2)
 	};
 	private static final Integer _numberOfPresets = 50;
 	
@@ -69,6 +69,19 @@ class StaticConfiguration
 		
 		throw new IllegalArgumentException("The matrix size \"" + matrixSize.toString() + "\" is not defined.");
 	}
+	
+	public static Integer getTextOffset(Integer matrixSize)
+	{
+		for(MatrixConfiguration matrixConfiguration : _matrixConfigurations)
+		{
+			if(matrixConfiguration.getMatrixSize() == matrixSize)
+			{
+				return matrixConfiguration.getTextOffset();
+			}
+		}
+		
+		throw new IllegalArgumentException("The matrix size \"" + matrixSize.toString() + "\" is not defined.");
+	}
 }
 
 /**
@@ -79,12 +92,14 @@ class MatrixConfiguration
 	private final Integer _cellSize;
 	private final Integer _matrixSize;
 	private final Integer _strutHeight;
+	private final Integer _textOffset;
 	
-	public MatrixConfiguration(Integer matrixSize, Integer cellSize, Integer strutHeight)
+	public MatrixConfiguration(Integer matrixSize, Integer cellSize, Integer strutHeight, Integer textOffset)
 	{
 		_cellSize = cellSize;
 		_matrixSize = matrixSize;
 		_strutHeight = strutHeight;
+		_textOffset = textOffset;
 	}
 	
 	public Integer getCellSize()
@@ -100,5 +115,10 @@ class MatrixConfiguration
 	public Integer getStrutHeight()
 	{
 		return _strutHeight;
+	}
+	
+	public Integer getTextOffset()
+	{
+		return _textOffset;
 	}
 }

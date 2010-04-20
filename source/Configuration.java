@@ -404,6 +404,11 @@ class Configuration
 		return StaticConfiguration.getCellSize(getSize());
 	}
 	
+	public Integer getCurrentTextOffset()
+	{
+		return StaticConfiguration.getTextOffset(getSize());
+	}
+	
 	public int getGroupSize()
 	{
 		return m_GroupSize;

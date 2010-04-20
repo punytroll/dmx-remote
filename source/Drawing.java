@@ -7,26 +7,6 @@ import java.lang.Integer;
 
 class Drawing
 {
-	static public int getMatrixTextOffset(Configuration Configuration)
-	{
-		int CellSize = Configuration.getCurrentCellSize();
-		
-		if(CellSize == 23)
-		{
-			return 8;
-		}
-		else if(CellSize == 19)
-		{
-			return 6;
-		}
-		else if(CellSize == 11)
-		{
-			return 2;
-		}
-		
-		return 2;
-	}
-	
 	static public void draw(Configuration Configuration, Graphics Graphics, int X, int Y, boolean TextHorizontal)
 	{
 		int CellSize = Configuration.getCurrentCellSize();
@@ -80,7 +60,7 @@ class Drawing
 		{
 			for(int Name = 0; Name < Configuration.getSize(); ++Name)
 			{
-				Graphics2D.drawString(Integer.toString(Name + 1), X + 2, Y + 1 + (Name + 1) * (CellSize + 1) - 1 - getMatrixTextOffset(Configuration));
+				Graphics2D.drawString(Integer.toString(Name + 1), X + 2, Y + 1 + (Name + 1) * (CellSize + 1) - 1 - Configuration.getCurrentTextOffset());
 			}
 		}
 		else
@@ -88,7 +68,7 @@ class Drawing
 			Graphics2D.rotate(Math.PI / -2.0);
 			for(int Name = 0; Name < Configuration.getSize(); ++Name)
 			{
-				Graphics2D.drawString(Integer.toString(Name + 1), Y + 2 - Configuration.getIdentifierFieldWidth() + Configuration.getNameFieldWidth() + 2, X + 1 + (Name + 1) * (CellSize + 1) - 1 - getMatrixTextOffset(Configuration));
+				Graphics2D.drawString(Integer.toString(Name + 1), Y + 2 - Configuration.getIdentifierFieldWidth() + Configuration.getNameFieldWidth() + 2, X + 1 + (Name + 1) * (CellSize + 1) - 1 - Configuration.getCurrentTextOffset());
 			}
 		}
 		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
