@@ -27,7 +27,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 	private JPopupMenu m_MatrixPopupMenu;
 	
 	// the device configuration window
-	private EditDeviceNamesWindow m_DevicesWindow;
+	private EditDeviceNamesWindow _editDeviceNamesWindow;
 	
 	// the edit preset names window
 	private EditPresetNamesWindow m_EditPresetNamesWindow;
@@ -436,8 +436,8 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 		{
 			setLocation(0, 0);
 			m_MatrixWindow.setLocation(0, 0);
-			m_DevicesWindow.setLocation(0, 0);
 			m_PresetsWindow.setLocation(0, 0);
+			_editDeviceNamesWindow.setLocation(0, 0);
 			m_EditPresetNamesWindow.setLocation(0, 0);
 		}
 		else
@@ -641,10 +641,10 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 			}
 		}
 		{
-			if(m_DevicesWindow == null)
+			if(_editDeviceNamesWindow == null)
 			{
-				m_DevicesWindow = new EditDeviceNamesWindow(m_Configuration);
-				m_DevicesWindow.addComponentListener(new ComponentListener()
+				_editDeviceNamesWindow = new EditDeviceNamesWindow(m_Configuration);
+				_editDeviceNamesWindow.addComponentListener(new ComponentListener()
 				{
 					public void componentHidden(ComponentEvent Event)
 					{
@@ -669,7 +669,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					}
 				}
 				);
-				m_DevicesWindow.addInternalFrameListener(new InternalFrameAdapter()
+				_editDeviceNamesWindow.addInternalFrameListener(new InternalFrameAdapter()
 				{
 					public void internalFrameActivated(InternalFrameEvent Event)
 					{
@@ -682,10 +682,10 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					}
 				}
 				);
-				m_DevicesWindow.setSize(PersistentConfiguration.getWindowWidth("edit-device-names"), PersistentConfiguration.getWindowHeight("edit-device-names"));
-				m_DevicesWindow.setLocation(PersistentConfiguration.getWindowLeft("edit-device-names"), PersistentConfiguration.getWindowTop("edit-device-names"));
-				m_DevicesWindow.setVisible(PersistentConfiguration.getWindowVisible("edit-device-names"));
-				m_DevicesWindow.setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
+				_editDeviceNamesWindow.setSize(PersistentConfiguration.getWindowWidth("edit-device-names"), PersistentConfiguration.getWindowHeight("edit-device-names"));
+				_editDeviceNamesWindow.setLocation(PersistentConfiguration.getWindowLeft("edit-device-names"), PersistentConfiguration.getWindowTop("edit-device-names"));
+				_editDeviceNamesWindow.setVisible(PersistentConfiguration.getWindowVisible("edit-device-names"));
+				_editDeviceNamesWindow.setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
 			}
 		}
 		
@@ -693,7 +693,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 		// the order may change
 		m_Desktop.add(m_PresetsWindow);
 		m_Desktop.add(m_MatrixWindow);
-		m_Desktop.add(m_DevicesWindow);
+		m_Desktop.add(_editDeviceNamesWindow);
 		m_Desktop.add(m_EditPresetNamesWindow);
 		
 		String ActiveWindow = m_Configuration.getActiveWindow();
@@ -1192,11 +1192,11 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 	
 	public void devicesEnterDeviceNames()
 	{
-		m_DevicesWindow.setVisible(true);
-		m_DevicesWindow.toFront();
+		_editDeviceNamesWindow.setVisible(true);
+		_editDeviceNamesWindow.toFront();
 		try
 		{
-			m_DevicesWindow.setSelected(true);
+			_editDeviceNamesWindow.setSelected(true);
 		}
 		catch(PropertyVetoException Exception)
 		{
