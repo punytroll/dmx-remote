@@ -1,28 +1,29 @@
 import javax.swing.event.EventListenerList;
 
-class Program
+class Preset
 {
-	private int [] m_Matrix;
-	private String m_Name;
+	private int [] _matrix;
+	private String _name;
 	private EventListenerList _presetListeners;
 	
-	public Program()
+	public Preset()
 	{
-		m_Name = "";
+		_matrix = null;
+		_name = "";
 		_presetListeners = new EventListenerList();
 	}
 	
 	public void clear()
 	{
-		m_Matrix = null;
+		_matrix = null;
 		setName("");
 	}
 	
 	public int getSize()
 	{
-		if(m_Matrix != null)
+		if(_matrix != null)
 		{
-			return m_Matrix.length;
+			return _matrix.length;
 		}
 		else
 		{
@@ -32,39 +33,39 @@ class Program
 	
 	public String getName()
 	{
-		return m_Name;
+		return _name;
 	}
 	
 	public int [] getMatrix()
 	{
-		return m_Matrix;
+		return _matrix;
 	}
 	
-	public void setName(String Name)
+	public void setName(String name)
 	{
-		if(Name.equals(m_Name) == false)
+		if(name.equals(_name) == false)
 		{
-			m_Name = Name;
+			_name = name;
 			fireNamedChanged();
 		}
 	}
 	
-	public void setMatrix(int [] Matrix)
+	public void setMatrix(int [] matrix)
 	{
-		m_Matrix = new int[Matrix.length];
-		for(int I = 0; I < Matrix.length; ++I)
+		_matrix = new int[matrix.length];
+		for(int index = 0; index < matrix.length; ++index)
 		{
-			m_Matrix[I] = Matrix[I];
+			_matrix[index] = matrix[index];
 		}
 	}
 	
 	public boolean hasMatrixInformation()
 	{
-		if(m_Matrix != null)
+		if(_matrix != null)
 		{
-			for(int I = 0; I < m_Matrix.length; ++I)
+			for(int index = 0; index < _matrix.length; ++index)
 			{
-				if(m_Matrix[I] != -1)
+				if(_matrix[index] != -1)
 				{
 					return true;
 				}
@@ -96,7 +97,7 @@ class Program
 		{
 			if(event == null)
 			{
-				event = new NameChangedEvent(m_Name);
+				event = new NameChangedEvent(_name);
 			}
 			presetListener.nameChanged(event);
 		}
