@@ -348,6 +348,9 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 		setJMenuBar(MenuBar);
 		setContentPane(m_Desktop);
 		createWindows();
+		setLocation(PersistentConfiguration.getWindowLeft("main"), PersistentConfiguration.getWindowTop("main"));
+		setSize(PersistentConfiguration.getWindowWidth("main"), PersistentConfiguration.getWindowHeight("main"));
+		setVisible(true);
 		if(m_Configuration.getCurrentPresetsFile().equals("") == false)
 		{
 			loadPresetsFromFile(m_Configuration.getCurrentPresetsFile(), true);
@@ -369,9 +372,6 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				//~ }
 			//~ }
 		//~ }
-		setLocation(PersistentConfiguration.getWindowLeft("main"), PersistentConfiguration.getWindowTop("main"));
-		setSize(PersistentConfiguration.getWindowWidth("main"), PersistentConfiguration.getWindowHeight("main"));
-		setVisible(true);
 	}
 	
 	public void actionPerformed(ActionEvent Event)
