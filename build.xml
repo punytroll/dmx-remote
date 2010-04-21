@@ -1,7 +1,7 @@
 <project name="dmx-remote" default="distribution" basedir=".">
 	<description>This build-file will build the distribution of the dmx-remote application.</description>
 	
-	<property name="version" value="1.10-rc1"/>
+	<property name="version" value="1.10-rc2"/>
 	<property name="source" location="source"/>
 	<property name="build" location="build"/>
 	<property name="distribution" location="distribution"/>

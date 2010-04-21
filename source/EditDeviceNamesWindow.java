@@ -26,7 +26,7 @@ class EditDeviceNamesWindow extends JInternalFrame implements SelectionListener
 		super(Configuration.getString("Edit Device Names"), true, true, true, false);
 		m_Configuration = Configuration;
 		setBackground(m_Configuration.getBackgroundColor());
-		m_DevicesPanel = new DevicesPanel(m_Configuration, "EditDeviceNames");
+		m_DevicesPanel = new DevicesPanel(m_Configuration);
 		m_DevicesPanel.addSelectionListener(this);
 		m_DeviceNameTextField = new JTextField(15);
 		m_DeviceNameTextField.addKeyListener(new KeyAdapter()

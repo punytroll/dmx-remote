@@ -11,14 +11,12 @@ class PresetsPanel extends JPanel implements ProgramsListener, MetricListener
 	private int m_Hover;
 	private int m_Select;
 	private EventListenerList m_SelectionListeners;
-	private String m_WindowName;
 	
-	public PresetsPanel(Configuration Configuration, String WindowName)
+	public PresetsPanel(Configuration Configuration)
 	{
 		m_Configuration = Configuration;
 		m_Configuration.addProgramsListener(this);
 		m_Configuration.addMetricListener(this);
-		m_WindowName = WindowName;
 		setBackground(m_Configuration.getBackgroundColor());
 		m_SelectionListeners = new EventListenerList();
 		m_Hover = -1;
@@ -45,10 +43,7 @@ class PresetsPanel extends JPanel implements ProgramsListener, MetricListener
 			
 			public void mouseExited(MouseEvent Event)
 			{
-				if(m_Configuration.getActiveWindow().equals(m_WindowName) == true)
-				{
-					setHover(-1);
-				}
+				setHover(-1);
 			}
 			
 			public void mouseClicked(MouseEvent Event)
@@ -63,28 +58,25 @@ class PresetsPanel extends JPanel implements ProgramsListener, MetricListener
 	
 	public void mouseHover(int MouseX, int MouseY)
 	{
-		if(m_Configuration.getActiveWindow().equals(m_WindowName) == true)
+		double HoverX = Math.floor((double)(MouseX - 1) / (m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding()));
+		double HoverY = Math.floor((double)(MouseY - 2) / (m_Configuration.getCurrentCellSize() + 1));
+		
+		if((HoverY >= 0) && (HoverY < StaticConfiguration.getNumberOfPresets() / 2) && (MouseX - ((int)(HoverX) * (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth())) <= m_Configuration.getIdentifierFieldWidth()))
 		{
-			double HoverX = Math.floor((double)(MouseX - 1) / (m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding()));
-			double HoverY = Math.floor((double)(MouseY - 2) / (m_Configuration.getCurrentCellSize() + 1));
+			int Hover = (int)HoverY + (int)HoverX * StaticConfiguration.getNumberOfPresets() / 2;
 			
-			if((HoverY >= 0) && (HoverY < StaticConfiguration.getNumberOfPresets() / 2) && (MouseX - ((int)(HoverX) * (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth())) <= m_Configuration.getIdentifierFieldWidth()))
+			if((Hover > -1) && (Hover <= StaticConfiguration.getNumberOfPresets()))
 			{
-				int Hover = (int)HoverY + (int)HoverX * StaticConfiguration.getNumberOfPresets() / 2;
-				
-				if((Hover > -1) && (Hover <= StaticConfiguration.getNumberOfPresets()))
-				{
-					setHover(Hover);
-				}
-				else
-				{
-					setHover(-1);
-				}
+				setHover(Hover);
 			}
 			else
 			{
 				setHover(-1);
 			}
+		}
+		else
+		{
+			setHover(-1);
 		}
 	}
 	
@@ -132,7 +124,7 @@ class PresetsPanel extends JPanel implements ProgramsListener, MetricListener
 		Graphics2D Graphics2D = (Graphics2D)Graphics;
 		Composite Original = Graphics2D.getComposite();
 		
-		if((m_Hover != -1) && (m_Configuration.getActiveWindow().equals(m_WindowName) == true))
+		if(m_Hover != -1)
 		{
 			Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.70f));
 			Graphics2D.setPaint(Color.white);
