@@ -16,8 +16,6 @@ class Configuration
 	private String m_ConfigurationRoot;
 	private int m_GroupSize;
 	private int m_MatrixPadding;
-	private int m_IdentifierFieldWidth;
-	private int m_NameFieldWidth;
 	private int m_Matrix[];
 	private int m_FixedHoverSource;
 	private int m_FixedHoverDestination;
@@ -69,8 +67,6 @@ class Configuration
 		m_TransmitModeListeners = new EventListenerList();
 		m_GroupSize = 4;
 		m_MatrixPadding = 8;
-		m_IdentifierFieldWidth = 100;
-		m_NameFieldWidth = 80;
 		m_Matrix = new int[getCurrentMatrixSize()];
 		m_FixedHoverSource = -1;
 		m_FixedHoverDestination = -1;
@@ -387,12 +383,12 @@ class Configuration
 		return _currentMatrixSize;
 	}
 	
-	public Integer getCurrentCellSize()
+	public static Integer getCurrentCellSize()
 	{
 		return StaticConfiguration.getCellSize(getCurrentMatrixSize());
 	}
 	
-	public Integer getCurrentTextOffset()
+	public static Integer getCurrentTextOffset()
 	{
 		return StaticConfiguration.getTextOffset(getCurrentMatrixSize());
 	}
@@ -409,12 +405,12 @@ class Configuration
 	
 	public int getIdentifierFieldWidth()
 	{
-		return m_IdentifierFieldWidth;
+		return StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth();
 	}
 	
 	public int getNameFieldWidth()
 	{
-		return m_NameFieldWidth;
+		return StaticConfiguration.getNameFieldWidth();
 	}
 	
 	public int getIDNumber()
