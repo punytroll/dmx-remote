@@ -12,31 +12,31 @@ class Drawing
 		int CellSize = Configuration.getCurrentCellSize();
 		
 		Graphics.setColor(new Color(0.78f, 0.79f, 0.80f));
-		for(int Block = 0; Block <= Configuration.getCurrentMatrixSize() / (2 * configuration.getGroupSize()); ++Block)
+		for(int Block = 0; Block <= Configuration.getCurrentMatrixSize() / (2 * StaticConfiguration.getCellGroupSize()); ++Block)
 		{
 			if(TextHorizontal == true)
 			{
-				Graphics.fillRect(X, Y + 1 + 2 * Block * configuration.getGroupSize() * (CellSize + 1), configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth() - 2, configuration.getGroupSize() * (CellSize + 1));
-				Graphics.fillRect(X + configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth(), Y + 1 + 2 * Block * configuration.getGroupSize() * (CellSize + 1), configuration.getNameFieldWidth(), configuration.getGroupSize() * (CellSize + 1));
+				Graphics.fillRect(X, Y + 1 + 2 * Block * StaticConfiguration.getCellGroupSize() * (CellSize + 1), configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth() - 2, StaticConfiguration.getCellGroupSize() * (CellSize + 1));
+				Graphics.fillRect(X + configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth(), Y + 1 + 2 * Block * StaticConfiguration.getCellGroupSize() * (CellSize + 1), configuration.getNameFieldWidth(), StaticConfiguration.getCellGroupSize() * (CellSize + 1));
 			}
 			else
 			{
-				Graphics.fillRect(X + 1 + 2 * Block * configuration.getGroupSize() * (CellSize + 1), Y, configuration.getGroupSize() * (CellSize + 1), configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth() - 2);
-				Graphics.fillRect(X + 1 + 2 * Block * configuration.getGroupSize() * (CellSize + 1), Y + configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth(), configuration.getGroupSize() * (CellSize + 1), configuration.getNameFieldWidth());
+				Graphics.fillRect(X + 1 + 2 * Block * StaticConfiguration.getCellGroupSize() * (CellSize + 1), Y, StaticConfiguration.getCellGroupSize() * (CellSize + 1), configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth() - 2);
+				Graphics.fillRect(X + 1 + 2 * Block * StaticConfiguration.getCellGroupSize() * (CellSize + 1), Y + configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth(), StaticConfiguration.getCellGroupSize() * (CellSize + 1), configuration.getNameFieldWidth());
 			}
 		}
 		Graphics.setColor(new Color(0.70f, 0.72f, 0.73f));
-		for(int Block = 0; Block <= Configuration.getCurrentMatrixSize() / (2 * configuration.getGroupSize()); ++Block)
+		for(int Block = 0; Block <= Configuration.getCurrentMatrixSize() / (2 * StaticConfiguration.getCellGroupSize()); ++Block)
 		{
 			if(TextHorizontal == true)
 			{
-				Graphics.fillRect(X, Y + 1 + (2 * Block + 1) * configuration.getGroupSize() * (CellSize + 1), configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth() - 2, configuration.getGroupSize() * (CellSize + 1));
-				Graphics.fillRect(X + configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth(), Y + 1 + (2 * Block + 1) * configuration.getGroupSize() * (CellSize + 1), configuration.getNameFieldWidth(), configuration.getGroupSize() * (CellSize + 1));
+				Graphics.fillRect(X, Y + 1 + (2 * Block + 1) * StaticConfiguration.getCellGroupSize() * (CellSize + 1), configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth() - 2, StaticConfiguration.getCellGroupSize() * (CellSize + 1));
+				Graphics.fillRect(X + configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth(), Y + 1 + (2 * Block + 1) * StaticConfiguration.getCellGroupSize() * (CellSize + 1), configuration.getNameFieldWidth(), StaticConfiguration.getCellGroupSize() * (CellSize + 1));
 			}
 			else
 			{
-				Graphics.fillRect(X + 1 + (2 * Block + 1) * configuration.getGroupSize() * (CellSize + 1), Y, configuration.getGroupSize() * (CellSize + 1), configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth() - 2);
-				Graphics.fillRect(X + 1 + (2 * Block + 1) * configuration.getGroupSize() * (CellSize + 1), Y + configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth(), configuration.getGroupSize() * (CellSize + 1), configuration.getNameFieldWidth());
+				Graphics.fillRect(X + 1 + (2 * Block + 1) * StaticConfiguration.getCellGroupSize() * (CellSize + 1), Y, StaticConfiguration.getCellGroupSize() * (CellSize + 1), configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth() - 2);
+				Graphics.fillRect(X + 1 + (2 * Block + 1) * StaticConfiguration.getCellGroupSize() * (CellSize + 1), Y + configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth(), StaticConfiguration.getCellGroupSize() * (CellSize + 1), configuration.getNameFieldWidth());
 			}
 		}
 		Graphics.setColor(new Color(0.26f, 0.28f, 0.29f));

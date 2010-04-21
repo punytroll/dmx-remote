@@ -57,7 +57,7 @@ class ProgramsWindow extends JInternalFrame implements SelectionListener, Preset
 		// create the Name Panel
 		m_NamePanel = new JPanel();
 		m_NamePanel.setBackground(m_Configuration.getBackgroundColor());
-		m_NamePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 2 * m_Configuration.getMatrixPadding(), 10));
+		m_NamePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 2 * StaticConfiguration.getCellBoxPadding(), 10));
 		
 		Box VBox = Box.createVerticalBox();
 		Font NameFont = new Font(null, Font.PLAIN, 14);
