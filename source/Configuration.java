@@ -35,7 +35,6 @@ class Configuration
 	private EventListenerList m_MetricListeners;
 	private EventListenerList m_DeviceListeners;
 	private EventListenerList m_HoverListeners;
-	private EventListenerList m_ProgramsListeners;
 	private EventListenerList m_BatchListeners;
 	private EventListenerList m_MIDIListeners;
 	private EventListenerList m_MatrixListeners;
@@ -63,7 +62,6 @@ class Configuration
 		m_MetricListeners = new EventListenerList();
 		m_DeviceListeners = new EventListenerList();
 		m_HoverListeners = new EventListenerList();
-		m_ProgramsListeners = new EventListenerList();
 		m_BatchListeners = new EventListenerList();
 		m_MIDIListeners = new EventListenerList();
 		m_MatrixListeners = new EventListenerList();
@@ -102,16 +100,6 @@ class Configuration
 		for(int Program = 0; Program < StaticConfiguration.getNumberOfPresets(); ++Program)
 		{
 			m_Programs[Program] = new Program();
-			
-			PresetListener Listener = new PresetListener()
-			{
-				public void nameChanged(NameChangedEvent Event)
-				{
-					fireProgramNameChanged(Event.getName());
-				}
-			};
-			
-			m_Programs[Program].addPresetListener(Listener);
 		}
 		m_BackgroundColor = new Color(0.36f, 0.40f, 0.43f);
 		m_MIDIDevices = new Vector();
@@ -935,24 +923,6 @@ class Configuration
 		}
 	}
 	
-	private void fireProgramNameChanged(String Name)
-	{
-		Object[] Listeners = m_ProgramsListeners.getListenerList();
-		NameChangedEvent Event = null;
-		
-		for(int Listener = 0; Listener < Listeners.length; Listener += 2)
-		{
-			if(Listeners[Listener] == ProgramsListener.class)
-			{
-				if(Event == null)
-				{
-					Event = new NameChangedEvent(Name);
-				}
-				((ProgramsListener)Listeners[Listener + 1]).programNameChanged(Event);
-			}
-		}
-	}
-	
 	private void fireEnterBatch()
 	{
 		Object[] Listeners = m_BatchListeners.getListenerList();
@@ -1069,11 +1039,6 @@ class Configuration
 	public void addHoverListener(HoverListener Listener)
 	{
 		m_HoverListeners.add(HoverListener.class, Listener);
-	}
-	
-	public void addProgramsListener(ProgramsListener Listener)
-	{
-		m_ProgramsListeners.add(ProgramsListener.class, Listener);
 	}
 	
 	public void addBatchListener(BatchListener Listener)
