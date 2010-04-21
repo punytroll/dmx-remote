@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-class MatrixControllerPanel extends JPanel implements HoverListener, ProgramListener, ConnectionListener, TransmitModeListener, MetricListener
+class MatrixControllerPanel extends JPanel implements HoverListener, PresetListener, ConnectionListener, TransmitModeListener, MetricListener
 {
 	private JLabel m_PresetNumberLabel;
 	private JLabel m_PresetNameLabel;
@@ -227,14 +227,14 @@ class MatrixControllerPanel extends JPanel implements HoverListener, ProgramList
 	{
 		if(m_Preset != null)
 		{
-			m_Preset.removeProgramListener(this);
+			m_Preset.removePresetListener(this);
 		}
 		if(PresetIndex != -1)
 		{
 			m_Preset = m_Configuration.getPreset(PresetIndex);
 			m_PresetNumberLabel.setText(String.valueOf(PresetIndex + 1));
 			m_PresetNameLabel.setText(m_Preset.getName());
-			m_Preset.addProgramListener(this);
+			m_Preset.addPresetListener(this);
 		}
 		else
 		{
@@ -267,9 +267,9 @@ class MatrixControllerPanel extends JPanel implements HoverListener, ProgramList
 		}
 	}
 	
-	public void programNameChanged(NameChangedEvent Event)
+	public void nameChanged(NameChangedEvent event)
 	{
-		m_PresetNameLabel.setText(m_Preset.getName());
+		m_PresetNameLabel.setText(event.getName());
 	}
 	
 	public void metricChanged(int WhatChanged)

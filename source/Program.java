@@ -4,12 +4,12 @@ class Program
 {
 	private int [] m_Matrix;
 	private String m_Name;
-	private EventListenerList m_ProgramListeners;
+	private EventListenerList _presetListeners;
 	
 	public Program()
 	{
 		m_Name = "";
-		m_ProgramListeners = new EventListenerList();
+		_presetListeners = new EventListenerList();
 	}
 	
 	public void clear()
@@ -78,31 +78,27 @@ class Program
 		}
 	}
 	
-	public void addProgramListener(ProgramListener Listener)
+	public void addPresetListener(PresetListener Listener)
 	{
-		m_ProgramListeners.add(ProgramListener.class, Listener);
+		_presetListeners.add(PresetListener.class, Listener);
 	}
 	
-	public void removeProgramListener(ProgramListener Listener)
+	public void removePresetListener(PresetListener Listener)
 	{
-		m_ProgramListeners.remove(ProgramListener.class, Listener);
+		_presetListeners.remove(PresetListener.class, Listener);
 	}
 	
 	public void fireNamedChanged()
 	{
-		Object[] Listeners = m_ProgramListeners.getListenerList();
-		NameChangedEvent Event = null;
+		NameChangedEvent event = null;
 		
-		for(int Listener = 0; Listener < Listeners.length; Listener += 2)
+		for(PresetListener presetListener : _presetListeners.getListeners(PresetListener.class))
 		{
-			if(Listeners[Listener] == ProgramListener.class)
+			if(event == null)
 			{
-				if(Event == null)
-				{
-					Event = new NameChangedEvent(m_Name);
-				}
-				((ProgramListener)Listeners[Listener + 1]).programNameChanged(Event);
+				event = new NameChangedEvent(m_Name);
 			}
+			presetListener.nameChanged(event);
 		}
 	}
 }

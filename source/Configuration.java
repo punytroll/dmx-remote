@@ -103,15 +103,15 @@ class Configuration
 		{
 			m_Programs[Program] = new Program();
 			
-			ProgramListener Listener = new ProgramListener()
+			PresetListener Listener = new PresetListener()
 			{
-				public void programNameChanged(NameChangedEvent Event)
+				public void nameChanged(NameChangedEvent Event)
 				{
 					fireProgramNameChanged(Event.getName());
 				}
 			};
 			
-			m_Programs[Program].addProgramListener(Listener);
+			m_Programs[Program].addPresetListener(Listener);
 		}
 		m_BackgroundColor = new Color(0.36f, 0.40f, 0.43f);
 		m_MIDIDevices = new Vector();
