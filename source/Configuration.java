@@ -50,7 +50,7 @@ class Configuration
 	Receiver m_MIDIReceiver;
 	
 	// Hacks
-	MatrixNamePanel m_MatrixNamePanel;
+	MatrixControllerPanel _matrixControllerPanel;
 	
 	public Configuration(String ConfigurationRoot)
 	{
@@ -220,9 +220,9 @@ class Configuration
 		setPresetsChanged();
 	}
 	
-	public void setMatrixNamePanel(MatrixNamePanel MatrixNamePanel)
+	public void setMatrixControllerPanel(MatrixControllerPanel matrixControllerPanel)
 	{
-		m_MatrixNamePanel = MatrixNamePanel;
+		_matrixControllerPanel = matrixControllerPanel;
 	}
 	
 	public void closeMIDIDevice()
@@ -494,24 +494,24 @@ class Configuration
 		return Preferences.userRoot().node(m_ConfigurationRoot).get("CurrentPresetsFile", "");
 	}
 	
-	public void setCurrentMatrixIsFile(String Path)
+	public void setCurrentMatrixIsFile(String filePath)
 	{
 		Preferences.userRoot().node(m_ConfigurationRoot).put("CurrentMatrixType", "File");
-		Preferences.userRoot().node(m_ConfigurationRoot).put("CurrentMatrix", Path);
-		m_MatrixNamePanel.setPresetIndex(-1);
+		Preferences.userRoot().node(m_ConfigurationRoot).put("CurrentMatrix", filePath);
+		_matrixControllerPanel.setPresetIndex(-1);
 	}
 	
-	public void setCurrentMatrixIsPreset(int PresetIndex)
+	public void setCurrentMatrixIsPreset(int presetIndex)
 	{
 		Preferences.userRoot().node(m_ConfigurationRoot).put("CurrentMatrixType", "Preset");
-		Preferences.userRoot().node(m_ConfigurationRoot).putInt("CurrentMatrix", PresetIndex);
-		m_MatrixNamePanel.setPresetIndex(PresetIndex);
+		Preferences.userRoot().node(m_ConfigurationRoot).putInt("CurrentMatrix", presetIndex);
+		_matrixControllerPanel.setPresetIndex(presetIndex);
 	}
 	
 	public void setCurrentMatrixIsEmpty()
 	{
 		Preferences.userRoot().node(m_ConfigurationRoot).put("CurrentMatrixType", "Empty");
-		m_MatrixNamePanel.setPresetIndex(-1);
+		_matrixControllerPanel.setPresetIndex(-1);
 	}
 	
 	public boolean isCurrentMatrixFile()
@@ -853,9 +853,9 @@ class Configuration
 		}
 		setMatrixSaved();
 		m_LoadedProgramIndex = ProgramIndex;
-		if(m_MatrixNamePanel != null)
+		if(_matrixControllerPanel != null)
 		{
-			m_MatrixNamePanel.setPresetIndex(ProgramIndex);
+			_matrixControllerPanel.setPresetIndex(ProgramIndex);
 		}
 		setCurrentMatrixIsPreset(ProgramIndex);
 		if(getTransmitManually() == true)
