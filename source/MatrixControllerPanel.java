@@ -37,7 +37,7 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 		m_Configuration.addConnectionListener(this);
 		m_Configuration.addTransmitModeListener(this);
 		m_Configuration.addMetricListener(this);
-		setBackground(m_Configuration.getBackgroundColor());
+		setOpaque(false);
 		setLayout(new FlowLayout(FlowLayout.LEFT, 30, 10));
 		m_VBox = Box.createVerticalBox();
 		
@@ -59,7 +59,7 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				
 				PresetPanel.setAlignmentX(LEFT_ALIGNMENT);
 				PresetPanel.setLayout(new BoxLayout(PresetPanel, BoxLayout.LINE_AXIS));
-				PresetPanel.setBackground(m_Configuration.getBackgroundColor());
+				PresetPanel.setOpaque(false);
 				
 				JPanel PresetNumberPanel = new JPanel();
 				
@@ -100,7 +100,7 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				
 				SourcePanel.setAlignmentX(LEFT_ALIGNMENT);
 				SourcePanel.setLayout(new BoxLayout(SourcePanel, BoxLayout.LINE_AXIS));
-				SourcePanel.setBackground(m_Configuration.getBackgroundColor());
+				SourcePanel.setOpaque(false);
 				
 				JPanel SourceNumberPanel = new JPanel();
 				
@@ -141,7 +141,7 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				
 				DestinationPanel.setAlignmentX(LEFT_ALIGNMENT);
 				DestinationPanel.setLayout(new BoxLayout(DestinationPanel, BoxLayout.LINE_AXIS));
-				DestinationPanel.setBackground(m_Configuration.getBackgroundColor());
+				DestinationPanel.setOpaque(false);
 				
 				JPanel DestinationNumberPanel = new JPanel();
 				

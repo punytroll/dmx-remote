@@ -483,6 +483,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 			if(m_MatrixWindow == null)
 			{
 				m_MatrixWindow = new JInternalFrame(m_Configuration.getString("Matrix"), true, true, true, false);
+				m_MatrixWindow.setBackground(StaticConfiguration.getWindowBackgroundColor());
 				m_MatrixWindow.addComponentListener(new ComponentListener()
 				{
 					public void componentHidden(ComponentEvent Event)

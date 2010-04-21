@@ -28,7 +28,7 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 		m_Configuration.addDeviceListener(this);
 		m_Configuration.addMetricListener(this);
 		m_SelectionListeners = new EventListenerList();
-		setBackground(m_Configuration.getBackgroundColor());
+		setBackground(StaticConfiguration.getWindowBackgroundColor());
 		m_Hover = -1;
 		m_Select = -1;
 		m_Transform = new AffineTransform();
@@ -155,7 +155,7 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 			
 			Graphics OffscreenGraphics = m_Background.getGraphics();
 			
-			OffscreenGraphics.setColor(m_Configuration.getBackgroundColor());
+			OffscreenGraphics.setColor(StaticConfiguration.getWindowBackgroundColor());
 			OffscreenGraphics.fillRect(0, 0, StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
 			Drawing.drawListBackground(OffscreenGraphics, Configuration.getCurrentMatrixSize(), StaticConfiguration.getCellGroupSize(), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), Configuration.getCurrentCellSize());
 			OffscreenGraphics.translate(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), 0);

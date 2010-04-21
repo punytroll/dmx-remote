@@ -36,7 +36,6 @@ class Configuration
 	private EventListenerList m_MIDIListeners;
 	private EventListenerList m_MatrixListeners;
 	private EventListenerList m_TransmitModeListeners;
-	private Color m_BackgroundColor;
 	private int m_LoadedProgramIndex;
 	
 	// MIDI Devices
@@ -93,7 +92,6 @@ class Configuration
 		{
 			_presets[presetIndex] = new Preset();
 		}
-		m_BackgroundColor = new Color(0.36f, 0.40f, 0.43f);
 		m_MIDIDevices = new Vector();
 		m_MIDIDevices.insertElementAt(getString("None"), 0);
 		
@@ -1041,10 +1039,5 @@ class Configuration
 	public void addTransmitModeListener(TransmitModeListener Listener)
 	{
 		m_TransmitModeListeners.add(TransmitModeListener.class, Listener);
-	}
-	
-	public Color getBackgroundColor()
-	{
-		return m_BackgroundColor;
 	}
 }

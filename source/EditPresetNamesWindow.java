@@ -37,7 +37,7 @@ class EditPresetNamesWindow extends JInternalFrame implements SelectionListener
 	{
 		super(Configuration.getString("Edit Preset Names"), true, true, true, false);
 		m_Configuration = Configuration;
-		setBackground(m_Configuration.getBackgroundColor());
+		setBackground(StaticConfiguration.getWindowBackgroundColor());
 		m_PresetsPanel = new PresetsPanel(Configuration);
 		m_PresetsPanel.addSelectionListener(this);
 		m_SelectedProgram = -1;
@@ -61,7 +61,7 @@ class EditPresetNamesWindow extends JInternalFrame implements SelectionListener
 		EditorBox.add(Label);
 		EditorBox.add(Box.createVerticalStrut(20));
 		EditorBox.add(m_IdentifierField);
-		Editor.setBackground(m_Configuration.getBackgroundColor());
+		Editor.setOpaque(false);
 		getContentPane().add(Editor, BorderLayout.EAST);
 		
 		GridBagConstraints Constraints = new GridBagConstraints();
