@@ -14,8 +14,6 @@ class Configuration
 	
 	// old variables
 	private String m_ConfigurationRoot;
-	private int m_GroupSize;
-	private int m_MatrixPadding;
 	private int m_Matrix[];
 	private int m_FixedHoverSource;
 	private int m_FixedHoverDestination;
@@ -65,8 +63,6 @@ class Configuration
 		m_MIDIListeners = new EventListenerList();
 		m_MatrixListeners = new EventListenerList();
 		m_TransmitModeListeners = new EventListenerList();
-		m_GroupSize = 4;
-		m_MatrixPadding = 8;
 		m_Matrix = new int[getCurrentMatrixSize()];
 		m_FixedHoverSource = -1;
 		m_FixedHoverDestination = -1;
@@ -391,16 +387,6 @@ class Configuration
 	public static Integer getCurrentTextOffset()
 	{
 		return StaticConfiguration.getTextOffset(getCurrentMatrixSize());
-	}
-	
-	public int getGroupSize()
-	{
-		return m_GroupSize;
-	}
-	
-	public int getMatrixPadding()
-	{
-		return m_MatrixPadding;
 	}
 	
 	public int getIdentifierFieldWidth()

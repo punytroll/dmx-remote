@@ -32,7 +32,7 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 		m_Hover = -1;
 		m_Select = -1;
 		m_Transform = new AffineTransform();
-		m_Transform.translate(m_Configuration.getMatrixPadding(), m_Configuration.getMatrixPadding() + 40);
+		m_Transform.translate(StaticConfiguration.getCellBoxPadding(), StaticConfiguration.getCellBoxPadding() + 40);
 		try
 		{
 			m_InverseTransform = m_Transform.createInverse();
@@ -52,12 +52,12 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 			{
 				Point2D.Double EventPoint = new Point2D.Double();
 				
-				m_InverseTransform.transform(new Point2D.Double(Event.getX() + m_Configuration.getMatrixPadding(), Event.getY()), EventPoint);
+				m_InverseTransform.transform(new Point2D.Double(Event.getX() + StaticConfiguration.getCellBoxPadding(), Event.getY()), EventPoint);
 				
-				double HoverX = Math.floor((EventPoint.getX() - 1) / (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth()));
+				double HoverX = Math.floor((EventPoint.getX() - 1) / (StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth()));
 				double HoverY = Math.floor((EventPoint.getY() - 1) / (Configuration.getCurrentCellSize() + 1));
 				
-				if((HoverY >= 0) && (HoverY < Configuration.getCurrentMatrixSize()) && (EventPoint.getX() - (int)HoverX * (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth()) > m_Configuration.getMatrixPadding()))
+				if((HoverY >= 0) && (HoverY < Configuration.getCurrentMatrixSize()) && (EventPoint.getX() - (int)HoverX * (StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth()) > StaticConfiguration.getCellBoxPadding()))
 				{
 					int Hover = (int)HoverY + (int)HoverX * Configuration.getCurrentMatrixSize();
 					
@@ -81,10 +81,10 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 		{
 			public void mouseEntered(MouseEvent Event)
 			{
-				double HoverX = Math.floor((double)(Event.getX() - 1) / (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth()));
-				double HoverY = Math.floor((double)(Event.getY() - m_Configuration.getMatrixPadding() - 1) / (Configuration.getCurrentCellSize() + 1));
+				double HoverX = Math.floor((double)(Event.getX() - 1) / (StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth()));
+				double HoverY = Math.floor((double)(Event.getY() - StaticConfiguration.getCellBoxPadding() - 1) / (Configuration.getCurrentCellSize() + 1));
 				
-				if((HoverY >= 0) && (HoverY < Configuration.getCurrentMatrixSize()) && (Event.getX() - (int)HoverX * (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth()) > m_Configuration.getMatrixPadding()))
+				if((HoverY >= 0) && (HoverY < Configuration.getCurrentMatrixSize()) && (Event.getX() - (int)HoverX * (StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth()) > StaticConfiguration.getCellBoxPadding()))
 				{
 					int Hover = (int)HoverY + (int)HoverX * Configuration.getCurrentMatrixSize();
 					
@@ -151,15 +151,15 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 	{
 		if(isDisplayable() == true)
 		{
-			m_Background = createImage(m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
+			m_Background = createImage(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
 			
 			Graphics OffscreenGraphics = m_Background.getGraphics();
 			
 			OffscreenGraphics.setColor(m_Configuration.getBackgroundColor());
-			OffscreenGraphics.fillRect(0, 0, m_Configuration.getMatrixPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
-			Drawing.drawListBackground(OffscreenGraphics, Configuration.getCurrentMatrixSize(), m_Configuration.getGroupSize(), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), Configuration.getCurrentCellSize());
-			OffscreenGraphics.translate(m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding(), 0);
-			Drawing.drawListBackground(OffscreenGraphics, Configuration.getCurrentMatrixSize(), m_Configuration.getGroupSize(), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), Configuration.getCurrentCellSize());
+			OffscreenGraphics.fillRect(0, 0, StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
+			Drawing.drawListBackground(OffscreenGraphics, Configuration.getCurrentMatrixSize(), StaticConfiguration.getCellGroupSize(), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), Configuration.getCurrentCellSize());
+			OffscreenGraphics.translate(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), 0);
+			Drawing.drawListBackground(OffscreenGraphics, Configuration.getCurrentMatrixSize(), StaticConfiguration.getCellGroupSize(), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), Configuration.getCurrentCellSize());
 		}
 	}
 	
@@ -176,8 +176,8 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 		Graphics2D.setPaint(new Color(0.85f, 0.85f, 0.85f));
 		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		Graphics2D.setFont(new Font("SansSerif", Font.BOLD, 12));
-		Graphics2D.drawString("SOURCES", m_Configuration.getMatrixPadding() + 2, 35);
-		Graphics2D.drawString("DESTINATIONS", m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 2, 35);
+		Graphics2D.drawString("SOURCES", StaticConfiguration.getCellBoxPadding() + 2, 35);
+		Graphics2D.drawString("DESTINATIONS", StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 2, 35);
 		Graphics2D.transform(m_Transform);
 		Graphics.drawImage(m_Background, 0, 0, this);
 		
@@ -193,7 +193,7 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 			}
 			else
 			{
-				Graphics2D.fillRect(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Hover - Configuration.getCurrentMatrixSize()) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
+				Graphics2D.fillRect(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Hover - Configuration.getCurrentMatrixSize()) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 		}
 		if(m_Select > -1)
@@ -208,7 +208,7 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 			{
 				Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.50f));
 				Graphics2D.setPaint(Color.red);
-				Graphics2D.fillRect(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Select - Configuration.getCurrentMatrixSize()) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
+				Graphics2D.fillRect(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Select - Configuration.getCurrentMatrixSize()) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 		}
 		Graphics2D.setComposite(Original);
@@ -224,10 +224,10 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 			Graphics2D.drawString(m_Configuration.getSourceName(Name), StaticConfiguration.getNumberFieldWidth() + Configuration.getCurrentTextOffset(), 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 3);
 		}
 		Graphics2D.setClip(OldClip);
-		Graphics2D.clip(new Rectangle(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 0, m_Configuration.getIdentifierFieldWidth() - 2, (Configuration.getCurrentCellSize() + 1) * Configuration.getCurrentMatrixSize()));
+		Graphics2D.clip(new Rectangle(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 0, m_Configuration.getIdentifierFieldWidth() - 2, (Configuration.getCurrentCellSize() + 1) * Configuration.getCurrentMatrixSize()));
 		for(int Name = 0; Name < Configuration.getCurrentMatrixSize(); ++Name)
 		{
-			Graphics2D.drawString(m_Configuration.getDestinationName(Name), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + m_Configuration.getMatrixPadding() + StaticConfiguration.getNumberFieldWidth() + Configuration.getCurrentTextOffset(), 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 3);
+			Graphics2D.drawString(m_Configuration.getDestinationName(Name), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding() + StaticConfiguration.getNumberFieldWidth() + Configuration.getCurrentTextOffset(), 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 3);
 		}
 		Graphics2D.setClip(OldClip);
 	}
@@ -271,8 +271,8 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 	
 	public void updateDimensions()
 	{
-		setMinimumSize(new Dimension(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding(), 40 + m_Configuration.getMatrixPadding() + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1) + 1 + m_Configuration.getMatrixPadding()));
-		setPreferredSize(new Dimension(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding(), 40 + m_Configuration.getMatrixPadding() + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1) + 1 + m_Configuration.getMatrixPadding()));
-		setMaximumSize(new Dimension(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding(), 40 + m_Configuration.getMatrixPadding() + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1) + 1 + m_Configuration.getMatrixPadding()));
+		setMinimumSize(new Dimension(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), 40 + StaticConfiguration.getCellBoxPadding() + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1) + 1 + StaticConfiguration.getCellBoxPadding()));
+		setPreferredSize(new Dimension(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), 40 + StaticConfiguration.getCellBoxPadding() + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1) + 1 + StaticConfiguration.getCellBoxPadding()));
+		setMaximumSize(new Dimension(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), 40 + StaticConfiguration.getCellBoxPadding() + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1) + 1 + StaticConfiguration.getCellBoxPadding()));
 	}
 }
