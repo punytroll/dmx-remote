@@ -221,13 +221,13 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 		Graphics2D.clip(new Rectangle(0, 0, m_Configuration.getIdentifierFieldWidth() - 2, (Configuration.getCurrentCellSize() + 1) * m_Configuration.getCurrentMatrixSize()));
 		for(int Name = 0; Name < Configuration.getCurrentMatrixSize(); ++Name)
 		{
-			Graphics2D.drawString(m_Configuration.getSourceName(Name), 2 + m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 3);
+			Graphics2D.drawString(m_Configuration.getSourceName(Name), StaticConfiguration.getNumberFieldWidth() + Configuration.getCurrentTextOffset(), 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 3);
 		}
 		Graphics2D.setClip(OldClip);
 		Graphics2D.clip(new Rectangle(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 0, m_Configuration.getIdentifierFieldWidth() - 2, (Configuration.getCurrentCellSize() + 1) * Configuration.getCurrentMatrixSize()));
 		for(int Name = 0; Name < Configuration.getCurrentMatrixSize(); ++Name)
 		{
-			Graphics2D.drawString(m_Configuration.getDestinationName(Name), m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth() + 2, 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 3);
+			Graphics2D.drawString(m_Configuration.getDestinationName(Name), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + m_Configuration.getMatrixPadding() + StaticConfiguration.getNumberFieldWidth() + Configuration.getCurrentTextOffset(), 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 3);
 		}
 		Graphics2D.setClip(OldClip);
 	}
