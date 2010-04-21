@@ -6,18 +6,30 @@ import java.util.Vector;
  **/
 class StaticConfiguration
 {
+	private static final Integer _cellBoxPadding = 8;
+	private static final Integer _cellGroupSize = 4;
 	private static final String _configurationApplication = "dmx-remote";
 	private static final String _configurationVersion = "configuration-version-1.0";
 	private static final MatrixConfiguration[] _matrixConfigurations = { 
-		new MatrixConfiguration(12, 23, 40, 8),
-		new MatrixConfiguration(16, 19, 70, 6),
-		new MatrixConfiguration(18, 19, 110, 6),
-		new MatrixConfiguration(32, 11, 120, 2),
-		new MatrixConfiguration(64, 11, 130, 2)
+		new MatrixConfiguration(12, 23, 145, 8),
+		new MatrixConfiguration(16, 19, 175, 6),
+		new MatrixConfiguration(18, 19, 215, 6),
+		new MatrixConfiguration(32, 11, 240, 2),
+		new MatrixConfiguration(64, 11, 250, 2)
 	};
 	private static final Integer _nameFieldWidth = 80;
 	private static final Integer _numberFieldWidth = 20;
 	private static final Integer _numberOfPresets = 50;
+	
+	public static Integer getCellBoxPadding()
+	{
+		return _cellBoxPadding;
+	}
+	
+	public static Integer getCellGroupSize()
+	{
+		return _cellGroupSize;
+	}
 	
 	public static Integer getCellSize(Integer matrixSize)
 	{
