@@ -51,8 +51,8 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 			}
 		}
 		);
-		setPreferredSize(new Dimension(m_Configuration.getMatrixPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (m_Configuration.getCurrentCellSize() + 1)));
-		setMinimumSize(new Dimension(m_Configuration.getMatrixPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (m_Configuration.getCurrentCellSize() + 1)));
+		setPreferredSize(new Dimension(m_Configuration.getMatrixPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
+		setMinimumSize(new Dimension(m_Configuration.getMatrixPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
 		for(int presetIndex = 0; presetIndex < StaticConfiguration.getNumberOfPresets(); ++presetIndex)
 		{
 			m_Configuration.getPreset(presetIndex).addPresetListener(this);
@@ -62,7 +62,7 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 	public void mouseHover(int MouseX, int MouseY)
 	{
 		double HoverX = Math.floor((double)(MouseX - 1) / (m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding()));
-		double HoverY = Math.floor((double)(MouseY - 2) / (m_Configuration.getCurrentCellSize() + 1));
+		double HoverY = Math.floor((double)(MouseY - 2) / (Configuration.getCurrentCellSize() + 1));
 		
 		if((HoverY >= 0) && (HoverY < StaticConfiguration.getNumberOfPresets() / 2) && (MouseX - ((int)(HoverX) * (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth())) <= m_Configuration.getIdentifierFieldWidth()))
 		{
@@ -104,15 +104,15 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 	
 	public void prepareBackground()
 	{
-		m_Background = createImage(m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (StaticConfiguration.getNumberOfPresets() / 2) * (m_Configuration.getCurrentCellSize() + 1));
+		m_Background = createImage(m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1));
 		
 		Graphics OffscreenGraphics = m_Background.getGraphics();
 		
 		OffscreenGraphics.setColor(m_Configuration.getBackgroundColor());
-		OffscreenGraphics.fillRect(0, 0, m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (StaticConfiguration.getNumberOfPresets() / 2) * (m_Configuration.getCurrentCellSize() + 1));
-		Drawing.drawListBackground(OffscreenGraphics, StaticConfiguration.getNumberOfPresets() / 2, 1, m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), m_Configuration.getCurrentCellSize());
+		OffscreenGraphics.fillRect(0, 0, m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1));
+		Drawing.drawListBackground(OffscreenGraphics, StaticConfiguration.getNumberOfPresets() / 2, 1, m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), Configuration.getCurrentCellSize());
 		OffscreenGraphics.translate(m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding(), 0);
-		Drawing.drawListBackground(OffscreenGraphics, StaticConfiguration.getNumberOfPresets() / 2, 1, m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), m_Configuration.getCurrentCellSize());
+		Drawing.drawListBackground(OffscreenGraphics, StaticConfiguration.getNumberOfPresets() / 2, 1, m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), Configuration.getCurrentCellSize());
 	}
 	
 	public void paintComponent(Graphics Graphics)
@@ -133,11 +133,11 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 			Graphics2D.setPaint(Color.white);
 			if(m_Hover < StaticConfiguration.getNumberOfPresets() / 2)
 			{
-				Graphics2D.fillRect(0, 1 + m_Hover * (m_Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getCurrentCellSize());
+				Graphics2D.fillRect(0, 1 + m_Hover * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 			else
 			{
-				Graphics2D.fillRect(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Hover - StaticConfiguration.getNumberOfPresets() / 2) * (m_Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getCurrentCellSize());
+				Graphics2D.fillRect(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Hover - StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 		}
 		if(m_Select != -1)
@@ -146,11 +146,11 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 			Graphics2D.setPaint(Color.green);
 			if(m_Select < StaticConfiguration.getNumberOfPresets() / 2)
 			{
-				Graphics2D.fillRect(0, 1 + m_Select * (m_Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getCurrentCellSize());
+				Graphics2D.fillRect(0, 1 + m_Select * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 			else
 			{
-				Graphics2D.fillRect(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Select - StaticConfiguration.getNumberOfPresets() / 2) * (m_Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getCurrentCellSize());
+				Graphics2D.fillRect(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Select - StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 		}
 		Graphics2D.setComposite(Original);
@@ -158,18 +158,18 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 		
 		Shape OldClip = Graphics2D.getClip();
 		
-		Graphics2D.clip(new Rectangle(0, 1, m_Configuration.getIdentifierFieldWidth() - 2, (m_Configuration.getCurrentCellSize() + 1) * StaticConfiguration.getNumberOfPresets()));
+		Graphics2D.clip(new Rectangle(0, 1, m_Configuration.getIdentifierFieldWidth() - 2, (Configuration.getCurrentCellSize() + 1) * StaticConfiguration.getNumberOfPresets()));
 		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		Graphics2D.setFont(new Font("SansSerif", Font.PLAIN, 9));
 		for(int Name = 0; Name < StaticConfiguration.getNumberOfPresets() / 2; ++Name)
 		{
-			Graphics2D.drawString(m_Configuration.getPreset(Name).getName(), 2 + m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), 1 + (Name + 1) * (m_Configuration.getCurrentCellSize() + 1) - 3);
+			Graphics2D.drawString(m_Configuration.getPreset(Name).getName(), StaticConfiguration.getNumberFieldWidth() + Configuration.getCurrentTextOffset(), 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 3);
 		}
 		Graphics2D.setClip(OldClip);
-		Graphics2D.clip(new Rectangle(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1, m_Configuration.getIdentifierFieldWidth() - 2, (m_Configuration.getCurrentCellSize() + 1) * StaticConfiguration.getNumberOfPresets()));
+		Graphics2D.clip(new Rectangle(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1, m_Configuration.getIdentifierFieldWidth() - 2, (Configuration.getCurrentCellSize() + 1) * StaticConfiguration.getNumberOfPresets()));
 		for(int Name = 0; Name < StaticConfiguration.getNumberOfPresets() / 2; ++Name)
 		{
-			Graphics2D.drawString(m_Configuration.getPreset(StaticConfiguration.getNumberOfPresets() / 2 + Name).getName(), m_Configuration.getMatrixPadding() + 2 + 2 * m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), 1 + (Name + 1) * (m_Configuration.getCurrentCellSize() + 1) - 3);
+			Graphics2D.drawString(m_Configuration.getPreset(StaticConfiguration.getNumberOfPresets() / 2 + Name).getName(), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + m_Configuration.getMatrixPadding() + StaticConfiguration.getNumberFieldWidth() + Configuration.getCurrentTextOffset(), 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 3);
 		}
 		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		Graphics2D.setClip(OldClip);
@@ -205,8 +205,8 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 	
 	public void metricChanged(int WhatChanged)
 	{
-		setPreferredSize(new Dimension(m_Configuration.getMatrixPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (m_Configuration.getCurrentCellSize() + 1)));
-		setMinimumSize(new Dimension(m_Configuration.getMatrixPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (m_Configuration.getCurrentCellSize() + 1)));
+		setPreferredSize(new Dimension(m_Configuration.getMatrixPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
+		setMinimumSize(new Dimension(m_Configuration.getMatrixPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
 		getParent().doLayout();
 		prepareBackground();
 	}

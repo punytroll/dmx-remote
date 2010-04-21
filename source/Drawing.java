@@ -9,7 +9,7 @@ class Drawing
 {
 	static public void draw(Configuration configuration, Graphics Graphics, int X, int Y, boolean TextHorizontal)
 	{
-		int CellSize = configuration.getCurrentCellSize();
+		int CellSize = Configuration.getCurrentCellSize();
 		
 		Graphics.setColor(new Color(0.78f, 0.79f, 0.80f));
 		for(int Block = 0; Block <= Configuration.getCurrentMatrixSize() / (2 * configuration.getGroupSize()); ++Block)
@@ -60,7 +60,7 @@ class Drawing
 		{
 			for(int Name = 0; Name < Configuration.getCurrentMatrixSize(); ++Name)
 			{
-				Graphics2D.drawString(Integer.toString(Name + 1), X + 2, Y + 1 + (Name + 1) * (CellSize + 1) - 1 - configuration.getCurrentTextOffset());
+				Graphics2D.drawString(Integer.toString(Name + 1), X + 2, Y + 1 + (Name + 1) * (CellSize + 1) - 1 - Configuration.getCurrentTextOffset());
 			}
 		}
 		else
@@ -68,7 +68,7 @@ class Drawing
 			Graphics2D.rotate(Math.PI / -2.0);
 			for(int Name = 0; Name < Configuration.getCurrentMatrixSize(); ++Name)
 			{
-				Graphics2D.drawString(Integer.toString(Name + 1), Y + 2 - configuration.getIdentifierFieldWidth() + configuration.getNameFieldWidth() + 2, X + 1 + (Name + 1) * (CellSize + 1) - 1 - configuration.getCurrentTextOffset());
+				Graphics2D.drawString(Integer.toString(Name + 1), Y + 2 - configuration.getIdentifierFieldWidth() + configuration.getNameFieldWidth() + 2, X + 1 + (Name + 1) * (CellSize + 1) - 1 - Configuration.getCurrentTextOffset());
 			}
 		}
 		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
