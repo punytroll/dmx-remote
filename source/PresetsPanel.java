@@ -205,8 +205,8 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 	
 	public void metricChanged(int WhatChanged)
 	{
-		setPreferredSize(new Dimension(StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
-		setMinimumSize(new Dimension(StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
+		setPreferredSize(new Dimension(StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), 1 + (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
+		setMinimumSize(new Dimension(StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), 1 + (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
 		getParent().doLayout();
 		prepareBackground();
 	}
