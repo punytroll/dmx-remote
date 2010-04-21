@@ -18,7 +18,7 @@ class StaticConfiguration
 		new MatrixConfiguration(64, 11, 250, 2)
 	};
 	private static final Integer _nameFieldWidth = 80;
-	private static final Integer _numberFieldWidth = 20;
+	private static final Integer _numberFieldWidth = 18;
 	private static final Integer _numberOfPresets = 50;
 	
 	public static Integer getCellBoxPadding()
