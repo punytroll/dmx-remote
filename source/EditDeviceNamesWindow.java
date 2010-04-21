@@ -21,10 +21,10 @@ class EditDeviceNamesWindow extends JInternalFrame implements SelectionListener
 	private JTextField m_DeviceNameTextField;
 	private DevicesPanel m_DevicesPanel;
 	
-	public EditDeviceNamesWindow(Configuration Configuration)
+	public EditDeviceNamesWindow(Configuration configuration)
 	{
-		super(Configuration.getString("Edit Device Names"), true, true, true, false);
-		m_Configuration = Configuration;
+		super(configuration.getString("Edit Device Names"), true, true, true, false);
+		m_Configuration = configuration;
 		setBackground(m_Configuration.getBackgroundColor());
 		m_DevicesPanel = new DevicesPanel(m_Configuration);
 		m_DevicesPanel.addSelectionListener(this);
@@ -35,7 +35,7 @@ class EditDeviceNamesWindow extends JInternalFrame implements SelectionListener
 			{
 				if(Event.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if(m_DevicesPanel.getSelectedDevice() < m_Configuration.getSize() * 2 - 1)
+					if(m_DevicesPanel.getSelectedDevice() < Configuration.getCurrentMatrixSize() * 2 - 1)
 					{
 						m_DevicesPanel.setSelectedDevice(m_DevicesPanel.getSelectedDevice() + 1);
 					}
@@ -56,13 +56,13 @@ class EditDeviceNamesWindow extends JInternalFrame implements SelectionListener
 				{
 					int SelectedDevice = m_DevicesPanel.getSelectedDevice();
 					
-					if(SelectedDevice < m_Configuration.getSize())
+					if(SelectedDevice < Configuration.getCurrentMatrixSize())
 					{
 						m_Configuration.setSourceName(SelectedDevice, m_DeviceNameTextField.getText());
 					}
 					else
 					{
-						SelectedDevice -= m_Configuration.getSize();
+						SelectedDevice -= Configuration.getCurrentMatrixSize();
 						m_Configuration.setDestinationName(SelectedDevice, m_DeviceNameTextField.getText());
 					}
 				}
@@ -132,13 +132,13 @@ class EditDeviceNamesWindow extends JInternalFrame implements SelectionListener
 		{
 			int SelectedDevice = Event.getSelection();
 			
-			if(SelectedDevice < m_Configuration.getSize())
+			if(SelectedDevice < m_Configuration.getCurrentMatrixSize())
 			{
 				m_DeviceNameTextField.setText(m_Configuration.getSourceName(SelectedDevice));
 			}
 			else
 			{
-				SelectedDevice -= m_Configuration.getSize();
+				SelectedDevice -= m_Configuration.getCurrentMatrixSize();
 				m_DeviceNameTextField.setText(m_Configuration.getDestinationName(SelectedDevice));
 			}
 		}

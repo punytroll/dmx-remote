@@ -214,7 +214,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				{
 					public void actionPerformed(ActionEvent Event)
 					{
-						if(m_Configuration.getSize() < 64)
+						if(m_Configuration.getCurrentMatrixSize() < 64)
 						{
 							m_DMXProtocol.dumpPresets();
 						}
@@ -751,9 +751,9 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 			boolean BooleanData;
 			
 			IntData = Data.readInt();
-			if(IntData != m_Configuration.getSize())
+			if(IntData != m_Configuration.getCurrentMatrixSize())
 			{
-				JOptionPane.showMessageDialog(null, "The matrix you try to read from the file is of size " + IntData + " but your current matrix' size is " + m_Configuration.getSize() + ".\nPlease adjust the current size before loading.", "Sizes differ", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "The matrix you try to read from the file is of size " + IntData + " but your current matrix' size is " + m_Configuration.getCurrentMatrixSize() + ".\nPlease adjust the current size before loading.", "Sizes differ", JOptionPane.ERROR_MESSAGE);
 				
 				return;
 			}
@@ -778,12 +778,12 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				// this will not happen for the matrix has already been saved
 				return;
 			}
-			for(int Name = 0; Name < m_Configuration.getSize(); ++Name)
+			for(int Name = 0; Name < m_Configuration.getCurrentMatrixSize(); ++Name)
 			{
 				UTFData = Data.readUTF();
 				m_Configuration.setSourceName(Name, UTFData);
 			}
-			for(int Name = 0; Name < m_Configuration.getSize(); ++Name)
+			for(int Name = 0; Name < m_Configuration.getCurrentMatrixSize(); ++Name)
 			{
 				UTFData = Data.readUTF();
 				m_Configuration.setDestinationName(Name, UTFData);
@@ -796,7 +796,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				return;
 			}
 			UTFData = Data.readUTF();
-			for(int Destination = 0; Destination < m_Configuration.getSize(); ++Destination)
+			for(int Destination = 0; Destination < m_Configuration.getCurrentMatrixSize(); ++Destination)
 			{
 				IntData = Data.readInt();
 				if(IntData != -1)
@@ -886,18 +886,18 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 			
 			try
 			{
-				Data.writeInt(m_Configuration.getSize());
-				for(int Name = 0; Name < m_Configuration.getSize(); ++Name)
+				Data.writeInt(m_Configuration.getCurrentMatrixSize());
+				for(int Name = 0; Name < m_Configuration.getCurrentMatrixSize(); ++Name)
 				{
 					Data.writeUTF(m_Configuration.getSourceName(Name));
 				}
-				for(int Name = 0; Name < m_Configuration.getSize(); ++Name)
+				for(int Name = 0; Name < m_Configuration.getCurrentMatrixSize(); ++Name)
 				{
 					Data.writeUTF(m_Configuration.getDestinationName(Name));
 				}
 				Data.writeInt(1);
 				Data.writeUTF("Name");
-				for(int Destination = 0; Destination < m_Configuration.getSize(); ++Destination)
+				for(int Destination = 0; Destination < m_Configuration.getCurrentMatrixSize(); ++Destination)
 				{
 					Data.writeInt(m_Configuration.getConnectedSource(Destination));
 				}
@@ -1014,12 +1014,12 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 			
 			try
 			{
-				Data.writeInt(m_Configuration.getSize());
-				for(int Name = 0; Name < m_Configuration.getSize(); ++Name)
+				Data.writeInt(m_Configuration.getCurrentMatrixSize());
+				for(int Name = 0; Name < m_Configuration.getCurrentMatrixSize(); ++Name)
 				{
 					Data.writeUTF(m_Configuration.getSourceName(Name));
 				}
-				for(int Name = 0; Name < m_Configuration.getSize(); ++Name)
+				for(int Name = 0; Name < m_Configuration.getCurrentMatrixSize(); ++Name)
 				{
 					Data.writeUTF(m_Configuration.getDestinationName(Name));
 				}
@@ -1032,7 +1032,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					
 					int [] Matrix = preset.getMatrix();
 					
-					for(int Destination = 0; Destination < m_Configuration.getSize(); ++Destination)
+					for(int Destination = 0; Destination < m_Configuration.getCurrentMatrixSize(); ++Destination)
 					{
 						if(Matrix == null)
 						{
@@ -1085,19 +1085,19 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 			{
 				m_Configuration.setSize(IntData);
 			}
-			if(IntData != m_Configuration.getSize())
+			if(IntData != m_Configuration.getCurrentMatrixSize())
 			{
-				JOptionPane.showMessageDialog(null, "The matrix you try to read from the file is of size " + IntData + " but your current matrix' size is " + m_Configuration.getSize() + ".\nPlease adjust the current size before loading.", "Sizes differ", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "The matrix you try to read from the file is of size " + IntData + " but your current matrix' size is " + m_Configuration.getCurrentMatrixSize() + ".\nPlease adjust the current size before loading.", "Sizes differ", JOptionPane.ERROR_MESSAGE);
 				
 				return;
 			}
 			m_Configuration.clearNames();
-			for(int Name = 0; Name < m_Configuration.getSize(); ++Name)
+			for(int Name = 0; Name < m_Configuration.getCurrentMatrixSize(); ++Name)
 			{
 				UTFData = Data.readUTF();
 				m_Configuration.setSourceName(Name, UTFData);
 			}
-			for(int Name = 0; Name < m_Configuration.getSize(); ++Name)
+			for(int Name = 0; Name < m_Configuration.getCurrentMatrixSize(); ++Name)
 			{
 				UTFData = Data.readUTF();
 				m_Configuration.setDestinationName(Name, UTFData);
@@ -1108,7 +1108,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				System.out.println("More than " + StaticConfiguration.getNumberOfPresets().toString() + " data sets in file, so I will truncate at " + StaticConfiguration.getNumberOfPresets().toString() + ".");
 			}
 			
-			int [] Matrix = new int[m_Configuration.getSize()];
+			int [] Matrix = new int[m_Configuration.getCurrentMatrixSize()];
 			
 			for(int presetIndex = 0; presetIndex < StaticConfiguration.getNumberOfPresets(); ++presetIndex)
 			{
@@ -1116,7 +1116,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				
 				UTFData = Data.readUTF();
 				preset.setName(UTFData);
-				for(int Destination = 0; Destination < m_Configuration.getSize(); ++Destination)
+				for(int Destination = 0; Destination < m_Configuration.getCurrentMatrixSize(); ++Destination)
 				{
 					Matrix[Destination] = Data.readInt();
 				}
@@ -1269,7 +1269,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 			{
 				AbstractButton Button = (AbstractButton)Buttons.nextElement();
 				
-				if(Button.getText().equals(String.valueOf(m_Configuration.getSize())) == true)
+				if(Button.getText().equals(String.valueOf(m_Configuration.getCurrentMatrixSize())) == true)
 				{
 					m_SystemSizeButtonGroup.setSelected(Button.getModel(), true);
 					

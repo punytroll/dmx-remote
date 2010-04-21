@@ -29,10 +29,10 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 	private Component m_Strut;
 	private Box m_VBox;
 	
-	public MatrixControllerPanel(Configuration Configuration)
+	public MatrixControllerPanel(Configuration configuration)
 	{
 		_selectedPresetIndex = -1;
-		m_Configuration = Configuration;
+		m_Configuration = configuration;
 		m_Configuration.addHoverListener(this);
 		m_Configuration.addConnectionListener(this);
 		m_Configuration.addTransmitModeListener(this);
@@ -281,7 +281,7 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 		
 		int iSize = m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding();
 		
-		iSize += StaticConfiguration.getStrutHeight(m_Configuration.getSize());
+		iSize += StaticConfiguration.getStrutHeight(Configuration.getCurrentMatrixSize());
 		m_Strut = Box.createVerticalStrut(iSize);
 		m_VBox.add(m_Strut, 0);
 		validate();
