@@ -32,10 +32,11 @@ class SelectAndRenamePresetDialog extends JDialog
 	{
 		super(Owner, Title, Modal);
 		m_Configuration = Configuration;
-		getContentPane().setBackground(m_Configuration.getBackgroundColor());
+		getContentPane().setBackground(StaticConfiguration.getWindowBackgroundColor());
 		
 		JPanel Buttons = new JPanel();
 		
+		Buttons.setOpaque(false);
 		Buttons.setLayout(new BoxLayout(Buttons, BoxLayout.LINE_AXIS));
 		Buttons.add(Box.createHorizontalGlue());
 		m_Cancel = new JButton("Cancel");
@@ -60,14 +61,13 @@ class SelectAndRenamePresetDialog extends JDialog
 		}
 		);
 		Buttons.add(m_OK);
-		Buttons.setBackground(m_Configuration.getBackgroundColor());
 		
 		JPanel Settings = new JPanel();
 		
+		Settings.setOpaque(false);
 		Settings.setLayout(new BoxLayout(Settings, BoxLayout.PAGE_AXIS));
 		Settings.add(new JLabel("Select Preset"));
 		Settings.add(Box.createRigidArea(new Dimension(0,5)));
-		Settings.setBackground(m_Configuration.getBackgroundColor());
 		m_Name = new JTextField();
 		m_Name.setAlignmentX(LEFT_ALIGNMENT);
 		m_Name.setMaximumSize(new Dimension(Short.MAX_VALUE, 25));

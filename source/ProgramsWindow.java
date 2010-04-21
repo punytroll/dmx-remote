@@ -39,6 +39,7 @@ class ProgramsWindow extends JInternalFrame implements SelectionListener, Preset
 	public ProgramsWindow(Configuration Configuration)
 	{
 		super(Configuration.getString("Presets"), true, true, true, false);
+		setBackground(StaticConfiguration.getWindowBackgroundColor());
 		m_Configuration = Configuration;
 		_selectedPresetIndex = -1;
 		getContentPane().setLayout(new BorderLayout());
@@ -49,14 +50,14 @@ class ProgramsWindow extends JInternalFrame implements SelectionListener, Preset
 		
 		JPanel PresetsPanel = new JPanel();
 		
-		PresetsPanel.setBackground(m_Configuration.getBackgroundColor());
+		PresetsPanel.setOpaque(false);
 		PresetsPanel.setLayout(new GridBagLayout());
 		PresetsPanel.add(m_PresetsPanel);
 		getContentPane().add(PresetsPanel, BorderLayout.CENTER);
 		
 		// create the Name Panel
 		m_NamePanel = new JPanel();
-		m_NamePanel.setBackground(m_Configuration.getBackgroundColor());
+		m_NamePanel.setOpaque(false);
 		m_NamePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 2 * StaticConfiguration.getCellBoxPadding(), 10));
 		
 		Box VBox = Box.createVerticalBox();
@@ -75,7 +76,7 @@ class ProgramsWindow extends JInternalFrame implements SelectionListener, Preset
 				
 				PresetPanel.setAlignmentX(LEFT_ALIGNMENT);
 				PresetPanel.setLayout(new BoxLayout(PresetPanel, BoxLayout.LINE_AXIS));
-				PresetPanel.setBackground(m_Configuration.getBackgroundColor());
+				PresetPanel.setOpaque(false);
 				
 				JPanel PresetNumberPanel = new JPanel();
 				

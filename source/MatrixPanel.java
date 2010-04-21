@@ -20,7 +20,7 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 		m_Configuration.addDeviceListener(this);
 		m_Configuration.addHoverListener(this);
 		m_Configuration.addMetricListener(this);
-		setBackground(m_Configuration.getBackgroundColor());
+		setBackground(StaticConfiguration.getWindowBackgroundColor());
 		setPreferredSize(new Dimension(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1) + StaticConfiguration.getCellBoxPadding(), StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1) + StaticConfiguration.getCellBoxPadding()));
 		m_Transform = new AffineTransform();
 		m_Transform.translate(StaticConfiguration.getCellBoxPadding(), StaticConfiguration.getCellBoxPadding());
@@ -82,7 +82,7 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 			Graphics OffscreenGraphics = m_Background.getGraphics();
 			
 			// clear the matrix area
-			OffscreenGraphics.setColor(m_Configuration.getBackgroundColor());
+			OffscreenGraphics.setColor(StaticConfiguration.getWindowBackgroundColor());
 			OffscreenGraphics.fillRect(0, 0, m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
 			// colorize the light areas of the matrix
 			OffscreenGraphics.setColor(new Color(0.70f, 0.70f, 0.70f));

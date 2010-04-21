@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.Vector;
 
 /**
@@ -20,6 +21,7 @@ class StaticConfiguration
 	private static final Integer _nameFieldWidth = 80;
 	private static final Integer _numberFieldWidth = 18;
 	private static final Integer _numberOfPresets = 50;
+	private static final Color _windowBackgroundColor = new Color(0.36f, 0.40f, 0.43f);
 	
 	public static Integer getCellBoxPadding()
 	{
@@ -105,6 +107,11 @@ class StaticConfiguration
 		}
 		
 		throw new IllegalArgumentException("The matrix size \"" + matrixSize.toString() + "\" is not defined.");
+	}
+	
+	public static Color getWindowBackgroundColor()
+	{
+		return _windowBackgroundColor;
 	}
 }
 
