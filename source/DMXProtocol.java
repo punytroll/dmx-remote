@@ -45,16 +45,16 @@ class DMXProtocol implements ConnectionListener, BatchListener
 			{
 				Command = new SysexMessage();
 				
-				byte [] Message = new byte[8 + 3 * m_Configuration.getSize()];
+				byte [] Message = new byte[8 + 3 * Configuration.getCurrentMatrixSize()];
 				int iIndex = 0;
 				
 				Message[iIndex++] = (byte)0xF0;
 				Message[iIndex++] = (byte)0x3F;
 				Message[iIndex++] = (byte)m_Configuration.getIDNumber();
 				Message[iIndex++] = (byte)0x00;
-				Message[iIndex++] = (byte)m_Configuration.getSize();
+				Message[iIndex++] = Configuration.getCurrentMatrixSize().byteValue();
 				Message[iIndex++] = (byte)0x00;
-				for(int iDestination = 0; iDestination < m_Configuration.getSize(); ++iDestination)
+				for(int iDestination = 0; iDestination < Configuration.getCurrentMatrixSize(); ++iDestination)
 				{
 					Message[iIndex++] = (byte)iDestination;
 					Message[iIndex++] = (byte)(m_Configuration.getConnectedSource(iDestination) + 1);
@@ -104,10 +104,10 @@ class DMXProtocol implements ConnectionListener, BatchListener
 			{
 				Command = new SysexMessage();
 				
-				System.out.println("Size: " + m_Configuration.getSize() + " x " + m_Configuration.getSize());
+				System.out.println("Size: " + Configuration.getCurrentMatrixSize() + " x " + Configuration.getCurrentMatrixSize());
 				System.out.println("Presets: " + StaticConfiguration.getNumberOfPresets());
 				
-				int ArrayLength = 5 + 1 + 2 * 16 * m_Configuration.getSize() + 1 + StaticConfiguration.getNumberOfPresets() * (1 + 16 + 1 + 3 * m_Configuration.getSize() + 1) + 1;
+				int ArrayLength = 5 + 1 + 2 * 16 * Configuration.getCurrentMatrixSize() + 1 + StaticConfiguration.getNumberOfPresets() * (1 + 16 + 1 + 3 * Configuration.getCurrentMatrixSize() + 1) + 1;
 				
 				System.out.println("ArrayLength: " + ArrayLength);
 				
@@ -121,8 +121,8 @@ class DMXProtocol implements ConnectionListener, BatchListener
 				Message[iIndex++] = (byte)0x3F;
 				Message[iIndex++] = (byte)m_Configuration.getIDNumber();
 				Message[iIndex++] = (byte)0x01;
-				Message[iIndex++] = (byte)m_Configuration.getSize();
-				for(int iDestination = 0; iDestination < m_Configuration.getSize(); ++iDestination)
+				Message[iIndex++] = Configuration.getCurrentMatrixSize().byteValue();
+				for(int iDestination = 0; iDestination < Configuration.getCurrentMatrixSize(); ++iDestination)
 				{
 					for(int iCharacter = 0; iCharacter < 16; ++iCharacter)
 					{
@@ -136,8 +136,8 @@ class DMXProtocol implements ConnectionListener, BatchListener
 						}
 					}
 				}
-				Message[iIndex++] = (byte)m_Configuration.getSize();
-				for(int iSource = 0; iSource < m_Configuration.getSize(); ++iSource)
+				Message[iIndex++] = Configuration.getCurrentMatrixSize().byteValue();
+				for(int iSource = 0; iSource < Configuration.getCurrentMatrixSize(); ++iSource)
 				{
 					for(int iCharacter = 0; iCharacter < 16; ++iCharacter)
 					{
@@ -166,11 +166,11 @@ class DMXProtocol implements ConnectionListener, BatchListener
 							Message[iIndex++] = (byte)0x20;
 						}
 					}
-					Message[iIndex++] = (byte)m_Configuration.getSize();
+					Message[iIndex++] = Configuration.getCurrentMatrixSize().byteValue();
 					
 					int [] Matrix = m_Configuration.getPreset(iPreset).getMatrix();
 					
-					for(int iDestination = 0; iDestination < m_Configuration.getSize(); ++iDestination)
+					for(int iDestination = 0; iDestination < Configuration.getCurrentMatrixSize(); ++iDestination)
 					{
 						Message[iIndex++] = (byte)iDestination;
 						if(Matrix != null)
@@ -229,10 +229,10 @@ class DMXProtocol implements ConnectionListener, BatchListener
 			{
 				Command = new SysexMessage();
 				
-				System.out.println("Size: " + m_Configuration.getSize() + " x " + m_Configuration.getSize());
+				System.out.println("Size: " + Configuration.getCurrentMatrixSize() + " x " + Configuration.getCurrentMatrixSize());
 				System.out.println("Presets: " + StaticConfiguration.getNumberOfPresets());
 				
-				int ArrayLength = 5 + 1 + 2 * 16 * m_Configuration.getSize() + 1 + StaticConfiguration.getNumberOfPresets() * (1 + 16 + 1 + m_Configuration.getSize() + 1) + 1;
+				int ArrayLength = 5 + 1 + 2 * 16 * Configuration.getCurrentMatrixSize() + 1 + StaticConfiguration.getNumberOfPresets() * (1 + 16 + 1 + Configuration.getCurrentMatrixSize() + 1) + 1;
 				
 				System.out.println("ArrayLength: " + ArrayLength);
 				
@@ -246,8 +246,8 @@ class DMXProtocol implements ConnectionListener, BatchListener
 				Message[iIndex++] = (byte)0x3F;
 				Message[iIndex++] = (byte)m_Configuration.getIDNumber();
 				Message[iIndex++] = (byte)0x01;
-				Message[iIndex++] = (byte)m_Configuration.getSize();
-				for(int iDestination = 0; iDestination < m_Configuration.getSize(); ++iDestination)
+				Message[iIndex++] = Configuration.getCurrentMatrixSize().byteValue();
+				for(int iDestination = 0; iDestination < Configuration.getCurrentMatrixSize(); ++iDestination)
 				{
 					for(int iCharacter = 0; iCharacter < 16; ++iCharacter)
 					{
@@ -261,8 +261,8 @@ class DMXProtocol implements ConnectionListener, BatchListener
 						}
 					}
 				}
-				Message[iIndex++] = (byte)m_Configuration.getSize();
-				for(int iSource = 0; iSource < m_Configuration.getSize(); ++iSource)
+				Message[iIndex++] = Configuration.getCurrentMatrixSize().byteValue();
+				for(int iSource = 0; iSource < Configuration.getCurrentMatrixSize(); ++iSource)
 				{
 					for(int iCharacter = 0; iCharacter < 16; ++iCharacter)
 					{
@@ -291,11 +291,11 @@ class DMXProtocol implements ConnectionListener, BatchListener
 							Message[iIndex++] = (byte)0x20;
 						}
 					}
-					Message[iIndex++] = (byte)m_Configuration.getSize();
+					Message[iIndex++] = Configuration.getCurrentMatrixSize().byteValue();
 					
 					int [] Matrix = m_Configuration.getPreset(iPreset).getMatrix();
 					
-					for(int iDestination = 0; iDestination < m_Configuration.getSize(); ++iDestination)
+					for(int iDestination = 0; iDestination < Configuration.getCurrentMatrixSize(); ++iDestination)
 					{
 						if(Matrix != null)
 						{

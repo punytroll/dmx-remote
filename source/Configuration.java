@@ -8,12 +8,12 @@ import java.util.prefs.Preferences;
 class Configuration
 {
 	// new variables
+	private static Integer _currentMatrixSize;
 	private LanguageTable _languageTable;
 	private Preset _presets[];
 	
 	// old variables
 	private String m_ConfigurationRoot;
-	private int m_Size;
 	private int m_GroupSize;
 	private int m_MatrixPadding;
 	private int m_IdentifierFieldWidth;
@@ -53,6 +53,7 @@ class Configuration
 	
 	public Configuration(String ConfigurationRoot)
 	{
+		_currentMatrixSize = 32;
 		// initialize the language map
 		_languageTable = new LanguageTable();
 		initializeLanguages();
@@ -66,12 +67,11 @@ class Configuration
 		m_MIDIListeners = new EventListenerList();
 		m_MatrixListeners = new EventListenerList();
 		m_TransmitModeListeners = new EventListenerList();
-		m_Size = 32;
 		m_GroupSize = 4;
 		m_MatrixPadding = 8;
 		m_IdentifierFieldWidth = 100;
 		m_NameFieldWidth = 80;
-		m_Matrix = new int[m_Size];
+		m_Matrix = new int[getCurrentMatrixSize()];
 		m_FixedHoverSource = -1;
 		m_FixedHoverDestination = -1;
 		m_HoverSource = -1;
@@ -87,12 +87,12 @@ class Configuration
 		m_MatrixChanged = false;
 		m_DevicesChanged = false;
 		m_PresetsChanged = false;
-		for(int Column = 0; Column < m_Size; ++Column)
+		for(int Column = 0; Column < getCurrentMatrixSize(); ++Column)
 		{
 			m_Matrix[Column] = -1;
 		}
-		m_Devices = new Device[2 * m_Size];
-		for(int Device = 0; Device < 2 * m_Size; ++Device)
+		m_Devices = new Device[2 * getCurrentMatrixSize()];
+		for(int Device = 0; Device < 2 * getCurrentMatrixSize(); ++Device)
 		{
 			m_Devices[Device] = new Device();
 		}
@@ -186,18 +186,18 @@ class Configuration
 	
 	public void setSize(int Size)
 	{
-		if(Size == m_Size)
+		if(Size == getCurrentMatrixSize())
 		{
 			return;
 		}
-		m_Size = Size;
-		m_Matrix = new int[m_Size];
-		for(int Column = 0; Column < m_Size; ++Column)
+		_currentMatrixSize = Size;
+		m_Matrix = new int[getCurrentMatrixSize()];
+		for(int Column = 0; Column < getCurrentMatrixSize(); ++Column)
 		{
 			m_Matrix[Column] = -1;
 		}
-		m_Devices = new Device[2 * m_Size];
-		for(int Device = 0; Device < 2 * m_Size; ++Device)
+		m_Devices = new Device[2 * getCurrentMatrixSize()];
+		for(int Device = 0; Device < 2 * getCurrentMatrixSize(); ++Device)
 		{
 			m_Devices[Device] = new Device();
 		}
@@ -339,7 +339,7 @@ class Configuration
 	
 	public void setHoverSource(int Source)
 	{
-		if((Source >= 0) && (Source < getSize()))
+		if((Source >= 0) && (Source < getCurrentMatrixSize()))
 		{
 			if(m_HoverSource != Source)
 			{
@@ -359,7 +359,7 @@ class Configuration
 	
 	public void setHoverDestination(int Destination)
 	{
-		if((Destination >= 0) && (Destination < getSize()))
+		if((Destination >= 0) && (Destination < getCurrentMatrixSize()))
 		{
 			if(m_HoverDestination != Destination)
 			{
@@ -379,22 +379,22 @@ class Configuration
 	
 	public boolean getHover()
 	{
-		return (m_HoverSource >= 0) && (m_HoverDestination >= 0) && (m_HoverSource < getSize()) && (m_HoverDestination < getSize());
+		return (m_HoverSource >= 0) && (m_HoverDestination >= 0) && (m_HoverSource < getCurrentMatrixSize()) && (m_HoverDestination < getCurrentMatrixSize());
 	}
 	
-	public int getSize()
+	public static Integer getCurrentMatrixSize()
 	{
-		return m_Size;
+		return _currentMatrixSize;
 	}
 	
 	public Integer getCurrentCellSize()
 	{
-		return StaticConfiguration.getCellSize(getSize());
+		return StaticConfiguration.getCellSize(getCurrentMatrixSize());
 	}
 	
 	public Integer getCurrentTextOffset()
 	{
-		return StaticConfiguration.getTextOffset(getSize());
+		return StaticConfiguration.getTextOffset(getCurrentMatrixSize());
 	}
 	
 	public int getGroupSize()
@@ -575,7 +575,7 @@ class Configuration
 	
 	public void copySourcesToDestinations()
 	{
-		for(int I = 0; I < getSize(); ++I)
+		for(int I = 0; I < getCurrentMatrixSize(); ++I)
 		{
 			if(getDestinationName(I).equals("") == true)
 			{
@@ -586,7 +586,7 @@ class Configuration
 	
 	public boolean isConnected(int Source, int Destination)
 	{
-		if(Source >= m_Size || Destination >= m_Size)
+		if(Source >= getCurrentMatrixSize() || Destination >= getCurrentMatrixSize())
 		{
 			return false;
 		}
@@ -596,7 +596,7 @@ class Configuration
 	
 	public void clearNames()
 	{
-		for(int Name = 0; Name < getSize() * 2; ++Name)
+		for(int Name = 0; Name < getCurrentMatrixSize() * 2; ++Name)
 		{
 			setName(Name, "");
 		}
@@ -610,7 +610,7 @@ class Configuration
 			throw new MatrixNotSavedException();
 		}
 		enterBatch();
-		for(int Destination = 0; Destination < getSize(); ++Destination)
+		for(int Destination = 0; Destination < getCurrentMatrixSize(); ++Destination)
 		{
 			setDisconnected(Destination);
 		}
@@ -709,7 +709,7 @@ class Configuration
 	
 	public void setConnected(int Source, int Destination, boolean Connected)
 	{
-		if((Source >= 0) && (Destination >= 0) && (Source < m_Size) && (Destination < m_Size) && (isConnected(Source, Destination) != Connected))
+		if((Source >= 0) && (Destination >= 0) && (Source < getCurrentMatrixSize()) && (Destination < getCurrentMatrixSize()) && (isConnected(Source, Destination) != Connected))
 		{
 			enterBatch();
 			if(m_Matrix[Destination] != -1)
@@ -731,7 +731,7 @@ class Configuration
 	
 	public int getConnectedSource(int Destination)
 	{
-		if((Destination >= 0) && (Destination < getSize()))
+		if((Destination >= 0) && (Destination < getCurrentMatrixSize()))
 		{
 			return m_Matrix[Destination];
 		}
@@ -755,7 +755,7 @@ class Configuration
 	
 	public String getSourceName(int Index)
 	{
-		if((Index < m_Size) && (Index >= 0))
+		if((Index < getCurrentMatrixSize()) && (Index >= 0))
 		{
 			return m_Devices[Index].getName();
 		}
@@ -767,9 +767,9 @@ class Configuration
 	
 	public String getDestinationName(int Index)
 	{
-		if((Index < m_Size) && (Index >= 0))
+		if((Index < getCurrentMatrixSize()) && (Index >= 0))
 		{
-			return m_Devices[Index + m_Size].getName();
+			return m_Devices[Index + getCurrentMatrixSize()].getName();
 		}
 		else
 		{
@@ -779,7 +779,7 @@ class Configuration
 	
 	public void setSourceName(int Index, String Name)
 	{
-		if(Index < m_Size)
+		if(Index < getCurrentMatrixSize())
 		{
 			setName(Index, Name);
 		}
@@ -787,21 +787,21 @@ class Configuration
 	
 	public void setDestinationName(int Index, String Name)
 	{
-		if(Index < m_Size)
+		if(Index < getCurrentMatrixSize())
 		{
-			Index += m_Size;
+			Index += getCurrentMatrixSize();
 			setName(Index, Name);
 		}
 	}
 	
 	public void setName(int Index, String Name)
 	{
-		if(Index < m_Size * 2)
+		if(Index < getCurrentMatrixSize() * 2)
 		{
 			if(m_Devices[Index].getName().equals(Name) == false)
 			{
 				m_Devices[Index].setName(Name);
-				fireDeviceNameChanged(Index, Index > m_Size, m_Devices[Index]);
+				fireDeviceNameChanged(Index, Index > getCurrentMatrixSize(), m_Devices[Index]);
 				setDevicesChanged();
 			}
 		}
@@ -824,7 +824,7 @@ class Configuration
 			}
 			else
 			{
-				if(Matrix.length != getSize())
+				if(Matrix.length != getCurrentMatrixSize())
 				{
 					System.out.println("\tloadProgramToMatrix: Dimensions don't match.");
 					
@@ -832,7 +832,7 @@ class Configuration
 				}
 				enterBatch();
 				clearMatrix();
-				for(int Destination = 0; Destination < getSize(); ++Destination)
+				for(int Destination = 0; Destination < getCurrentMatrixSize(); ++Destination)
 				{
 					setConnected(Matrix[Destination], Destination, true);
 				}

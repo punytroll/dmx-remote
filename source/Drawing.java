@@ -7,48 +7,48 @@ import java.lang.Integer;
 
 class Drawing
 {
-	static public void draw(Configuration Configuration, Graphics Graphics, int X, int Y, boolean TextHorizontal)
+	static public void draw(Configuration configuration, Graphics Graphics, int X, int Y, boolean TextHorizontal)
 	{
-		int CellSize = Configuration.getCurrentCellSize();
+		int CellSize = configuration.getCurrentCellSize();
 		
 		Graphics.setColor(new Color(0.78f, 0.79f, 0.80f));
-		for(int Block = 0; Block <= Configuration.getSize() / (2 * Configuration.getGroupSize()); ++Block)
+		for(int Block = 0; Block <= Configuration.getCurrentMatrixSize() / (2 * configuration.getGroupSize()); ++Block)
 		{
 			if(TextHorizontal == true)
 			{
-				Graphics.fillRect(X, Y + 1 + 2 * Block * Configuration.getGroupSize() * (CellSize + 1), Configuration.getIdentifierFieldWidth() - Configuration.getNameFieldWidth() - 2, Configuration.getGroupSize() * (CellSize + 1));
-				Graphics.fillRect(X + Configuration.getIdentifierFieldWidth() - Configuration.getNameFieldWidth(), Y + 1 + 2 * Block * Configuration.getGroupSize() * (CellSize + 1), Configuration.getNameFieldWidth(), Configuration.getGroupSize() * (CellSize + 1));
+				Graphics.fillRect(X, Y + 1 + 2 * Block * configuration.getGroupSize() * (CellSize + 1), configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth() - 2, configuration.getGroupSize() * (CellSize + 1));
+				Graphics.fillRect(X + configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth(), Y + 1 + 2 * Block * configuration.getGroupSize() * (CellSize + 1), configuration.getNameFieldWidth(), configuration.getGroupSize() * (CellSize + 1));
 			}
 			else
 			{
-				Graphics.fillRect(X + 1 + 2 * Block * Configuration.getGroupSize() * (CellSize + 1), Y, Configuration.getGroupSize() * (CellSize + 1), Configuration.getIdentifierFieldWidth() - Configuration.getNameFieldWidth() - 2);
-				Graphics.fillRect(X + 1 + 2 * Block * Configuration.getGroupSize() * (CellSize + 1), Y + Configuration.getIdentifierFieldWidth() - Configuration.getNameFieldWidth(), Configuration.getGroupSize() * (CellSize + 1), Configuration.getNameFieldWidth());
+				Graphics.fillRect(X + 1 + 2 * Block * configuration.getGroupSize() * (CellSize + 1), Y, configuration.getGroupSize() * (CellSize + 1), configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth() - 2);
+				Graphics.fillRect(X + 1 + 2 * Block * configuration.getGroupSize() * (CellSize + 1), Y + configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth(), configuration.getGroupSize() * (CellSize + 1), configuration.getNameFieldWidth());
 			}
 		}
 		Graphics.setColor(new Color(0.70f, 0.72f, 0.73f));
-		for(int Block = 0; Block <= Configuration.getSize() / (2 * Configuration.getGroupSize()); ++Block)
+		for(int Block = 0; Block <= Configuration.getCurrentMatrixSize() / (2 * configuration.getGroupSize()); ++Block)
 		{
 			if(TextHorizontal == true)
 			{
-				Graphics.fillRect(X, Y + 1 + (2 * Block + 1) * Configuration.getGroupSize() * (CellSize + 1), Configuration.getIdentifierFieldWidth() - Configuration.getNameFieldWidth() - 2, Configuration.getGroupSize() * (CellSize + 1));
-				Graphics.fillRect(X + Configuration.getIdentifierFieldWidth() - Configuration.getNameFieldWidth(), Y + 1 + (2 * Block + 1) * Configuration.getGroupSize() * (CellSize + 1), Configuration.getNameFieldWidth(), Configuration.getGroupSize() * (CellSize + 1));
+				Graphics.fillRect(X, Y + 1 + (2 * Block + 1) * configuration.getGroupSize() * (CellSize + 1), configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth() - 2, configuration.getGroupSize() * (CellSize + 1));
+				Graphics.fillRect(X + configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth(), Y + 1 + (2 * Block + 1) * configuration.getGroupSize() * (CellSize + 1), configuration.getNameFieldWidth(), configuration.getGroupSize() * (CellSize + 1));
 			}
 			else
 			{
-				Graphics.fillRect(X + 1 + (2 * Block + 1) * Configuration.getGroupSize() * (CellSize + 1), Y, Configuration.getGroupSize() * (CellSize + 1), Configuration.getIdentifierFieldWidth() - Configuration.getNameFieldWidth() - 2);
-				Graphics.fillRect(X + 1 + (2 * Block + 1) * Configuration.getGroupSize() * (CellSize + 1), Y + Configuration.getIdentifierFieldWidth() - Configuration.getNameFieldWidth(), Configuration.getGroupSize() * (CellSize + 1), Configuration.getNameFieldWidth());
+				Graphics.fillRect(X + 1 + (2 * Block + 1) * configuration.getGroupSize() * (CellSize + 1), Y, configuration.getGroupSize() * (CellSize + 1), configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth() - 2);
+				Graphics.fillRect(X + 1 + (2 * Block + 1) * configuration.getGroupSize() * (CellSize + 1), Y + configuration.getIdentifierFieldWidth() - configuration.getNameFieldWidth(), configuration.getGroupSize() * (CellSize + 1), configuration.getNameFieldWidth());
 			}
 		}
 		Graphics.setColor(new Color(0.26f, 0.28f, 0.29f));
-		for(int i = 0; i <= Configuration.getSize(); ++i)
+		for(int i = 0; i <= Configuration.getCurrentMatrixSize(); ++i)
 		{
 			if(TextHorizontal == true)
 			{
-				Graphics.drawLine(X, Y + i * (CellSize + 1), X + Configuration.getIdentifierFieldWidth(), Y + i * (CellSize + 1));
+				Graphics.drawLine(X, Y + i * (CellSize + 1), X + configuration.getIdentifierFieldWidth(), Y + i * (CellSize + 1));
 			}
 			else
 			{
-				Graphics.drawLine(X + i * (CellSize + 1), Y, X + i * (CellSize + 1), Y + Configuration.getIdentifierFieldWidth());
+				Graphics.drawLine(X + i * (CellSize + 1), Y, X + i * (CellSize + 1), Y + configuration.getIdentifierFieldWidth());
 			}
 		}
 		
@@ -58,17 +58,17 @@ class Drawing
 		Graphics2D.setFont(new Font("SansSerif", Font.PLAIN, 9));
 		if(TextHorizontal == true)
 		{
-			for(int Name = 0; Name < Configuration.getSize(); ++Name)
+			for(int Name = 0; Name < Configuration.getCurrentMatrixSize(); ++Name)
 			{
-				Graphics2D.drawString(Integer.toString(Name + 1), X + 2, Y + 1 + (Name + 1) * (CellSize + 1) - 1 - Configuration.getCurrentTextOffset());
+				Graphics2D.drawString(Integer.toString(Name + 1), X + 2, Y + 1 + (Name + 1) * (CellSize + 1) - 1 - configuration.getCurrentTextOffset());
 			}
 		}
 		else
 		{
 			Graphics2D.rotate(Math.PI / -2.0);
-			for(int Name = 0; Name < Configuration.getSize(); ++Name)
+			for(int Name = 0; Name < Configuration.getCurrentMatrixSize(); ++Name)
 			{
-				Graphics2D.drawString(Integer.toString(Name + 1), Y + 2 - Configuration.getIdentifierFieldWidth() + Configuration.getNameFieldWidth() + 2, X + 1 + (Name + 1) * (CellSize + 1) - 1 - Configuration.getCurrentTextOffset());
+				Graphics2D.drawString(Integer.toString(Name + 1), Y + 2 - configuration.getIdentifierFieldWidth() + configuration.getNameFieldWidth() + 2, X + 1 + (Name + 1) * (CellSize + 1) - 1 - configuration.getCurrentTextOffset());
 			}
 		}
 		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
