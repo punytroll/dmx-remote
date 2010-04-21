@@ -68,13 +68,6 @@ class SelectAndRenamePresetDialog extends JDialog
 		Settings.add(new JLabel("Select Preset"));
 		Settings.add(Box.createRigidArea(new Dimension(0,5)));
 		Settings.setBackground(m_Configuration.getBackgroundColor());
-		
-		Vector Items = new Vector();
-		
-		for(int I = 0; I < StaticConfiguration.getNumberOfPresets(); ++I)
-		{
-			Items.add(String.valueOf(I + 1) + ". " + m_Configuration.getPreset(I).getName());
-		}
 		m_Name = new JTextField();
 		m_Name.setAlignmentX(LEFT_ALIGNMENT);
 		m_Name.setMaximumSize(new Dimension(Short.MAX_VALUE, 25));
@@ -95,7 +88,11 @@ class SelectAndRenamePresetDialog extends JDialog
 			}
 		}
 		);
-		m_Combo = new JComboBox(Items);
+		m_Combo = new JComboBox();
+		for(int presetIndex = 0; presetIndex < StaticConfiguration.getNumberOfPresets(); ++presetIndex)
+		{
+			m_Combo.addItem(String.valueOf(presetIndex + 1) + ". " + m_Configuration.getPreset(presetIndex).getName());
+		}
 		m_Combo.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent Event)

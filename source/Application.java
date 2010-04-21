@@ -1024,13 +1024,13 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					Data.writeUTF(m_Configuration.getDestinationName(Name));
 				}
 				Data.writeInt(50);
-				for(int ProgramIndex = 0; ProgramIndex < StaticConfiguration.getNumberOfPresets(); ++ProgramIndex)
+				for(int presetIndex = 0; presetIndex < StaticConfiguration.getNumberOfPresets(); ++presetIndex)
 				{
-					Program Program = m_Configuration.getPreset(ProgramIndex);
+					Preset preset = m_Configuration.getPreset(presetIndex);
 					
-					Data.writeUTF(Program.getName());
+					Data.writeUTF(preset.getName());
 					
-					int [] Matrix = Program.getMatrix();
+					int [] Matrix = preset.getMatrix();
 					
 					for(int Destination = 0; Destination < m_Configuration.getSize(); ++Destination)
 					{
@@ -1110,17 +1110,17 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 			
 			int [] Matrix = new int[m_Configuration.getSize()];
 			
-			for(int ProgramIndex = 0; ProgramIndex < StaticConfiguration.getNumberOfPresets(); ++ProgramIndex)
+			for(int presetIndex = 0; presetIndex < StaticConfiguration.getNumberOfPresets(); ++presetIndex)
 			{
-				Program Program = m_Configuration.getPreset(ProgramIndex);
+				Preset preset = m_Configuration.getPreset(presetIndex);
 				
 				UTFData = Data.readUTF();
-				Program.setName(UTFData);
+				preset.setName(UTFData);
 				for(int Destination = 0; Destination < m_Configuration.getSize(); ++Destination)
 				{
 					Matrix[Destination] = Data.readInt();
 				}
-				Program.setMatrix(Matrix);
+				preset.setMatrix(Matrix);
 			}
 			BooleanData = Data.readBoolean();
 			if(BooleanData == true)

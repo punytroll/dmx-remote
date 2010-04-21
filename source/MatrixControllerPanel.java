@@ -25,12 +25,13 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 	private JLabel m_DestinationNameLabel;
 	private JButton m_Transmit;
 	private Configuration m_Configuration;
-	private Program m_Preset;
+	private Integer _selectedPresetIndex;
 	private Component m_Strut;
 	private Box m_VBox;
 	
 	public MatrixControllerPanel(Configuration Configuration)
 	{
+		_selectedPresetIndex = -1;
 		m_Configuration = Configuration;
 		m_Configuration.addHoverListener(this);
 		m_Configuration.addConnectionListener(this);
@@ -223,22 +224,21 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 		}
 	}
 	
-	void setPresetIndex(int PresetIndex)
+	void setPresetIndex(Integer selectPresetIndex)
 	{
-		if(m_Preset != null)
+		if(_selectedPresetIndex != -1)
 		{
-			m_Preset.removePresetListener(this);
+			m_Configuration.getPreset(_selectedPresetIndex).removePresetListener(this);
 		}
-		if(PresetIndex != -1)
+		_selectedPresetIndex = selectPresetIndex;
+		if(_selectedPresetIndex != -1)
 		{
-			m_Preset = m_Configuration.getPreset(PresetIndex);
-			m_PresetNumberLabel.setText(String.valueOf(PresetIndex + 1));
-			m_PresetNameLabel.setText(m_Preset.getName());
-			m_Preset.addPresetListener(this);
+			m_PresetNumberLabel.setText(String.valueOf(_selectedPresetIndex + 1));
+			m_PresetNameLabel.setText(m_Configuration.getPreset(_selectedPresetIndex).getName());
+			m_Configuration.getPreset(_selectedPresetIndex).addPresetListener(this);
 		}
 		else
 		{
-			m_Preset = null;
 			m_PresetNumberLabel.setText("");
 			m_PresetNameLabel.setText("");
 		}

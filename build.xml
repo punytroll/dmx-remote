@@ -12,7 +12,7 @@
 	</target>
 	
 	<target name="compilation" depends="initalization" description="Compile the sources.">
-		<javac srcdir="${source}" destdir="${build}">
+		<javac srcdir="${source}" destdir="${build}" debug="true" includeantruntime="false">
 			<compilerarg value="-Xlint:unchecked"/>
 			<compilerarg value="-Xlint:deprecation"/>
 		</javac>

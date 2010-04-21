@@ -9,6 +9,7 @@ class Configuration
 {
 	// new variables
 	private LanguageTable _languageTable;
+	private Preset _presets[];
 	
 	// old variables
 	private String m_ConfigurationRoot;
@@ -39,7 +40,6 @@ class Configuration
 	private EventListenerList m_MIDIListeners;
 	private EventListenerList m_MatrixListeners;
 	private EventListenerList m_TransmitModeListeners;
-	private Program m_Programs[];
 	private Color m_BackgroundColor;
 	private int m_LoadedProgramIndex;
 	
@@ -96,10 +96,10 @@ class Configuration
 		{
 			m_Devices[Device] = new Device();
 		}
-		m_Programs = new Program[StaticConfiguration.getNumberOfPresets()];
-		for(int Program = 0; Program < StaticConfiguration.getNumberOfPresets(); ++Program)
+		_presets = new Preset[StaticConfiguration.getNumberOfPresets()];
+		for(Integer presetIndex = 0; presetIndex < StaticConfiguration.getNumberOfPresets(); ++presetIndex)
 		{
-			m_Programs[Program] = new Program();
+			_presets[presetIndex] = new Preset();
 		}
 		m_BackgroundColor = new Color(0.36f, 0.40f, 0.43f);
 		m_MIDIDevices = new Vector();
@@ -563,11 +563,11 @@ class Configuration
 		return m_TransmitManually;
 	}
 	
-	public Program getPreset(int presetIndex)
+	public Preset getPreset(int presetIndex)
 	{
 		if((presetIndex >= 0) && (presetIndex < StaticConfiguration.getNumberOfPresets()))
 		{
-			return m_Programs[presetIndex];
+			return _presets[presetIndex];
 		}
 		
 		return null;
@@ -619,9 +619,9 @@ class Configuration
 	
 	public void clearPresets()
 	{
-		for(int Preset = 0; Preset < StaticConfiguration.getNumberOfPresets(); ++Preset)
+		for(Preset preset : _presets)
 		{
-			m_Programs[Preset].clear();
+			preset.clear();
 		}
 	}
 	
@@ -816,7 +816,7 @@ class Configuration
 		}
 		if((ProgramIndex >= 0) && (ProgramIndex < StaticConfiguration.getNumberOfPresets()))
 		{
-			int [] Matrix = m_Programs[ProgramIndex].getMatrix();
+			int [] Matrix = _presets[ProgramIndex].getMatrix();
 			
 			if(Matrix == null)
 			{
@@ -858,7 +858,7 @@ class Configuration
 		{
 			return;
 		}
-		m_Programs[PresetIndex].setMatrix(m_Matrix);
+		_presets[PresetIndex].setMatrix(m_Matrix);
 		setCurrentMatrixIsPreset(PresetIndex);
 		setMatrixSaved();
 		setPresetsChanged();
