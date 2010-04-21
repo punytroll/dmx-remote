@@ -15,6 +15,8 @@ class StaticConfiguration
 		new MatrixConfiguration(32, 11, 120, 2),
 		new MatrixConfiguration(64, 11, 130, 2)
 	};
+	private static final Integer _nameFieldWidth = 80;
+	private static final Integer _numberFieldWidth = 20;
 	private static final Integer _numberOfPresets = 50;
 	
 	public static Integer getCellSize(Integer matrixSize)
@@ -50,6 +52,16 @@ class StaticConfiguration
 		}
 		
 		return result;
+	}
+	
+	public static Integer getNameFieldWidth()
+	{
+		return _nameFieldWidth;
+	}
+	
+	public static Integer getNumberFieldWidth()
+	{
+		return _numberFieldWidth;
 	}
 	
 	public static Integer getNumberOfPresets()
