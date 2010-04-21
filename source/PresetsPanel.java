@@ -4,7 +4,7 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.event.EventListenerList;
 import javax.swing.JPanel;
 
-class PresetsPanel extends JPanel implements ProgramsListener, MetricListener
+class PresetsPanel extends JPanel implements MetricListener, PresetListener
 {
 	private Configuration m_Configuration;
 	private Image m_Background;
@@ -15,7 +15,6 @@ class PresetsPanel extends JPanel implements ProgramsListener, MetricListener
 	public PresetsPanel(Configuration Configuration)
 	{
 		m_Configuration = Configuration;
-		m_Configuration.addProgramsListener(this);
 		m_Configuration.addMetricListener(this);
 		setBackground(m_Configuration.getBackgroundColor());
 		m_SelectionListeners = new EventListenerList();
@@ -54,6 +53,10 @@ class PresetsPanel extends JPanel implements ProgramsListener, MetricListener
 		);
 		setPreferredSize(new Dimension(m_Configuration.getMatrixPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (m_Configuration.getCurrentCellSize() + 1)));
 		setMinimumSize(new Dimension(m_Configuration.getMatrixPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (m_Configuration.getCurrentCellSize() + 1)));
+		for(int presetIndex = 0; presetIndex < StaticConfiguration.getNumberOfPresets(); ++presetIndex)
+		{
+			m_Configuration.getPreset(presetIndex).addPresetListener(this);
+		}
 	}
 	
 	public void mouseHover(int MouseX, int MouseY)
@@ -195,7 +198,7 @@ class PresetsPanel extends JPanel implements ProgramsListener, MetricListener
 		}
 	}
 	
-	public void programNameChanged(NameChangedEvent Event)
+	public void nameChanged(NameChangedEvent Event)
 	{
 		repaint();
 	}
