@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-class MatrixNamePanel extends JPanel implements HoverListener, ProgramListener, ConnectionListener, TransmitModeListener, MetricListener
+class MatrixControllerPanel extends JPanel implements HoverListener, ProgramListener, ConnectionListener, TransmitModeListener, MetricListener
 {
 	private JLabel m_PresetNumberLabel;
 	private JLabel m_PresetNameLabel;
@@ -29,7 +29,7 @@ class MatrixNamePanel extends JPanel implements HoverListener, ProgramListener, 
 	private Component m_Strut;
 	private Box m_VBox;
 	
-	public MatrixNamePanel(Configuration Configuration)
+	public MatrixControllerPanel(Configuration Configuration)
 	{
 		m_Configuration = Configuration;
 		m_Configuration.addHoverListener(this);

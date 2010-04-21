@@ -21,7 +21,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 	
 	// the patch matrix
 	private JInternalFrame m_MatrixWindow;
-	private MatrixNamePanel m_MatrixNamePanel;
+	private MatrixControllerPanel _matrixControllerPanel;
 	private MatrixPanel m_MatrixPanel;
 	// its popup menu
 	private JPopupMenu m_MatrixPopupMenu;
@@ -474,11 +474,11 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				}
 				);
 			}
-			if(m_MatrixNamePanel == null)
+			if(_matrixControllerPanel == null)
 			{
-				m_MatrixNamePanel = new MatrixNamePanel(m_Configuration);
-				m_MatrixNamePanel.setMaximumSize(new Dimension(300, 600));
-				m_Configuration.setMatrixNamePanel(m_MatrixNamePanel);
+				_matrixControllerPanel = new MatrixControllerPanel(m_Configuration);
+				_matrixControllerPanel.setMaximumSize(new Dimension(300, 600));
+				m_Configuration.setMatrixControllerPanel(_matrixControllerPanel);
 			}
 			if(m_MatrixWindow == null)
 			{
@@ -526,7 +526,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				JScrollPane scrollPane = new JScrollPane(m_MatrixPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 				
 				scrollPane.setBorder(BorderFactory.createEmptyBorder());
-				m_MatrixWindow.getContentPane().add(m_MatrixNamePanel, BorderLayout.WEST);
+				m_MatrixWindow.getContentPane().add(_matrixControllerPanel, BorderLayout.WEST);
 				m_MatrixWindow.getContentPane().add(scrollPane, BorderLayout.CENTER);
 				m_MatrixWindow.setSize(PersistentConfiguration.getWindowWidth("matrix"), PersistentConfiguration.getWindowHeight("matrix"));
 				m_MatrixWindow.setLocation(PersistentConfiguration.getWindowLeft("matrix"), PersistentConfiguration.getWindowTop("matrix"));
@@ -538,7 +538,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					public void actionPerformed(ActionEvent Event)
 					{
 						m_Configuration.transmitNow();
-						m_MatrixNamePanel.transmitted();
+						_matrixControllerPanel.transmitted();
 					}
 				}
 				);
