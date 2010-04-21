@@ -17,18 +17,16 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 	private Image m_Background;
 	private AffineTransform m_Transform;
 	private AffineTransform m_InverseTransform;
-	private String m_WindowName;
 	private EventListenerList m_SelectionListeners;
 	
 	private int m_Hover;
 	private int m_Select;
 	
-	public DevicesPanel(Configuration Configuration, String WindowName)
+	public DevicesPanel(Configuration Configuration)
 	{
 		m_Configuration = Configuration;
 		m_Configuration.addDeviceListener(this);
 		m_Configuration.addMetricListener(this);
-		m_WindowName = WindowName;
 		m_SelectionListeners = new EventListenerList();
 		setBackground(m_Configuration.getBackgroundColor());
 		m_Hover = -1;
@@ -52,32 +50,29 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 			
 			public void mouseMoved(MouseEvent Event)
 			{
-				if(m_Configuration.getActiveWindow().equals(m_WindowName) == true)
+				Point2D.Double EventPoint = new Point2D.Double();
+				
+				m_InverseTransform.transform(new Point2D.Double(Event.getX() + m_Configuration.getMatrixPadding(), Event.getY()), EventPoint);
+				
+				double HoverX = Math.floor((EventPoint.getX() - 1) / (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth()));
+				double HoverY = Math.floor((EventPoint.getY() - 1) / (m_Configuration.getCurrentCellSize() + 1));
+				
+				if((HoverY >= 0) && (HoverY < m_Configuration.getSize()) && (EventPoint.getX() - (int)HoverX * (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth()) > m_Configuration.getMatrixPadding()))
 				{
-					Point2D.Double EventPoint = new Point2D.Double();
+					int Hover = (int)HoverY + (int)HoverX * m_Configuration.getSize();
 					
-					m_InverseTransform.transform(new Point2D.Double(Event.getX() + m_Configuration.getMatrixPadding(), Event.getY()), EventPoint);
-					
-					double HoverX = Math.floor((EventPoint.getX() - 1) / (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth()));
-					double HoverY = Math.floor((EventPoint.getY() - 1) / (m_Configuration.getCurrentCellSize() + 1));
-					
-					if((HoverY >= 0) && (HoverY < m_Configuration.getSize()) && (EventPoint.getX() - (int)HoverX * (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth()) > m_Configuration.getMatrixPadding()))
+					if((Hover > -1) && (Hover < m_Configuration.getSize() * 2))
 					{
-						int Hover = (int)HoverY + (int)HoverX * m_Configuration.getSize();
-						
-						if((Hover > -1) && (Hover < m_Configuration.getSize() * 2))
-						{
-							setHover(Hover);
-						}
-						else
-						{
-							setHover(-1);
-						}
+						setHover(Hover);
 					}
 					else
 					{
 						setHover(-1);
 					}
+				}
+				else
+				{
+					setHover(-1);
 				}
 			}
 		}
@@ -86,28 +81,25 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 		{
 			public void mouseEntered(MouseEvent Event)
 			{
-				if(m_Configuration.getActiveWindow().equals(m_WindowName) == true)
+				double HoverX = Math.floor((double)(Event.getX() - 1) / (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth()));
+				double HoverY = Math.floor((double)(Event.getY() - m_Configuration.getMatrixPadding() - 1) / (m_Configuration.getCurrentCellSize() + 1));
+				
+				if((HoverY >= 0) && (HoverY < m_Configuration.getSize()) && (Event.getX() - (int)HoverX * (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth()) > m_Configuration.getMatrixPadding()))
 				{
-					double HoverX = Math.floor((double)(Event.getX() - 1) / (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth()));
-					double HoverY = Math.floor((double)(Event.getY() - m_Configuration.getMatrixPadding() - 1) / (m_Configuration.getCurrentCellSize() + 1));
+					int Hover = (int)HoverY + (int)HoverX * m_Configuration.getSize();
 					
-					if((HoverY >= 0) && (HoverY < m_Configuration.getSize()) && (Event.getX() - (int)HoverX * (m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth()) > m_Configuration.getMatrixPadding()))
+					if((Hover > -1) && (Hover < m_Configuration.getSize() * 2))
 					{
-						int Hover = (int)HoverY + (int)HoverX * m_Configuration.getSize();
-						
-						if((Hover > -1) && (Hover < m_Configuration.getSize() * 2))
-						{
-							setHover(Hover);
-						}
-						else
-						{
-							setHover(-1);
-						}
+						setHover(Hover);
 					}
 					else
 					{
 						setHover(-1);
 					}
+				}
+				else
+				{
+					setHover(-1);
 				}
 			}
 			
@@ -118,14 +110,11 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 			
 			public void mouseClicked(MouseEvent Event)
 			{
-				if(m_Configuration.getActiveWindow().equals(m_WindowName) == true)
+				if(m_Hover > -1)
 				{
-					if(m_Hover > -1)
+					if(m_Hover != m_Select)
 					{
-						if(m_Hover != m_Select)
-						{
-							setSelectedDevice(m_Hover);
-						}
+						setSelectedDevice(m_Hover);
 					}
 				}
 			}
@@ -194,20 +183,17 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 		
 		Composite Original = Graphics2D.getComposite();
 		
-		if(m_Configuration.getActiveWindow() == m_WindowName)
+		if(m_Hover > -1)
 		{
-			if(m_Hover > -1)
+			Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.70f));
+			Graphics2D.setPaint(Color.white);
+			if(m_Hover < m_Configuration.getSize())
 			{
-				Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.70f));
-				Graphics2D.setPaint(Color.white);
-				if(m_Hover < m_Configuration.getSize())
-				{
-					Graphics2D.fillRect(0, 1 + m_Hover * (m_Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getCurrentCellSize());
-				}
-				else
-				{
-					Graphics2D.fillRect(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Hover - m_Configuration.getSize()) * (m_Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getCurrentCellSize());
-				}
+				Graphics2D.fillRect(0, 1 + m_Hover * (m_Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getCurrentCellSize());
+			}
+			else
+			{
+				Graphics2D.fillRect(m_Configuration.getMatrixPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Hover - m_Configuration.getSize()) * (m_Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getCurrentCellSize());
 			}
 		}
 		if(m_Select > -1)

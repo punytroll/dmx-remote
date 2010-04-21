@@ -36,15 +36,12 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 		{
 			public void mouseMoved(MouseEvent Event)
 			{
-				if(m_Configuration.getActiveWindow().equals("Matrix") == true)
-				{
-					Point2D.Double EventPoint = new Point2D.Double();
-					
-					m_InverseTransform.transform(new Point2D.Double(Event.getX(), Event.getY()), EventPoint);
-					
-					m_Configuration.setHoverSource((int)Math.floor((EventPoint.getY() - 2 - m_Configuration.getIdentifierFieldWidth() - m_Configuration.getMatrixPadding()) / (m_Configuration.getCurrentCellSize() + 1)));
-					m_Configuration.setHoverDestination((int)Math.floor((EventPoint.getX() - 2 - m_Configuration.getIdentifierFieldWidth() - m_Configuration.getMatrixPadding()) / (m_Configuration.getCurrentCellSize() + 1)));
-				}
+				Point2D.Double EventPoint = new Point2D.Double();
+				
+				m_InverseTransform.transform(new Point2D.Double(Event.getX(), Event.getY()), EventPoint);
+				
+				m_Configuration.setHoverSource((int)Math.floor((EventPoint.getY() - 2 - m_Configuration.getIdentifierFieldWidth() - m_Configuration.getMatrixPadding()) / (m_Configuration.getCurrentCellSize() + 1)));
+				m_Configuration.setHoverDestination((int)Math.floor((EventPoint.getX() - 2 - m_Configuration.getIdentifierFieldWidth() - m_Configuration.getMatrixPadding()) / (m_Configuration.getCurrentCellSize() + 1)));
 			}
 		}
 		);
@@ -52,14 +49,11 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 		{
 			public void mouseEntered(MouseEvent Event)
 			{
-				if(m_Configuration.getActiveWindow().equals("Matrix") == true)
-				{
-					Point2D.Double EventPoint = new Point2D.Double();
-					
-					m_InverseTransform.transform(new Point2D.Double(Event.getX(), Event.getY()), EventPoint);
-					m_Configuration.setHoverSource((int)Math.floor((EventPoint.getY() - 2 - m_Configuration.getIdentifierFieldWidth() - m_Configuration.getMatrixPadding()) / (m_Configuration.getCurrentCellSize() + 1)));
-					m_Configuration.setHoverDestination((int)Math.floor((EventPoint.getX() - 2 - m_Configuration.getIdentifierFieldWidth() - m_Configuration.getMatrixPadding()) / (m_Configuration.getCurrentCellSize() + 1)));
-				}
+				Point2D.Double EventPoint = new Point2D.Double();
+				
+				m_InverseTransform.transform(new Point2D.Double(Event.getX(), Event.getY()), EventPoint);
+				m_Configuration.setHoverSource((int)Math.floor((EventPoint.getY() - 2 - m_Configuration.getIdentifierFieldWidth() - m_Configuration.getMatrixPadding()) / (m_Configuration.getCurrentCellSize() + 1)));
+				m_Configuration.setHoverDestination((int)Math.floor((EventPoint.getX() - 2 - m_Configuration.getIdentifierFieldWidth() - m_Configuration.getMatrixPadding()) / (m_Configuration.getCurrentCellSize() + 1)));
 			}
 			
 			public void mouseExited(MouseEvent Event)
@@ -158,29 +152,26 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 			}
 		}
 		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-		if(m_Configuration.getActiveWindow().equals("Matrix") == true)
+		if(m_Configuration.getHover() == true)
 		{
-			if(m_Configuration.getHover() == true)
-			{
-				Composite Original = Graphics2D.getComposite();
-				int hoverBarWidth = getHoverBarWidth();
-				
-				// highlighting in the matrix
-				Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f));
-				Graphics2D.setPaint(Color.blue);
-				Graphics2D.fillRect(m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 1 + m_Configuration.getHoverSource() * (m_Configuration.getCurrentCellSize() + 1) + (m_Configuration.getCurrentCellSize() - hoverBarWidth) / 2, m_Configuration.getMatrixPadding() + 1 + m_Configuration.getSize() * (m_Configuration.getCurrentCellSize() + 1), hoverBarWidth);
-				Graphics2D.setPaint(Color.red);
-				Graphics2D.fillRect(m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 1 + m_Configuration.getHoverDestination() * (m_Configuration.getCurrentCellSize() + 1) + (m_Configuration.getCurrentCellSize() - hoverBarWidth) / 2, m_Configuration.getIdentifierFieldWidth(), hoverBarWidth, m_Configuration.getMatrixPadding() + 1 + m_Configuration.getSize() * (m_Configuration.getCurrentCellSize() + 1));
-				
-				// wider highlighting in the names
-				Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.50f));
-				Graphics2D.setPaint(Color.blue);
-				Graphics2D.fillRect(0, m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 1 + m_Configuration.getHoverSource() * (m_Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getCurrentCellSize());
-				Graphics2D.setPaint(Color.red);
-				Graphics2D.fillRect(m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 1 + m_Configuration.getHoverDestination() * (m_Configuration.getCurrentCellSize() + 1), 0, m_Configuration.getCurrentCellSize(), m_Configuration.getIdentifierFieldWidth());
-				
-				Graphics2D.setComposite(Original);
-			}
+			Composite Original = Graphics2D.getComposite();
+			int hoverBarWidth = getHoverBarWidth();
+			
+			// highlighting in the matrix
+			Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f));
+			Graphics2D.setPaint(Color.blue);
+			Graphics2D.fillRect(m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 1 + m_Configuration.getHoverSource() * (m_Configuration.getCurrentCellSize() + 1) + (m_Configuration.getCurrentCellSize() - hoverBarWidth) / 2, m_Configuration.getMatrixPadding() + 1 + m_Configuration.getSize() * (m_Configuration.getCurrentCellSize() + 1), hoverBarWidth);
+			Graphics2D.setPaint(Color.red);
+			Graphics2D.fillRect(m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 1 + m_Configuration.getHoverDestination() * (m_Configuration.getCurrentCellSize() + 1) + (m_Configuration.getCurrentCellSize() - hoverBarWidth) / 2, m_Configuration.getIdentifierFieldWidth(), hoverBarWidth, m_Configuration.getMatrixPadding() + 1 + m_Configuration.getSize() * (m_Configuration.getCurrentCellSize() + 1));
+			
+			// wider highlighting in the names
+			Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.50f));
+			Graphics2D.setPaint(Color.blue);
+			Graphics2D.fillRect(0, m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 1 + m_Configuration.getHoverSource() * (m_Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getCurrentCellSize());
+			Graphics2D.setPaint(Color.red);
+			Graphics2D.fillRect(m_Configuration.getIdentifierFieldWidth() + m_Configuration.getMatrixPadding() + 1 + m_Configuration.getHoverDestination() * (m_Configuration.getCurrentCellSize() + 1), 0, m_Configuration.getCurrentCellSize(), m_Configuration.getIdentifierFieldWidth());
+			
+			Graphics2D.setComposite(Original);
 		}
 		Graphics2D.setPaint(new Color(0.0f, 0.0f, 0.0f));
 		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

@@ -38,7 +38,7 @@ class EditPresetNamesWindow extends JInternalFrame implements SelectionListener
 		super(Configuration.getString("Edit Preset Names"), true, true, true, false);
 		m_Configuration = Configuration;
 		setBackground(m_Configuration.getBackgroundColor());
-		m_PresetsPanel = new PresetsPanel(Configuration, "EditPresetNames");
+		m_PresetsPanel = new PresetsPanel(Configuration);
 		m_PresetsPanel.addSelectionListener(this);
 		m_SelectedProgram = -1;
 		
