@@ -27,21 +27,20 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-class ProgramsWindow extends JInternalFrame implements SelectionListener, ProgramsListener
+class ProgramsWindow extends JInternalFrame implements SelectionListener, PresetListener
 {
 	private Configuration m_Configuration;
 	private PresetsPanel m_PresetsPanel;
 	private JPanel m_NamePanel;
 	private JLabel m_PresetNumberLabel;
 	private JLabel m_PresetNameLabel;
-	private int m_SelectedProgram;
+	private int _selectedPresetIndex;
 	
 	public ProgramsWindow(Configuration Configuration)
 	{
 		super(Configuration.getString("Presets"), true, true, true, false);
 		m_Configuration = Configuration;
-		m_Configuration.addProgramsListener(this);
-		m_SelectedProgram = -1;
+		_selectedPresetIndex = -1;
 		getContentPane().setLayout(new BorderLayout());
 		
 		// create the Presets Panel
@@ -108,12 +107,14 @@ class ProgramsWindow extends JInternalFrame implements SelectionListener, Progra
 	
 	public void selectionChanged(SelectionEvent Event)
 	{
-		m_SelectedProgram = Event.getSelection();
+		if(_selectedPresetIndex > -1)
+		{
+			m_Configuration.getPreset(_selectedPresetIndex).removePresetListener(this);
+		}
+		_selectedPresetIndex = Event.getSelection();
 		try
 		{
 			m_Configuration.loadProgramToMatrix(Event.getSelection());
-			m_PresetNumberLabel.setText(String.valueOf(m_SelectedProgram + 1));
-			m_PresetNameLabel.setText(m_Configuration.getPreset(m_SelectedProgram).getName());
 		}
 		catch(MatrixNotSavedException Exception)
 		{
@@ -123,21 +124,22 @@ class ProgramsWindow extends JInternalFrame implements SelectionListener, Progra
 				try
 				{
 					m_Configuration.loadProgramToMatrix(Event.getSelection());
-					m_PresetNumberLabel.setText(String.valueOf(m_SelectedProgram + 1));
-					m_PresetNameLabel.setText(m_Configuration.getPreset(m_SelectedProgram).getName());
 				}
 				catch(MatrixNotSavedException Exception2)
 				{
 				}
 			}
 		}
+		if(_selectedPresetIndex > -1)
+		{
+			m_PresetNumberLabel.setText(String.valueOf(_selectedPresetIndex + 1));
+			m_PresetNameLabel.setText(m_Configuration.getPreset(_selectedPresetIndex).getName());
+			m_Configuration.getPreset(_selectedPresetIndex).addPresetListener(this);
+		}
 	}
 	
-	public void programNameChanged(NameChangedEvent Event)
+	public void nameChanged(NameChangedEvent event)
 	{
-		if(m_SelectedProgram > -1)
-		{
-			m_PresetNameLabel.setText(m_Configuration.getPreset(m_SelectedProgram).getName());
-		}
+		m_PresetNameLabel.setText(event.getName());
 	}
 }
