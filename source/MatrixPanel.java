@@ -118,8 +118,8 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 				OffscreenGraphics.drawLine(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + i * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + i * (Configuration.getCurrentCellSize() + 1));
 				OffscreenGraphics.drawLine(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + i * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + i * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
 			}
-			Drawing.draw(m_Configuration, OffscreenGraphics, 0, m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), true);
-			Drawing.draw(m_Configuration, OffscreenGraphics, m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), 0, false);
+			Drawing.draw(m_Configuration, OffscreenGraphics, 0, StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding(), true);
+			Drawing.draw(m_Configuration, OffscreenGraphics, StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding(), 0, false);
 		}
 	}
 	
