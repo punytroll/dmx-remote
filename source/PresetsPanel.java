@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import javax.swing.event.EventListenerList;
 import javax.swing.JPanel;
@@ -111,8 +112,14 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 		graphics.setColor(StaticConfiguration.getWindowBackgroundColor());
 		graphics.fillRect(0, 0, m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1));
 		Drawing.drawListBackground(graphics, StaticConfiguration.getNumberOfPresets() / 2, 1, m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), Configuration.getCurrentCellSize());
-		graphics.translate(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), 0);
+		Drawing.drawListIndices(graphics, 1, StaticConfiguration.getNumberOfPresets() / 2, Configuration.getCurrentCellSize());
+		graphics.translate(StaticConfiguration.getNumberFieldWidth(), 0);
+		Drawing.drawListSeparatorLine(graphics, StaticConfiguration.getNumberOfPresets() / 2, Configuration.getCurrentCellSize());
+		graphics.translate(StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding(), 0);
 		Drawing.drawListBackground(graphics, StaticConfiguration.getNumberOfPresets() / 2, 1, m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), Configuration.getCurrentCellSize());
+		Drawing.drawListIndices(graphics, StaticConfiguration.getNumberOfPresets() / 2 + 1, StaticConfiguration.getNumberOfPresets() / 2, Configuration.getCurrentCellSize());
+		graphics.translate(StaticConfiguration.getNumberFieldWidth(), 0);
+		Drawing.drawListSeparatorLine(graphics, StaticConfiguration.getNumberOfPresets() / 2, Configuration.getCurrentCellSize());
 	}
 	
 	public void paintComponent(Graphics Graphics)
@@ -124,55 +131,48 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 		}
 		Graphics.drawImage(m_Background, 0, 0, this);
 		
-		Graphics2D Graphics2D = (Graphics2D)Graphics;
-		Composite Original = Graphics2D.getComposite();
+		Graphics2D graphics = (Graphics2D)Graphics;
+		AffineTransform saveTransform = graphics.getTransform();
+		Shape saveClip = graphics.getClip();
+		Composite saveComposite = graphics.getComposite();
 		
 		if(m_Hover != -1)
 		{
-			Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.70f));
-			Graphics2D.setPaint(Color.white);
+			graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.70f));
+			graphics.setPaint(Color.white);
 			if(m_Hover < StaticConfiguration.getNumberOfPresets() / 2)
 			{
-				Graphics2D.fillRect(0, 1 + m_Hover * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
+				graphics.fillRect(0, 1 + m_Hover * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 			else
 			{
-				Graphics2D.fillRect(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Hover - StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
+				graphics.fillRect(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Hover - StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 		}
 		if(m_Select != -1)
 		{
-			Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.30f));
-			Graphics2D.setPaint(Color.green);
+			graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.30f));
+			graphics.setPaint(Color.green);
 			if(m_Select < StaticConfiguration.getNumberOfPresets() / 2)
 			{
-				Graphics2D.fillRect(0, 1 + m_Select * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
+				graphics.fillRect(0, 1 + m_Select * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 			else
 			{
-				Graphics2D.fillRect(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Select - StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
+				graphics.fillRect(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Select - StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 		}
-		Graphics2D.setComposite(Original);
-		Graphics2D.setPaint(new Color(0.0f, 0.0f, 0.0f));
-		
-		Shape OldClip = Graphics2D.getClip();
-		
-		Graphics2D.clip(new Rectangle(0, 1, m_Configuration.getIdentifierFieldWidth() - 2, (Configuration.getCurrentCellSize() + 1) * StaticConfiguration.getNumberOfPresets()));
-		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		Graphics2D.setFont(new Font("SansSerif", Font.PLAIN, 9));
-		for(int Name = 0; Name < StaticConfiguration.getNumberOfPresets() / 2; ++Name)
-		{
-			Graphics2D.drawString(m_Configuration.getPreset(Name).getName(), StaticConfiguration.getNumberFieldWidth() + Configuration.getCurrentTextOffset(), 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 3);
-		}
-		Graphics2D.setClip(OldClip);
-		Graphics2D.clip(new Rectangle(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1, m_Configuration.getIdentifierFieldWidth() - 2, (Configuration.getCurrentCellSize() + 1) * StaticConfiguration.getNumberOfPresets()));
-		for(int Name = 0; Name < StaticConfiguration.getNumberOfPresets() / 2; ++Name)
-		{
-			Graphics2D.drawString(m_Configuration.getPreset(StaticConfiguration.getNumberOfPresets() / 2 + Name).getName(), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding() + StaticConfiguration.getNumberFieldWidth() + Configuration.getCurrentTextOffset(), 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 3);
-		}
-		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-		Graphics2D.setClip(OldClip);
+		graphics.setComposite(saveComposite);
+		graphics.setPaint(new Color(0.0f, 0.0f, 0.0f));
+		graphics.translate(StaticConfiguration.getNumberFieldWidth(), 0);
+		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2 ) * (Configuration.getCurrentCellSize() + 1)));
+		Drawing.drawListItems(graphics, m_Configuration.getPresetNames(), 0, StaticConfiguration.getNumberOfPresets() / 2, Configuration.getCurrentCellSize());
+		graphics.setClip(saveClip);
+		graphics.translate(StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding() + StaticConfiguration.getNumberFieldWidth(), 0);
+		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2 ) * (Configuration.getCurrentCellSize() + 1)));
+		Drawing.drawListItems(graphics, m_Configuration.getPresetNames(), StaticConfiguration.getNumberOfPresets() / 2, StaticConfiguration.getNumberOfPresets(), Configuration.getCurrentCellSize());
+		graphics.setTransform(saveTransform);
+		graphics.setClip(saveClip);
 	}
 	
 	public void addSelectionListener(SelectionListener Listener)

@@ -153,13 +153,19 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 		{
 			m_Background = createImage(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
 			
-			Graphics OffscreenGraphics = m_Background.getGraphics();
+			Graphics2D graphics = (Graphics2D)m_Background.getGraphics();
 			
-			OffscreenGraphics.setColor(StaticConfiguration.getWindowBackgroundColor());
-			OffscreenGraphics.fillRect(0, 0, StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
-			Drawing.drawListBackground(OffscreenGraphics, Configuration.getCurrentMatrixSize(), StaticConfiguration.getCellGroupSize(), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), Configuration.getCurrentCellSize());
-			OffscreenGraphics.translate(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), 0);
-			Drawing.drawListBackground(OffscreenGraphics, Configuration.getCurrentMatrixSize(), StaticConfiguration.getCellGroupSize(), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), Configuration.getCurrentCellSize());
+			graphics.setColor(StaticConfiguration.getWindowBackgroundColor());
+			graphics.fillRect(0, 0, StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
+			Drawing.drawListBackground(graphics, Configuration.getCurrentMatrixSize(), StaticConfiguration.getCellGroupSize(), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), Configuration.getCurrentCellSize());
+			Drawing.drawListIndices(graphics, 1, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
+			graphics.translate(StaticConfiguration.getNumberFieldWidth(), 0);
+			Drawing.drawListSeparatorLine(graphics, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
+			graphics.translate(StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding(), 0);
+			Drawing.drawListBackground(graphics, Configuration.getCurrentMatrixSize(), StaticConfiguration.getCellGroupSize(), m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth(), Configuration.getCurrentCellSize());
+			Drawing.drawListIndices(graphics, 1, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
+			graphics.translate(StaticConfiguration.getNumberFieldWidth(), 0);
+			Drawing.drawListSeparatorLine(graphics, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
 		}
 	}
 	
@@ -171,65 +177,57 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 			prepareBackground();
 		}
 		
-		Graphics2D Graphics2D = (Graphics2D)Graphics;
+		Graphics2D graphics = (Graphics2D)Graphics;
+		AffineTransform saveTransform = graphics.getTransform();
+		Shape saveClip = graphics.getClip();
+		Composite saveComposite = graphics.getComposite();
 		
-		Graphics2D.setPaint(new Color(0.85f, 0.85f, 0.85f));
-		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-		Graphics2D.setFont(new Font("SansSerif", Font.BOLD, 12));
-		Graphics2D.drawString("SOURCES", StaticConfiguration.getCellBoxPadding() + 2, 35);
-		Graphics2D.drawString("DESTINATIONS", StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 2, 35);
-		Graphics2D.transform(m_Transform);
-		Graphics.drawImage(m_Background, 0, 0, this);
-		
-		Composite Original = Graphics2D.getComposite();
-		
+		graphics.setPaint(new Color(0.85f, 0.85f, 0.85f));
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+		graphics.setFont(new Font("SansSerif", Font.BOLD, 12));
+		graphics.drawString("SOURCES", StaticConfiguration.getCellBoxPadding() + 2, 35);
+		graphics.drawString("DESTINATIONS", StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 2, 35);
+		graphics.transform(m_Transform);
+		graphics.drawImage(m_Background, 0, 0, this);
 		if(m_Hover > -1)
 		{
-			Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.70f));
-			Graphics2D.setPaint(Color.white);
+			graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.70f));
+			graphics.setPaint(Color.white);
 			if(m_Hover < Configuration.getCurrentMatrixSize())
 			{
-				Graphics2D.fillRect(0, 1 + m_Hover * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
+				graphics.fillRect(0, 1 + m_Hover * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 			else
 			{
-				Graphics2D.fillRect(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Hover - Configuration.getCurrentMatrixSize()) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
+				graphics.fillRect(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Hover - Configuration.getCurrentMatrixSize()) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 		}
 		if(m_Select > -1)
 		{
 			if(m_Select < Configuration.getCurrentMatrixSize())
 			{
-				Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.30f));
-				Graphics2D.setPaint(Color.blue);
-				Graphics2D.fillRect(0, 1 + m_Select * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
+				graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.30f));
+				graphics.setPaint(Color.blue);
+				graphics.fillRect(0, 1 + m_Select * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 			else
 			{
-				Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.50f));
-				Graphics2D.setPaint(Color.red);
-				Graphics2D.fillRect(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Select - Configuration.getCurrentMatrixSize()) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
+				graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.50f));
+				graphics.setPaint(Color.red);
+				graphics.fillRect(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Select - Configuration.getCurrentMatrixSize()) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 		}
-		Graphics2D.setComposite(Original);
-		Graphics2D.setPaint(new Color(0.0f, 0.0f, 0.0f));
-		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		Graphics2D.setFont(new Font("SansSerif", Font.PLAIN, 9));
-		
-		Shape OldClip = Graphics2D.getClip();
-		
-		Graphics2D.clip(new Rectangle(0, 0, m_Configuration.getIdentifierFieldWidth() - 2, (Configuration.getCurrentCellSize() + 1) * m_Configuration.getCurrentMatrixSize()));
-		for(int Name = 0; Name < Configuration.getCurrentMatrixSize(); ++Name)
-		{
-			Graphics2D.drawString(m_Configuration.getSourceName(Name), StaticConfiguration.getNumberFieldWidth() + Configuration.getCurrentTextOffset(), 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 3);
-		}
-		Graphics2D.setClip(OldClip);
-		Graphics2D.clip(new Rectangle(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 0, m_Configuration.getIdentifierFieldWidth() - 2, (Configuration.getCurrentCellSize() + 1) * Configuration.getCurrentMatrixSize()));
-		for(int Name = 0; Name < Configuration.getCurrentMatrixSize(); ++Name)
-		{
-			Graphics2D.drawString(m_Configuration.getDestinationName(Name), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding() + StaticConfiguration.getNumberFieldWidth() + Configuration.getCurrentTextOffset(), 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 3);
-		}
-		Graphics2D.setClip(OldClip);
+		graphics.setComposite(saveComposite);
+		graphics.setPaint(new Color(0.0f, 0.0f, 0.0f));
+		graphics.translate(StaticConfiguration.getNumberFieldWidth(), 0);
+		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth(), (Configuration.getCurrentCellSize() + 1) * m_Configuration.getCurrentMatrixSize()));
+		Drawing.drawListItems(graphics, m_Configuration.getSourceNames(), 0, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
+		graphics.setClip(saveClip);
+		graphics.translate(StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding() + StaticConfiguration.getNumberFieldWidth(), 0);
+		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth(), (Configuration.getCurrentCellSize() + 1) * m_Configuration.getCurrentMatrixSize()));
+		Drawing.drawListItems(graphics, m_Configuration.getDestinationNames(), 0, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
+		graphics.setTransform(saveTransform);
+		graphics.setClip(saveClip);
 	}
 	
 	public void deviceNameChanged(DeviceEvent Event)

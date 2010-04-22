@@ -733,6 +733,42 @@ class Configuration
 		}
 	}
 	
+	public Vector< String > getDestinationNames()
+	{
+		Vector< String > result = new Vector< String >();
+		
+		for(Integer deviceIndex = 0; deviceIndex < getCurrentMatrixSize(); ++deviceIndex)
+		{
+			result.add(m_Devices[deviceIndex + getCurrentMatrixSize()].getName());
+		}
+		
+		return result;
+	}
+	
+	public Vector< String > getSourceNames()
+	{
+		Vector< String > result = new Vector< String >();
+		
+		for(Integer deviceIndex = 0; deviceIndex < getCurrentMatrixSize(); ++deviceIndex)
+		{
+			result.add(m_Devices[deviceIndex].getName());
+		}
+		
+		return result;
+	}
+	
+	public Vector< String > getPresetNames()
+	{
+		Vector< String > result = new Vector< String >();
+		
+		for(Preset preset : _presets)
+		{
+			result.add(preset.getName());
+		}
+		
+		return result;
+	}
+	
 	public String getSourceName(int Index)
 	{
 		if((Index < getCurrentMatrixSize()) && (Index >= 0))
