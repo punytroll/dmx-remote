@@ -11,7 +11,6 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 	private Configuration m_Configuration;
 	private Image m_Background;
 	private AffineTransform m_Transform;
-	private AffineTransform m_InverseTransform;
 	
 	public MatrixPanel(Configuration configuration)
 	{
@@ -24,22 +23,19 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 		setPreferredSize(new Dimension(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1) + StaticConfiguration.getCellBoxPadding(), StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1) + StaticConfiguration.getCellBoxPadding()));
 		m_Transform = new AffineTransform();
 		m_Transform.translate(StaticConfiguration.getCellBoxPadding(), StaticConfiguration.getCellBoxPadding());
-		try
-		{
-			m_InverseTransform = m_Transform.createInverse();
-		}
-		catch(NoninvertibleTransformException Exception)
-		{
-			System.exit(1);
-		}
 		addMouseMotionListener(new MouseMotionAdapter()
 		{
 			public void mouseMoved(MouseEvent Event)
 			{
-				Point2D.Double EventPoint = new Point2D.Double();
+				Point2D.Double EventPoint = new Point2D.Double(Event.getX(), Event.getY());
 				
-				m_InverseTransform.transform(new Point2D.Double(Event.getX(), Event.getY()), EventPoint);
-				
+				try
+				{
+					m_Transform.inverseTransform(EventPoint, EventPoint);
+				}
+				catch(NoninvertibleTransformException exception)
+				{
+				}
 				m_Configuration.setHoverSource((int)Math.floor((EventPoint.getY() - 2 - m_Configuration.getIdentifierFieldWidth() - StaticConfiguration.getCellBoxPadding()) / (Configuration.getCurrentCellSize() + 1)));
 				m_Configuration.setHoverDestination((int)Math.floor((EventPoint.getX() - 2 - m_Configuration.getIdentifierFieldWidth() - StaticConfiguration.getCellBoxPadding()) / (Configuration.getCurrentCellSize() + 1)));
 			}
@@ -49,9 +45,15 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 		{
 			public void mouseEntered(MouseEvent Event)
 			{
-				Point2D.Double EventPoint = new Point2D.Double();
+				Point2D.Double EventPoint = new Point2D.Double(Event.getX(), Event.getY());
 				
-				m_InverseTransform.transform(new Point2D.Double(Event.getX(), Event.getY()), EventPoint);
+				try
+				{
+					m_Transform.inverseTransform(EventPoint, EventPoint);
+				}
+				catch(NoninvertibleTransformException exception)
+				{
+				}
 				m_Configuration.setHoverSource((int)Math.floor((EventPoint.getY() - 2 - m_Configuration.getIdentifierFieldWidth() - StaticConfiguration.getCellBoxPadding()) / (Configuration.getCurrentCellSize() + 1)));
 				m_Configuration.setHoverDestination((int)Math.floor((EventPoint.getX() - 2 - m_Configuration.getIdentifierFieldWidth() - StaticConfiguration.getCellBoxPadding()) / (Configuration.getCurrentCellSize() + 1)));
 			}
@@ -79,47 +81,57 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 		{
 			m_Background = createImage(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
 			
-			Graphics OffscreenGraphics = m_Background.getGraphics();
+			Graphics2D graphics = (Graphics2D)m_Background.getGraphics();
 			
 			// clear the matrix area
-			OffscreenGraphics.setColor(StaticConfiguration.getWindowBackgroundColor());
-			OffscreenGraphics.fillRect(0, 0, m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
+			graphics.setColor(StaticConfiguration.getWindowBackgroundColor());
+			graphics.fillRect(0, 0, m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
 			// colorize the light areas of the matrix
-			OffscreenGraphics.setColor(new Color(0.70f, 0.70f, 0.70f));
+			graphics.setColor(new Color(0.70f, 0.70f, 0.70f));
 			for(int Row = 0; Row <= Configuration.getCurrentMatrixSize() / (2 * StaticConfiguration.getCellGroupSize()); ++Row)
 			{
 				for(int Column = 0; Column <= Configuration.getCurrentMatrixSize() / (2 * StaticConfiguration.getCellGroupSize()); ++Column)
 				{
-					OffscreenGraphics.fillRect(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + 2 * Column * StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + 2 * Row * StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1));
+					graphics.fillRect(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + 2 * Column * StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + 2 * Row * StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1));
 				}
 			}
 			// colorize the dark areas of the matrix
-			OffscreenGraphics.setColor(new Color(0.55f, 0.55f, 0.55f));
+			graphics.setColor(new Color(0.55f, 0.55f, 0.55f));
 			for(int Row = 0; Row <= Configuration.getCurrentMatrixSize() / (2 * StaticConfiguration.getCellGroupSize()); ++Row)
 			{
 				for(int Column = 0; Column <= Configuration.getCurrentMatrixSize() / (2 * StaticConfiguration.getCellGroupSize()); ++Column)
 				{
-					OffscreenGraphics.fillRect(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + (2 * Column + 1) * StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + (2 * Row + 1) * StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1));
+					graphics.fillRect(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + (2 * Column + 1) * StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + (2 * Row + 1) * StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1));
 				}
 			}
 			// colorize the normal areas of the matrix
-			OffscreenGraphics.setColor(new Color(0.63f, 0.63f, 0.63f));
+			graphics.setColor(new Color(0.63f, 0.63f, 0.63f));
 			for(int Row = 0; Row <= Configuration.getCurrentMatrixSize() / StaticConfiguration.getCellGroupSize(); ++Row)
 			{
 				for(int Column = 0; Column <= Configuration.getCurrentMatrixSize() / (2 * StaticConfiguration.getCellGroupSize()); ++Column)
 				{
-					OffscreenGraphics.fillRect(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + (2 * Column + ((Row + 1) % 2)) * StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Row * StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1));
+					graphics.fillRect(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + (2 * Column + ((Row + 1) % 2)) * StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Row * StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1), StaticConfiguration.getCellGroupSize() * (Configuration.getCurrentCellSize() + 1));
 				}
 			}
 			// draw all the lines
-			OffscreenGraphics.setColor(new Color(0.78f, 0.78f, 0.78f));
+			graphics.setColor(new Color(0.78f, 0.78f, 0.78f));
 			for(int i = 0; i <= Configuration.getCurrentMatrixSize(); ++i)
 			{
-				OffscreenGraphics.drawLine(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + i * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + i * (Configuration.getCurrentCellSize() + 1));
-				OffscreenGraphics.drawLine(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + i * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + i * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
+				graphics.drawLine(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + i * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + i * (Configuration.getCurrentCellSize() + 1));
+				graphics.drawLine(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + i * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding(), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + i * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
 			}
-			Drawing.draw(m_Configuration, OffscreenGraphics, 0, StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding(), true);
-			Drawing.draw(m_Configuration, OffscreenGraphics, StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding(), 0, false);
+			graphics.translate(0, StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding());
+			Drawing.drawListBackground(graphics, Configuration.getCurrentMatrixSize(), StaticConfiguration.getCellGroupSize(), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth(), StaticConfiguration.getNumberFieldWidth(), Configuration.getCurrentCellSize());
+			Drawing.drawListIndices(graphics, 1, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
+			graphics.translate(StaticConfiguration.getNumberFieldWidth(), 0);
+			Drawing.drawListSeparatorLine(graphics, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
+			graphics.setTransform(graphics.getDeviceConfiguration().getDefaultTransform());
+			graphics.rotate(Math.PI / -2.0);
+			graphics.translate(-(StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth()), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding());
+			Drawing.drawListBackground(graphics, Configuration.getCurrentMatrixSize(), StaticConfiguration.getCellGroupSize(), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth(), StaticConfiguration.getNumberFieldWidth(), Configuration.getCurrentCellSize());
+			graphics.translate(StaticConfiguration.getNameFieldWidth(), 0);
+			Drawing.drawListIndices(graphics, 1, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
+			Drawing.drawListSeparatorLine(graphics, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
 		}
 	}
 	
@@ -131,69 +143,63 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 			prepareBackground();
 		}
 		
-		Graphics2D Graphics2D = (Graphics2D)Graphics;
+		Graphics2D graphics = (Graphics2D)Graphics;
+		AffineTransform saveTransform = graphics.getTransform();
+		Shape saveClip = graphics.getClip();
 		
-		Graphics2D.transform(m_Transform);
-		Graphics2D.drawImage(m_Background, 0, 0, this);
-		Graphics2D.setPaint(new Color(0.85f, 0.85f, 0.85f));
-		Graphics2D.setFont(new Font("SansSerif", Font.BOLD, 12));
-		Graphics2D.drawString("SOURCES", 2, m_Configuration.getIdentifierFieldWidth());
-		Graphics2D.drawString("DESTINATIONS", 2, StaticConfiguration.getCellBoxPadding() + 2);
-		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		Graphics2D.setPaint(new Color(0.0f, 0.0f, 0.6f));
+		graphics.transform(m_Transform);
+		graphics.drawImage(m_Background, 0, 0, this);
+		graphics.setPaint(new Color(0.85f, 0.85f, 0.85f));
+		graphics.setFont(new Font("SansSerif", Font.BOLD, 12));
+		graphics.drawString("SOURCES", 2, m_Configuration.getIdentifierFieldWidth());
+		graphics.drawString("DESTINATIONS", 2, StaticConfiguration.getCellBoxPadding() + 2);
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		graphics.setPaint(new Color(0.0f, 0.0f, 0.6f));
 		for(int Row = 0; Row < Configuration.getCurrentMatrixSize(); ++Row)
 		{
 			for(int Column = 0; Column < Configuration.getCurrentMatrixSize(); ++Column)
 			{
 				if(m_Configuration.isConnected(Row, Column) == true)
 				{
-					Graphics2D.fill(new Ellipse2D.Double(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Column * (Configuration.getCurrentCellSize() + 1) + (Configuration.getCurrentCellSize() - getMatrixBallWidth()) / 2, m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Row * (Configuration.getCurrentCellSize() + 1) + (m_Configuration.getCurrentCellSize() - getMatrixBallWidth()) / 2, getMatrixBallWidth(), getMatrixBallWidth()));
+					graphics.fill(new Ellipse2D.Double(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Column * (Configuration.getCurrentCellSize() + 1) + (Configuration.getCurrentCellSize() - getMatrixBallWidth()) / 2, m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Row * (Configuration.getCurrentCellSize() + 1) + (m_Configuration.getCurrentCellSize() - getMatrixBallWidth()) / 2, getMatrixBallWidth(), getMatrixBallWidth()));
 				}
 			}
 		}
-		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		if(m_Configuration.getHover() == true)
 		{
-			Composite Original = Graphics2D.getComposite();
+			Composite Original = graphics.getComposite();
 			int hoverBarWidth = getHoverBarWidth();
 			
 			// highlighting in the matrix
-			Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f));
-			Graphics2D.setPaint(Color.blue);
-			Graphics2D.fillRect(m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + m_Configuration.getHoverSource() * (Configuration.getCurrentCellSize() + 1) + (Configuration.getCurrentCellSize() - hoverBarWidth) / 2, StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1), hoverBarWidth);
-			Graphics2D.setPaint(Color.red);
-			Graphics2D.fillRect(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + m_Configuration.getHoverDestination() * (Configuration.getCurrentCellSize() + 1) + (Configuration.getCurrentCellSize() - hoverBarWidth) / 2, m_Configuration.getIdentifierFieldWidth(), hoverBarWidth, StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
+			graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f));
+			graphics.setPaint(Color.blue);
+			graphics.fillRect(m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + m_Configuration.getHoverSource() * (Configuration.getCurrentCellSize() + 1) + (Configuration.getCurrentCellSize() - hoverBarWidth) / 2, StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1), hoverBarWidth);
+			graphics.setPaint(Color.red);
+			graphics.fillRect(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + m_Configuration.getHoverDestination() * (Configuration.getCurrentCellSize() + 1) + (Configuration.getCurrentCellSize() - hoverBarWidth) / 2, m_Configuration.getIdentifierFieldWidth(), hoverBarWidth, StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getCurrentMatrixSize() * (Configuration.getCurrentCellSize() + 1));
 			
 			// wider highlighting in the names
-			Graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.50f));
-			Graphics2D.setPaint(Color.blue);
-			Graphics2D.fillRect(0, m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + m_Configuration.getHoverSource() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
-			Graphics2D.setPaint(Color.red);
-			Graphics2D.fillRect(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + m_Configuration.getHoverDestination() * (Configuration.getCurrentCellSize() + 1), 0, Configuration.getCurrentCellSize(), m_Configuration.getIdentifierFieldWidth());
+			graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.50f));
+			graphics.setPaint(Color.blue);
+			graphics.fillRect(0, m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + m_Configuration.getHoverSource() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
+			graphics.setPaint(Color.red);
+			graphics.fillRect(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + m_Configuration.getHoverDestination() * (Configuration.getCurrentCellSize() + 1), 0, Configuration.getCurrentCellSize(), m_Configuration.getIdentifierFieldWidth());
 			
-			Graphics2D.setComposite(Original);
+			graphics.setComposite(Original);
 		}
-		Graphics2D.setPaint(new Color(0.0f, 0.0f, 0.0f));
-		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		Graphics2D.setFont(new Font("SansSerif", Font.PLAIN, 9));
-		
-		Shape OldClip = Graphics2D.getClip();
-		
-		Graphics2D.clip(new Rectangle(0, m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1, m_Configuration.getIdentifierFieldWidth(), (Configuration.getCurrentCellSize() + 1) * Configuration.getCurrentMatrixSize()));
-		for(int Name = 0; Name < Configuration.getCurrentMatrixSize(); ++Name)
-		{
-			Graphics2D.drawString(m_Configuration.getSourceName(Name), m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth() + 2, m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 1 - Configuration.getCurrentTextOffset());
-		}
-		Graphics2D.setClip(OldClip);
-		Graphics2D.clip(new Rectangle(m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1, m_Configuration.getIdentifierFieldWidth() - m_Configuration.getNameFieldWidth() + 2, (Configuration.getCurrentCellSize() + 1) * Configuration.getCurrentMatrixSize(), m_Configuration.getNameFieldWidth()));
-		Graphics2D.rotate(Math.PI / -2.0);
-		for(int Name = 0; Name < Configuration.getCurrentMatrixSize(); ++Name)
-		{
-			Graphics2D.drawString(m_Configuration.getDestinationName(Name), 2 - m_Configuration.getIdentifierFieldWidth(), m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + (Name + 1) * (Configuration.getCurrentCellSize() + 1) - 1 - Configuration.getCurrentTextOffset());
-		}
-		Graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-		Graphics2D.transform(m_InverseTransform);
-		Graphics2D.setClip(OldClip);
+		graphics.setPaint(new Color(0.0f, 0.0f, 0.0f));
+		graphics.translate(StaticConfiguration.getNumberFieldWidth(), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding());
+		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth(), (Configuration.getCurrentCellSize() + 1) * Configuration.getCurrentMatrixSize()));
+		Drawing.drawListItems(graphics, m_Configuration.getSourceNames(), 0, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
+		graphics.setClip(null);
+		graphics.setTransform(saveTransform);
+		graphics.transform(m_Transform);
+		graphics.rotate(Math.PI / -2.0);
+		graphics.translate(-(StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth()), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding());
+		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth(), (Configuration.getCurrentCellSize() + 1) * Configuration.getCurrentMatrixSize()));
+		Drawing.drawListItems(graphics, m_Configuration.getDestinationNames(), 0, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
+		graphics.setClip(saveClip);
+		graphics.setTransform(saveTransform);
 	}
 	
 	public int getHoverBarWidth()
