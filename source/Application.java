@@ -478,7 +478,13 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 			{
 				_matrixControllerPanel = new MatrixControllerPanel(m_Configuration);
 				_matrixControllerPanel.setMaximumSize(new Dimension(300, 600));
-				m_Configuration.setMatrixControllerPanel(_matrixControllerPanel);
+				Configuration.addSelectedPresetIndexListener(new SelectionListener()
+				{
+					public void selectionChanged(SelectionEvent event)
+					{
+						_matrixControllerPanel.setPresetIndex(event.getSelection());
+					}
+				});
 			}
 			if(m_MatrixWindow == null)
 			{

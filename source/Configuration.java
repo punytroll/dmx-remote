@@ -8,9 +8,11 @@ import java.util.prefs.Preferences;
 class Configuration
 {
 	// new variables
-	private static Integer _currentMatrixSize;
+	private static Integer _currentMatrixSize = 32;
 	private LanguageTable _languageTable;
 	private Preset _presets[];
+	private static Integer _selectedPresetIndex = -1;
+	private static EventListenerList _selectedPresetIndexListeners = new EventListenerList();
 	
 	// old variables
 	private String m_ConfigurationRoot;
@@ -35,19 +37,14 @@ class Configuration
 	private EventListenerList m_BatchListeners;
 	private EventListenerList m_MIDIListeners;
 	private EventListenerList m_TransmitModeListeners;
-	private int m_LoadedProgramIndex;
 	
 	// MIDI Devices
 	Vector m_MIDIDevices;
 	MidiDevice m_MIDIDevice;
 	Receiver m_MIDIReceiver;
 	
-	// Hacks
-	MatrixControllerPanel _matrixControllerPanel;
-	
 	public Configuration(String ConfigurationRoot)
 	{
-		_currentMatrixSize = 32;
 		// initialize the language map
 		_languageTable = new LanguageTable();
 		initializeLanguages();
@@ -69,7 +66,6 @@ class Configuration
 		m_IDNumber = 0;
 		m_TransmitManually = false;
 		m_ActiveWindow = "";
-		m_LoadedProgramIndex = -1;
 		m_ConfigurationRoot = ConfigurationRoot;
 		
 		// changed flags
@@ -194,11 +190,6 @@ class Configuration
 		setMatrixChanged();
 		setDevicesChanged();
 		setPresetsChanged();
-	}
-	
-	public void setMatrixControllerPanel(MatrixControllerPanel matrixControllerPanel)
-	{
-		_matrixControllerPanel = matrixControllerPanel;
 	}
 	
 	public void closeMIDIDevice()
@@ -464,20 +455,23 @@ class Configuration
 	{
 		Preferences.userRoot().node(m_ConfigurationRoot).put("CurrentMatrixType", "File");
 		Preferences.userRoot().node(m_ConfigurationRoot).put("CurrentMatrix", filePath);
-		_matrixControllerPanel.setPresetIndex(-1);
+		_selectedPresetIndex = -1;
+		fireSelectedPresetIndexChanged();
 	}
 	
-	public void setCurrentMatrixIsPreset(int presetIndex)
+	public void setSelectedPresetIndex(Integer presetIndex)
 	{
 		Preferences.userRoot().node(m_ConfigurationRoot).put("CurrentMatrixType", "Preset");
 		Preferences.userRoot().node(m_ConfigurationRoot).putInt("CurrentMatrix", presetIndex);
-		_matrixControllerPanel.setPresetIndex(presetIndex);
+		_selectedPresetIndex = presetIndex;
+		fireSelectedPresetIndexChanged();
 	}
 	
 	public void setCurrentMatrixIsEmpty()
 	{
 		Preferences.userRoot().node(m_ConfigurationRoot).put("CurrentMatrixType", "Empty");
-		_matrixControllerPanel.setPresetIndex(-1);
+		_selectedPresetIndex = -1;
+		fireSelectedPresetIndexChanged();
 	}
 	
 	public boolean isCurrentMatrixFile()
@@ -852,12 +846,7 @@ class Configuration
 			}
 		}
 		setMatrixSaved();
-		m_LoadedProgramIndex = ProgramIndex;
-		if(_matrixControllerPanel != null)
-		{
-			_matrixControllerPanel.setPresetIndex(ProgramIndex);
-		}
-		setCurrentMatrixIsPreset(ProgramIndex);
+		setSelectedPresetIndex(ProgramIndex);
 		if(getTransmitManually() == true)
 		{
 			setTransmitImmediately();
@@ -871,14 +860,14 @@ class Configuration
 			return;
 		}
 		_presets[PresetIndex].setMatrix(m_Matrix);
-		setCurrentMatrixIsPreset(PresetIndex);
 		setMatrixSaved();
 		setPresetsChanged();
+		setSelectedPresetIndex(PresetIndex);
 	}
 	
-	public int getLoadedProgramIndex()
+	public static Integer getSelectedPresetIndex()
 	{
-		return m_LoadedProgramIndex;
+		return _selectedPresetIndex;
 	}
 	
 	private void fireDeviceNameChanged(int Index, boolean SourceEvent, Device Device)
@@ -1020,6 +1009,20 @@ class Configuration
 		}
 	}
 	
+	private static void fireSelectedPresetIndexChanged()
+	{
+		SelectionEvent event = null;
+		
+		for(SelectionListener selectionListener : _selectedPresetIndexListeners.getListeners(SelectionListener.class))
+		{
+			if(event == null)
+			{
+				event = new SelectionEvent(_selectedPresetIndex);
+			}
+			selectionListener.selectionChanged(event);
+		}
+	}
+	
 	public void addDeviceListener(DeviceListener Listener)
 	{
 		m_DeviceListeners.add(DeviceListener.class, Listener);
@@ -1053,5 +1056,10 @@ class Configuration
 	public void addTransmitModeListener(TransmitModeListener Listener)
 	{
 		m_TransmitModeListeners.add(TransmitModeListener.class, Listener);
+	}
+	
+	public static void addSelectedPresetIndexListener(SelectionListener Listener)
+	{
+		_selectedPresetIndexListeners.add(SelectionListener.class, Listener);
 	}
 }

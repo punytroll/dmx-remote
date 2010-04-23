@@ -47,6 +47,13 @@ class ProgramsWindow extends JInternalFrame implements SelectionListener, Preset
 		// create the Presets Panel
 		m_PresetsPanel = new PresetsPanel(Configuration);
 		m_PresetsPanel.addSelectionListener(this);
+		Configuration.addSelectedPresetIndexListener(new SelectionListener()
+		{
+			public void selectionChanged(SelectionEvent event)
+			{
+				m_PresetsPanel.setSelect(event.getSelection());
+			}
+		});
 		
 		JPanel PresetsPanel = new JPanel();
 		

@@ -109,13 +109,13 @@ class SelectAndRenamePresetDialog extends JDialog
 		);
 		m_Combo.setAlignmentX(LEFT_ALIGNMENT);
 		m_Combo.setMaximumSize(new Dimension(Short.MAX_VALUE, 25));
-		if(m_Configuration.getLoadedProgramIndex() == -1)
+		if(Configuration.getSelectedPresetIndex() == -1)
 		{
 			m_Combo.setSelectedIndex(0);
 		}
 		else
 		{
-			m_Combo.setSelectedIndex(m_Configuration.getLoadedProgramIndex());
+			m_Combo.setSelectedIndex(m_Configuration.getSelectedPresetIndex());
 		}
 		Settings.add(m_Combo);
 		Settings.add(Box.createRigidArea(new Dimension(0, 15)));
