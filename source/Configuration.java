@@ -10,6 +10,8 @@ class Configuration
 	// new variables
 	private static Integer _currentMatrixSize = 32;
 	private LanguageTable _languageTable;
+	private static BooleanObject _matrixModified = new BooleanObject(false);
+	private static EventListenerList _matrixModifiedListeners = new EventListenerList();
 	private Preset _presets[];
 	private static Integer _selectedPresetIndex = -1;
 	private static EventListenerList _selectedPresetIndexListeners = new EventListenerList();
@@ -24,7 +26,6 @@ class Configuration
 	private int m_IDNumber;
 	private int m_BatchLevel;
 	private boolean m_TransmitManually;
-	private boolean m_MatrixChanged;
 	private boolean m_DevicesChanged;
 	private boolean m_PresetsChanged;
 	private String m_ActiveWindow;
@@ -69,7 +70,6 @@ class Configuration
 		m_ConfigurationRoot = ConfigurationRoot;
 		
 		// changed flags
-		m_MatrixChanged = false;
 		m_DevicesChanged = false;
 		m_PresetsChanged = false;
 		for(int Column = 0; Column < getCurrentMatrixSize(); ++Column)
@@ -187,7 +187,7 @@ class Configuration
 		}
 		clearPresets();
 		fireMetricChanged(MetricListener.SIZE_CHANGED | MetricListener.MATRIX_CELL_SIZE_CHANGED);
-		setMatrixChanged();
+		setMatrixModified(false);
 		setDevicesChanged();
 		setPresetsChanged();
 	}
@@ -577,7 +577,7 @@ class Configuration
 	public void clearMatrix()
 		throws MatrixNotSavedException
 	{
-		if(isMatrixChanged() == true)
+		if(getMatrixModified() == true)
 		{
 			throw new MatrixNotSavedException();
 		}
@@ -597,12 +597,21 @@ class Configuration
 		}
 	}
 	
-	public void setMatrixChanged()
+	public static void setMatrixModified(Boolean matrixModified)
 	{
-		if(m_MatrixChanged == false)
+		setBoolean(_matrixModified, matrixModified, _matrixModifiedListeners);
+	}
+	
+	private static void setBoolean(BooleanObject destination, Boolean newValue, EventListenerList listeners)
+	{
+		if(destination.get() != newValue)
 		{
-			m_MatrixChanged = true;
+			Boolean oldValue = destination.get();
+			
+			destination.set(newValue);
+			fireBooleanChanged(listeners, oldValue, newValue);
 		}
+		fireBooleanSet(listeners, newValue);
 	}
 	
 	public void setDevicesChanged()
@@ -621,9 +630,9 @@ class Configuration
 		}
 	}
 	
-	public boolean isMatrixChanged()
+	public static Boolean getMatrixModified()
 	{
-		return m_MatrixChanged;
+		return _matrixModified.get();
 	}
 	
 	public boolean isDevicesChanged()
@@ -638,15 +647,7 @@ class Configuration
 	
 	public boolean isChanged()
 	{
-		return isMatrixChanged() || isDevicesChanged() || isPresetsChanged();
-	}
-	
-	public void setMatrixSaved()
-	{
-		if(m_MatrixChanged == true)
-		{
-			m_MatrixChanged = false;
-		}
+		return getMatrixModified() || isDevicesChanged() || isPresetsChanged();
 	}
 	
 	public void setDevicesSaved()
@@ -672,8 +673,8 @@ class Configuration
 			int Source = m_Matrix[Destination];
 			
 			m_Matrix[Destination] = -1;
-			setMatrixChanged();
 			fireConnectionChanged(Source, Destination, false);
+			setMatrixModified(true);
 		}
 	}
 	
@@ -694,7 +695,7 @@ class Configuration
 				m_Matrix[Destination] = Source;
 				fireConnectionChanged(m_Matrix[Destination], Destination, true);
 			}
-			setMatrixChanged();
+			setMatrixModified(true);
 			leaveBatch();
 		}
 	}
@@ -816,7 +817,7 @@ class Configuration
 	public void loadProgramToMatrix(int ProgramIndex)
 		throws MatrixNotSavedException
 	{
-		if(isMatrixChanged() == true)
+		if(getMatrixModified() == true)
 		{
 			throw new MatrixNotSavedException();
 		}
@@ -845,7 +846,7 @@ class Configuration
 				leaveBatch();
 			}
 		}
-		setMatrixSaved();
+		setMatrixModified(false);
 		setSelectedPresetIndex(ProgramIndex);
 		if(getTransmitManually() == true)
 		{
@@ -860,7 +861,7 @@ class Configuration
 			return;
 		}
 		_presets[PresetIndex].setMatrix(m_Matrix);
-		setMatrixSaved();
+		setMatrixModified(false);
 		setPresetsChanged();
 		setSelectedPresetIndex(PresetIndex);
 	}
@@ -1009,6 +1010,22 @@ class Configuration
 		}
 	}
 	
+	private static void fireBooleanSet(EventListenerList eventListeners, Boolean newValue)
+	{
+		for(BooleanListener booleanListener : eventListeners.getListeners(BooleanListener.class))
+		{
+			booleanListener.booleanSet(newValue);
+		}
+	}
+	
+	private static void fireBooleanChanged(EventListenerList eventListeners, Boolean oldValue, Boolean newValue)
+	{
+		for(BooleanListener booleanListener : eventListeners.getListeners(BooleanListener.class))
+		{
+			booleanListener.booleanChanged(oldValue, newValue);
+		}
+	}
+	
 	private static void fireSelectedPresetIndexChanged()
 	{
 		SelectionEvent event = null;
@@ -1058,8 +1075,13 @@ class Configuration
 		m_TransmitModeListeners.add(TransmitModeListener.class, Listener);
 	}
 	
-	public static void addSelectedPresetIndexListener(SelectionListener Listener)
+	public static void addMatrixModifiedListener(BooleanListener listener)
 	{
-		_selectedPresetIndexListeners.add(SelectionListener.class, Listener);
+		_matrixModifiedListeners.add(BooleanListener.class, listener);
+	}
+	
+	public static void addSelectedPresetIndexListener(SelectionListener listener)
+	{
+		_selectedPresetIndexListeners.add(SelectionListener.class, listener);
 	}
 }
