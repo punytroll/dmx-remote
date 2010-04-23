@@ -10,17 +10,17 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 	private Configuration m_Configuration;
 	private Image m_Background;
 	private int m_Hover;
-	private int m_Select;
-	private EventListenerList m_SelectionListeners;
+	private IntegerObject _selectedPresetIndex;
+	private EventListenerList _selectedPresetIndexListeners;
 	
 	public PresetsPanel(Configuration Configuration)
 	{
 		m_Configuration = Configuration;
 		m_Configuration.addMetricListener(this);
 		setBackground(StaticConfiguration.getWindowBackgroundColor());
-		m_SelectionListeners = new EventListenerList();
+		_selectedPresetIndexListeners = new EventListenerList();
+		_selectedPresetIndex = new IntegerObject(-1);
 		m_Hover = -1;
-		m_Select = -1;
 		addMouseMotionListener(new MouseMotionAdapter()
 		{
 			public void mouseDragged(MouseEvent Event)
@@ -48,7 +48,7 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 			
 			public void mouseClicked(MouseEvent Event)
 			{
-				setSelect(m_Hover);
+				setSelectedPresetIndex(m_Hover);
 			}
 		}
 		);
@@ -93,14 +93,29 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 		}
 	}
 	
-	public void setSelect(int Select)
+	public void setSelectedPresetIndex(Integer selectedPresetIndex)
 	{
-		if(m_Select != Select)
+		if(setInteger(_selectedPresetIndex, selectedPresetIndex, _selectedPresetIndexListeners) == true)
 		{
-			m_Select = Select;
-			fireSelectionChanged(m_Select);
 			repaint();
 		}
+	}
+	
+	private static Boolean setInteger(IntegerObject destination, Integer newValue, EventListenerList listeners)
+	{
+		Boolean result = false;
+		
+		if(destination.get() != newValue)
+		{
+			Integer oldValue = destination.get();
+			
+			destination.set(newValue);
+			fireIntegerChanged(listeners, oldValue, newValue);
+			result = true;
+		}
+		fireIntegerSet(listeners, newValue);
+		
+		return result;
 	}
 	
 	public void prepareBackground()
@@ -149,17 +164,17 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 				graphics.fillRect(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Hover - StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 		}
-		if(m_Select != -1)
+		if(_selectedPresetIndex.get() != -1)
 		{
 			graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.30f));
 			graphics.setPaint(Color.green);
-			if(m_Select < StaticConfiguration.getNumberOfPresets() / 2)
+			if(_selectedPresetIndex.get() < StaticConfiguration.getNumberOfPresets() / 2)
 			{
-				graphics.fillRect(0, 1 + m_Select * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
+				graphics.fillRect(0, 1 + _selectedPresetIndex.get() * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 			else
 			{
-				graphics.fillRect(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (m_Select - StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
+				graphics.fillRect(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth(), 1 + (_selectedPresetIndex.get() - StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1), m_Configuration.getIdentifierFieldWidth(), Configuration.getCurrentCellSize());
 			}
 		}
 		graphics.setComposite(saveComposite);
@@ -176,26 +191,24 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 		graphics.setClip(saveClip);
 	}
 	
-	public void addSelectionListener(SelectionListener Listener)
+	public void addSelectedPresetIndexListener(IntegerListener listener)
 	{
-		m_SelectionListeners.add(SelectionListener.class, Listener);
+		_selectedPresetIndexListeners.add(IntegerListener.class, listener);
 	}
 	
-	public void fireSelectionChanged(int PresetIndex)
+	private static void fireIntegerSet(EventListenerList eventListeners, Integer newValue)
 	{
-		Object[] Listeners = m_SelectionListeners.getListenerList();
-		SelectionEvent Event = null;
-		
-		for(int Listener = 0; Listener < Listeners.length; Listener += 2)
+		for(IntegerListener integerListener : eventListeners.getListeners(IntegerListener.class))
 		{
-			if(Listeners[Listener] == SelectionListener.class)
-			{
-				if(Event == null)
-				{
-					Event = new SelectionEvent(PresetIndex);
-				}
-				((SelectionListener)Listeners[Listener + 1]).selectionChanged(Event);
-			}
+			integerListener.integerSet(newValue);
+		}
+	}
+	
+	private static void fireIntegerChanged(EventListenerList eventListeners, Integer oldValue, Integer newValue)
+	{
+		for(IntegerListener integerListener : eventListeners.getListeners(IntegerListener.class))
+		{
+			integerListener.integerChanged(oldValue, newValue);
 		}
 	}
 	

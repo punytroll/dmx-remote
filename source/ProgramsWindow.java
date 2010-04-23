@@ -29,7 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-class ProgramsWindow extends JInternalFrame implements SelectionListener, PresetListener
+class ProgramsWindow extends JInternalFrame implements PresetListener
 {
 	private Configuration m_Configuration;
 	private PresetsPanel m_PresetsPanel;
@@ -47,15 +47,13 @@ class ProgramsWindow extends JInternalFrame implements SelectionListener, Preset
 		m_Configuration = Configuration;
 		_selectedPresetIndex = -1;
 		getContentPane().setLayout(new BorderLayout());
-		
 		// create the Presets Panel
 		m_PresetsPanel = new PresetsPanel(Configuration);
-		m_PresetsPanel.addSelectionListener(this);
 		Configuration.addSelectedPresetIndexListener(new SelectionListener()
 		{
 			public void selectionChanged(SelectionEvent event)
 			{
-				m_PresetsPanel.setSelect(event.getSelection());
+				m_PresetsPanel.setSelectedPresetIndex(event.getSelection());
 			}
 		});
 		
@@ -121,35 +119,47 @@ class ProgramsWindow extends JInternalFrame implements SelectionListener, Preset
 			}
 		});
 		_setBorder(Configuration.getMatrixModified());
+		m_PresetsPanel.addSelectedPresetIndexListener(new IntegerListener()
+		{
+			public void integerSet(Integer newValue)
+			{
+			}
+			
+			public void integerChanged(Integer oldValue, Integer newValue)
+			{
+				_setSelectedPresetIndex(newValue);
+			}
+		});
+		_setSelectedPresetIndex(-1);
 	}
 	
-	public void selectionChanged(SelectionEvent Event)
+	private void _setSelectedPresetIndex(Integer selectedPresetIndex)
 	{
-		if(_selectedPresetIndex > -1)
+		if(_selectedPresetIndex >= 0)
 		{
 			m_Configuration.getPreset(_selectedPresetIndex).removePresetListener(this);
 		}
-		_selectedPresetIndex = Event.getSelection();
-		try
-		{
-			m_Configuration.loadProgramToMatrix(Event.getSelection());
-		}
-		catch(MatrixNotSavedException Exception)
-		{
-			if(JOptionPane.showConfirmDialog(null, "The matrix is not saved yet.\nDo you really want to override the matrix' content?", "Matrix unsaved ...", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
-			{
-				m_Configuration.setMatrixModified(false);
-				try
-				{
-					m_Configuration.loadProgramToMatrix(Event.getSelection());
-				}
-				catch(MatrixNotSavedException Exception2)
-				{
-				}
-			}
-		}
+		_selectedPresetIndex = selectedPresetIndex;
 		if(_selectedPresetIndex >= 0)
 		{
+			try
+			{
+				m_Configuration.loadProgramToMatrix(_selectedPresetIndex);
+			}
+			catch(MatrixNotSavedException Exception)
+			{
+				if(JOptionPane.showConfirmDialog(null, "The matrix is not saved yet.\nDo you really want to override the matrix' content?", "Matrix unsaved ...", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+				{
+					m_Configuration.setMatrixModified(false);
+					try
+					{
+						m_Configuration.loadProgramToMatrix(_selectedPresetIndex);
+					}
+					catch(MatrixNotSavedException Exception2)
+					{
+					}
+				}
+			}
 			m_PresetNumberLabel.setText(String.valueOf(_selectedPresetIndex + 1));
 			m_PresetNameLabel.setText(m_Configuration.getPreset(_selectedPresetIndex).getName());
 			m_Configuration.getPreset(_selectedPresetIndex).addPresetListener(this);

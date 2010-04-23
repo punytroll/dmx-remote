@@ -26,12 +26,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-class EditPresetNamesWindow extends JInternalFrame implements SelectionListener
+class EditPresetNamesWindow extends JInternalFrame
 {
 	private Configuration m_Configuration;
 	private PresetsPanel m_PresetsPanel;
 	private JTextField m_IdentifierField;
-	private int m_SelectedProgram;
+	private Integer _selectedPresetIndex;
 	
 	public EditPresetNamesWindow(Configuration Configuration)
 	{
@@ -39,8 +39,6 @@ class EditPresetNamesWindow extends JInternalFrame implements SelectionListener
 		m_Configuration = Configuration;
 		setBackground(StaticConfiguration.getWindowBackgroundColor());
 		m_PresetsPanel = new PresetsPanel(Configuration);
-		m_PresetsPanel.addSelectionListener(this);
-		m_SelectedProgram = -1;
 		
 		FlowLayout Layout = new FlowLayout();
 		
@@ -72,9 +70,9 @@ class EditPresetNamesWindow extends JInternalFrame implements SelectionListener
 		{
 			public void update(DocumentEvent Event)
 			{
-				if((m_SelectedProgram > -1) && (m_SelectedProgram < StaticConfiguration.getNumberOfPresets()))
+				if((_selectedPresetIndex > -1) && (_selectedPresetIndex < StaticConfiguration.getNumberOfPresets()))
 				{
-					m_Configuration.getPreset(m_SelectedProgram).setName(m_IdentifierField.getText());
+					m_Configuration.getPreset(_selectedPresetIndex).setName(m_IdentifierField.getText());
 				}
 			}
 			
@@ -93,11 +91,30 @@ class EditPresetNamesWindow extends JInternalFrame implements SelectionListener
 			}
 		}
 		);
+		m_PresetsPanel.addSelectedPresetIndexListener(new IntegerListener()
+		{
+			public void integerSet(Integer newValue)
+			{
+			}
+			
+			public void integerChanged(Integer oldValue, Integer newValue)
+			{
+				_setSelectedPresetIndex(newValue);
+			}
+		});
+		_setSelectedPresetIndex(-1);
 	}
 	
-	public void selectionChanged(SelectionEvent Event)
+	private void _setSelectedPresetIndex(Integer selectedPresetIndex)
 	{
-		m_SelectedProgram =  Event.getSelection();
-		m_IdentifierField.setText(m_Configuration.getPreset(m_SelectedProgram).getName());
+		_selectedPresetIndex =  selectedPresetIndex;
+		if(selectedPresetIndex >= 0)
+		{
+			m_IdentifierField.setText(m_Configuration.getPreset(selectedPresetIndex).getName());
+		}
+		else
+		{
+			m_IdentifierField.setText("");
+		}
 	}
 }

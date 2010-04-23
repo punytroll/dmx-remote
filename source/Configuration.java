@@ -602,16 +602,21 @@ class Configuration
 		setBoolean(_matrixModified, matrixModified, _matrixModifiedListeners);
 	}
 	
-	private static void setBoolean(BooleanObject destination, Boolean newValue, EventListenerList listeners)
+	private static Boolean setBoolean(BooleanObject destination, Boolean newValue, EventListenerList listeners)
 	{
+		Boolean result = false;
+		
 		if(destination.get() != newValue)
 		{
 			Boolean oldValue = destination.get();
 			
 			destination.set(newValue);
 			fireBooleanChanged(listeners, oldValue, newValue);
+			result = true;
 		}
 		fireBooleanSet(listeners, newValue);
+		
+		return result;
 	}
 	
 	public void setDevicesChanged()
