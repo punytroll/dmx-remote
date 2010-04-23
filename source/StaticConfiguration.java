@@ -13,7 +13,7 @@ class StaticConfiguration
 	private static final String _configurationVersion = "configuration-version-1.0";
 	private static final Color _destinationPanelColor = new Color(0.5f, 0.14f, 0.14f);
 	private static final MatrixConfiguration[] _matrixConfigurations = { 
-		new MatrixConfiguration(12, 23, 145, 8),
+		new MatrixConfiguration(12, 19, 90, 6),
 		new MatrixConfiguration(16, 19, 175, 6),
 		new MatrixConfiguration(18, 19, 215, 6),
 		new MatrixConfiguration(32, 11, 240, 2),
