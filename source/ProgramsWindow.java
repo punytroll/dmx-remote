@@ -40,15 +40,15 @@ class ProgramsWindow extends JInternalFrame implements PresetListener
 	private JLabel m_PresetNameLabel;
 	private int _selectedPresetIndex;
 	
-	public ProgramsWindow(Configuration Configuration)
+	public ProgramsWindow(Configuration configuration)
 	{
-		super(Configuration.getString("Presets"), true, true, true, false);
+		super(configuration.getString("Presets"), true, true, true, false);
 		setBackground(StaticConfiguration.getWindowBackgroundColor());
-		m_Configuration = Configuration;
+		m_Configuration = configuration;
 		_selectedPresetIndex = -1;
 		getContentPane().setLayout(new BorderLayout());
 		// create the Presets Panel
-		m_PresetsPanel = new PresetsPanel(Configuration);
+		m_PresetsPanel = new PresetsPanel(configuration);
 		Configuration.addSelectedPresetIndexListener(new SelectionListener()
 		{
 			public void selectionChanged(SelectionEvent event)
@@ -123,6 +123,10 @@ class ProgramsWindow extends JInternalFrame implements PresetListener
 		{
 			public void integerSet(Integer newValue)
 			{
+				if((newValue == _selectedPresetIndex) && (Configuration.getMatrixModified() == true))
+				{
+					_setSelectedPresetIndex(newValue);
+				}
 			}
 			
 			public void integerChanged(Integer oldValue, Integer newValue)
