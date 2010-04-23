@@ -4,10 +4,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.font.TextAttribute;
 import java.awt.Insets;
 import java.util.HashMap;
-import javax.swing.border.EmptyBorder;
+import javax.swing.border.Border;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -17,6 +19,8 @@ import javax.swing.SwingConstants;
 
 class MatrixControllerPanel extends JPanel implements HoverListener, PresetListener, ConnectionListener, TransmitModeListener, MetricListener
 {
+	private JPanel _presetNamePanel;
+	private JPanel _presetNumberPanel;
 	private JLabel m_PresetNumberLabel;
 	private JLabel m_PresetNameLabel;
 	private JLabel m_SourceNumberLabel;
@@ -60,28 +64,23 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				PresetPanel.setAlignmentX(LEFT_ALIGNMENT);
 				PresetPanel.setLayout(new BoxLayout(PresetPanel, BoxLayout.LINE_AXIS));
 				PresetPanel.setOpaque(false);
-				
-				JPanel PresetNumberPanel = new JPanel();
-				
-				PresetNumberPanel.setBackground(new Color(0.0f, 0.0f, 0.0f));
-				PresetNumberPanel.setPreferredSize(new Dimension(20, 25));
-				m_PresetNumberLabel = new JLabel("");
+				_presetNumberPanel = new JPanel(new GridLayout(1, 1));
+				_presetNumberPanel.setBackground(new Color(0.0f, 0.0f, 0.0f));
+				_presetNumberPanel.setPreferredSize(new Dimension(25, 25));
+				m_PresetNumberLabel = new JLabel("", JLabel.CENTER);
 				m_PresetNumberLabel.setForeground(new Color(0.85f, 0.85f, 0.85f));
-				m_PresetNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
-				PresetNumberPanel.add(m_PresetNumberLabel);
+				_presetNumberPanel.add(m_PresetNumberLabel);
 				
-				JPanel PresetNamePanel = new JPanel();
-				
-				PresetNamePanel.setBackground(new Color(0.0f, 0.0f, 0.0f));
-				PresetNamePanel.setPreferredSize(new Dimension(160, 25));
-				m_PresetNameLabel = new JLabel("");
+				_presetNamePanel = new JPanel(new GridLayout(1, 1));
+				_presetNamePanel.setBackground(new Color(0.0f, 0.0f, 0.0f));
+				_presetNamePanel.setPreferredSize(new Dimension(160, 25));
+				m_PresetNameLabel = new JLabel("", JLabel.CENTER);
 				m_PresetNameLabel.setForeground(new Color(0.85f, 0.85f, 0.85f));
-				m_PresetNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-				PresetNamePanel.add(m_PresetNameLabel);
+				_presetNamePanel.add(m_PresetNameLabel);
 				
-				PresetPanel.add(PresetNumberPanel);
+				PresetPanel.add(_presetNumberPanel);
 				PresetPanel.add(Box.createRigidArea(new Dimension(15, 25)));
-				PresetPanel.add(PresetNamePanel);
+				PresetPanel.add(_presetNamePanel);
 				m_VBox.add(PresetPanel);
 			}
 		}
@@ -105,7 +104,7 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				JPanel SourceNumberPanel = new JPanel();
 				
 				SourceNumberPanel.setBackground(new Color(0.27f, 0.3f, 0.535f));
-				SourceNumberPanel.setPreferredSize(new Dimension(20, 25));
+				SourceNumberPanel.setPreferredSize(new Dimension(25, 25));
 				m_SourceNumberLabel = new JLabel();
 				m_SourceNumberLabel.setForeground(new Color(0.85f, 0.85f, 0.85f));
 				m_SourceNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -146,7 +145,7 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				JPanel DestinationNumberPanel = new JPanel();
 				
 				DestinationNumberPanel.setBackground(new Color(0.5f, 0.14f, 0.145f));
-				DestinationNumberPanel.setPreferredSize(new Dimension(20, 25));
+				DestinationNumberPanel.setPreferredSize(new Dimension(25, 25));
 				m_DestinationNumberLabel = new JLabel();
 				m_DestinationNumberLabel.setForeground(new Color(0.85f, 0.85f, 0.85f));
 				m_DestinationNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -198,6 +197,28 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 		{
 			changedToTransmitImmediately();
 		}
+		Configuration.addMatrixModifiedListener(new BooleanListener()
+		{
+			public void booleanSet(Boolean newValue)
+			{
+			}
+			
+			public void booleanChanged(Boolean oldValue, Boolean newValue)
+			{
+				Border border = null;
+				
+				if(newValue == true)
+				{
+					border = BorderFactory.createLineBorder(new Color(0.8f, 0.2f, 0.2f), 1);
+				}
+				else
+				{
+					border = BorderFactory.createLineBorder(new Color(1.0f, 1.0f, 1.0f), 1);
+				}
+				_presetNumberPanel.setBorder(border);
+				_presetNamePanel.setBorder(border);
+			}
+		});
 	}
 	
 	public void hoverChanged(HoverEvent Event)

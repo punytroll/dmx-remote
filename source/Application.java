@@ -764,13 +764,13 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				
 				return;
 			}
-			if(m_Configuration.isMatrixChanged() == true)
+			if(m_Configuration.getMatrixModified() == true)
 			{
 				if(JOptionPane.showConfirmDialog(null, "The matrix is not saved yet.\nDo you really want to override the matrix' content?", "Matrix unsaved ...", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
 				{
 					return;
 				}
-				m_Configuration.setMatrixSaved();
+				m_Configuration.setMatrixModified(false);
 			}
 			m_Configuration.enterBatch();
 			try
@@ -830,7 +830,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 		}
 		m_Configuration.setCurrentMatrixIsFile(Path);
 		m_Configuration.setDevicesSaved();
-		m_Configuration.setMatrixSaved();
+		m_Configuration.setMatrixModified(false);
 		setTitle("FRIEND-CHIP  DMX REMOTE - Matrix: " + Path);
 		m_CurrentMatrixFile = Path;
 	}
@@ -918,7 +918,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				return;
 			}
 			m_Configuration.setCurrentMatrixIsFile(SelectedFile.getPath());
-			m_Configuration.setMatrixSaved();
+			m_Configuration.setMatrixModified(false);
 			setTitle("FRIEND-CHIP  DMX REMOTE - Matrix: " + SelectedFile.getPath());
 			m_CurrentMatrixFile = SelectedFile.getPath();
 		}
@@ -958,18 +958,18 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 		try
 		{
 			m_Configuration.clearMatrix();
-			m_Configuration.setMatrixSaved();
+			m_Configuration.setMatrixModified(false);
 			m_Configuration.setCurrentMatrixIsEmpty();
 		}
 		catch(MatrixNotSavedException Exception)
 		{
 			if(JOptionPane.showConfirmDialog(null, "The matrix is not saved yet.\nDo you really want to clear the matrix?", "Matrix unsaved ...", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
 			{
-				m_Configuration.setMatrixSaved();
+				m_Configuration.setMatrixModified(false);
 				try
 				{
 					m_Configuration.clearMatrix();
-					m_Configuration.setMatrixSaved();
+					m_Configuration.setMatrixModified(false);
 					m_Configuration.setCurrentMatrixIsEmpty();
 				}
 				catch(MatrixNotSavedException Exception2)
@@ -1143,7 +1143,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 			return;
 		}
 		m_Configuration.setCurrentPresetsFile(Path);
-		m_Configuration.setMatrixSaved();
+		m_Configuration.setMatrixModified(false);
 		m_Configuration.setDevicesSaved();
 		m_Configuration.setPresetsSaved();
 		setTitle("FRIEND-CHIP  DMX REMOTE - Preset: " + Path);
