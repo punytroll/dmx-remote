@@ -222,8 +222,10 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 		graphics.translate(StaticConfiguration.getNumberFieldWidth(), 0);
 		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth(), (Configuration.getCurrentCellSize() + 1) * m_Configuration.getCurrentMatrixSize()));
 		Drawing.drawListItems(graphics, m_Configuration.getSourceNames(), 0, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
+		graphics.setTransform(saveTransform);
 		graphics.setClip(saveClip);
-		graphics.translate(StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding() + StaticConfiguration.getNumberFieldWidth(), 0);
+		graphics.transform(m_Transform);
+		graphics.translate(StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding() + StaticConfiguration.getNumberFieldWidth(), 0);
 		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth(), (Configuration.getCurrentCellSize() + 1) * m_Configuration.getCurrentMatrixSize()));
 		Drawing.drawListItems(graphics, m_Configuration.getDestinationNames(), 0, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
 		graphics.setTransform(saveTransform);
