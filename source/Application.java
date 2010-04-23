@@ -449,34 +449,36 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 	private void createWindows()
 	{
 		{
+			MouseAdapter mouseAdapter = new MouseAdapter()
+			{
+				public void mousePressed(MouseEvent event)
+				{
+					maybeShowPopup(event);
+				}
+				
+				public void mouseReleased(MouseEvent event)
+				{
+					maybeShowPopup(event);
+				}
+				
+				private void maybeShowPopup(MouseEvent event)
+				{
+					if(event.isPopupTrigger() == true)
+					{
+						m_MatrixPopupMenu.show(event.getComponent(), event.getX(), event.getY());
+					}
+				}
+			};
+			
 			if(m_MatrixPanel == null)
 			{
 				m_MatrixPanel = new MatrixPanel(m_Configuration);
-				m_MatrixPanel.addMouseListener(new MouseAdapter()
-				{
-					public void mousePressed(MouseEvent event)
-					{
-						maybeShowPopup(event);
-					}
-					
-					public void mouseReleased(MouseEvent event)
-					{
-						maybeShowPopup(event);
-					}
-					
-					private void maybeShowPopup(MouseEvent event)
-					{
-						if(event.isPopupTrigger() == true)
-						{
-							m_MatrixPopupMenu.show(m_MatrixPanel, event.getX(), event.getY());
-						}
-					}
-				}
-				);
+				m_MatrixPanel.addMouseListener(mouseAdapter);
 			}
 			if(_matrixControllerPanel == null)
 			{
 				_matrixControllerPanel = new MatrixControllerPanel(m_Configuration);
+				_matrixControllerPanel.addMouseListener(mouseAdapter);
 				_matrixControllerPanel.setMaximumSize(new Dimension(300, 600));
 				Configuration.addSelectedPresetIndexListener(new SelectionListener()
 				{
