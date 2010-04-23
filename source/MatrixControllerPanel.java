@@ -104,6 +104,7 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				JPanel SourceNumberPanel = new JPanel();
 				
 				SourceNumberPanel.setBackground(StaticConfiguration.getSourcePanelColor());
+				SourceNumberPanel.setBorder(BorderFactory.createLineBorder(new Color(1.0f, 1.0f, 1.0f), 1));
 				SourceNumberPanel.setPreferredSize(new Dimension(25, 25));
 				m_SourceNumberLabel = new JLabel();
 				m_SourceNumberLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
@@ -113,6 +114,7 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				JPanel SourceNamePanel = new JPanel();
 				
 				SourceNamePanel.setBackground(StaticConfiguration.getSourcePanelColor());
+				SourceNamePanel.setBorder(BorderFactory.createLineBorder(new Color(1.0f, 1.0f, 1.0f), 1));
 				SourceNamePanel.setPreferredSize(new Dimension(160, 25));
 				m_SourceNameLabel = new JLabel();
 				m_SourceNameLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
@@ -145,6 +147,7 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				JPanel DestinationNumberPanel = new JPanel();
 				
 				DestinationNumberPanel.setBackground(StaticConfiguration.getDestinationPanelColor());
+				DestinationNumberPanel.setBorder(BorderFactory.createLineBorder(new Color(1.0f, 1.0f, 1.0f), 1));
 				DestinationNumberPanel.setPreferredSize(new Dimension(25, 25));
 				m_DestinationNumberLabel = new JLabel();
 				m_DestinationNumberLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
@@ -154,6 +157,7 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				JPanel DestinationNamePanel = new JPanel();
 				
 				DestinationNamePanel.setBackground(StaticConfiguration.getDestinationPanelColor());
+				DestinationNamePanel.setBorder(BorderFactory.createLineBorder(new Color(1.0f, 1.0f, 1.0f), 1));
 				DestinationNamePanel.setPreferredSize(new Dimension(160, 25));
 				m_DestinationNameLabel = new JLabel();
 				m_DestinationNameLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
