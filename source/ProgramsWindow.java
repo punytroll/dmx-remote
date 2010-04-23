@@ -117,20 +117,10 @@ class ProgramsWindow extends JInternalFrame implements SelectionListener, Preset
 			
 			public void booleanChanged(Boolean oldValue, Boolean newValue)
 			{
-				Border border = null;
-				
-				if(newValue == true)
-				{
-					border = BorderFactory.createLineBorder(new Color(0.8f, 0.2f, 0.2f), 1);
-				}
-				else
-				{
-					border = BorderFactory.createLineBorder(new Color(1.0f, 1.0f, 1.0f), 1);
-				}
-				_presetNumberPanel.setBorder(border);
-				_presetNamePanel.setBorder(border);
+				_setBorder(newValue);
 			}
 		});
+		_setBorder(Configuration.getMatrixModified());
 	}
 	
 	public void selectionChanged(SelectionEvent Event)
@@ -158,12 +148,33 @@ class ProgramsWindow extends JInternalFrame implements SelectionListener, Preset
 				}
 			}
 		}
-		if(_selectedPresetIndex > -1)
+		if(_selectedPresetIndex >= 0)
 		{
 			m_PresetNumberLabel.setText(String.valueOf(_selectedPresetIndex + 1));
 			m_PresetNameLabel.setText(m_Configuration.getPreset(_selectedPresetIndex).getName());
 			m_Configuration.getPreset(_selectedPresetIndex).addPresetListener(this);
 		}
+		else
+		{
+			m_PresetNumberLabel.setText("");
+			m_PresetNameLabel.setText("");
+		}
+	}
+	
+	private void _setBorder(Boolean modified)
+	{
+		Border border = null;
+		
+		if(modified == true)
+		{
+			border = BorderFactory.createLineBorder(new Color(0.8f, 0.2f, 0.2f), 1);
+		}
+		else
+		{
+			border = BorderFactory.createLineBorder(new Color(1.0f, 1.0f, 1.0f), 1);
+		}
+		_presetNumberPanel.setBorder(border);
+		_presetNamePanel.setBorder(border);
 	}
 	
 	public void nameChanged(NameChangedEvent event)
