@@ -132,8 +132,8 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 		Graphics.drawImage(m_Background, 0, 0, this);
 		
 		Graphics2D graphics = (Graphics2D)Graphics;
-		AffineTransform saveTransform = graphics.getTransform();
 		Shape saveClip = graphics.getClip();
+		AffineTransform saveTransform = graphics.getTransform();
 		Composite saveComposite = graphics.getComposite();
 		
 		if(m_Hover != -1)
@@ -167,8 +167,9 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 		graphics.translate(StaticConfiguration.getNumberFieldWidth(), 0);
 		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2 ) * (Configuration.getCurrentCellSize() + 1)));
 		Drawing.drawListItems(graphics, m_Configuration.getPresetNames(), 0, StaticConfiguration.getNumberOfPresets() / 2, Configuration.getCurrentCellSize());
+		graphics.setTransform(saveTransform);
 		graphics.setClip(saveClip);
-		graphics.translate(StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding() + StaticConfiguration.getNumberFieldWidth(), 0);
+		graphics.translate(StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding() + StaticConfiguration.getNumberFieldWidth(), 0);
 		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2 ) * (Configuration.getCurrentCellSize() + 1)));
 		Drawing.drawListItems(graphics, m_Configuration.getPresetNames(), StaticConfiguration.getNumberOfPresets() / 2, StaticConfiguration.getNumberOfPresets(), Configuration.getCurrentCellSize());
 		graphics.setTransform(saveTransform);
