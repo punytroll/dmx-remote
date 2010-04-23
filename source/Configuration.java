@@ -34,7 +34,6 @@ class Configuration
 	private EventListenerList m_HoverListeners;
 	private EventListenerList m_BatchListeners;
 	private EventListenerList m_MIDIListeners;
-	private EventListenerList m_MatrixListeners;
 	private EventListenerList m_TransmitModeListeners;
 	private int m_LoadedProgramIndex;
 	
@@ -60,7 +59,6 @@ class Configuration
 		m_HoverListeners = new EventListenerList();
 		m_BatchListeners = new EventListenerList();
 		m_MIDIListeners = new EventListenerList();
-		m_MatrixListeners = new EventListenerList();
 		m_TransmitModeListeners = new EventListenerList();
 		m_Matrix = new int[getCurrentMatrixSize()];
 		m_FixedHoverSource = -1;
@@ -610,7 +608,6 @@ class Configuration
 		if(m_MatrixChanged == false)
 		{
 			m_MatrixChanged = true;
-			fireMatrixChanged();
 		}
 	}
 	
@@ -655,7 +652,6 @@ class Configuration
 		if(m_MatrixChanged == true)
 		{
 			m_MatrixChanged = false;
-			fireMatrixChanged();
 		}
 	}
 	
@@ -991,19 +987,6 @@ class Configuration
 		}
 	}
 	
-	private void fireMatrixChanged()
-	{
-		Object[] Listeners = m_MatrixListeners.getListenerList();
-		
-		for(int Listener = 0; Listener < Listeners.length; Listener += 2)
-		{
-			if(Listeners[Listener] == MatrixListener.class)
-			{
-				((MatrixListener)Listeners[Listener + 1]).matrixChanged();
-			}
-		}
-	}
-	
 	private void fireMetricChanged(int WhatChanged)
 	{
 		Object[] Listeners = m_MetricListeners.getListenerList();
@@ -1065,11 +1048,6 @@ class Configuration
 	public void addMIDIListener(MIDIListener Listener)
 	{
 		m_MIDIListeners.add(MIDIListener.class, Listener);
-	}
-	
-	public void addMatrixListener(MatrixListener Listener)
-	{
-		m_MatrixListeners.add(MatrixListener.class, Listener);
 	}
 	
 	public void addTransmitModeListener(TransmitModeListener Listener)
