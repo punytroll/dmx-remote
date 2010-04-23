@@ -205,20 +205,10 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 			
 			public void booleanChanged(Boolean oldValue, Boolean newValue)
 			{
-				Border border = null;
-				
-				if(newValue == true)
-				{
-					border = BorderFactory.createLineBorder(new Color(0.8f, 0.2f, 0.2f), 1);
-				}
-				else
-				{
-					border = BorderFactory.createLineBorder(new Color(1.0f, 1.0f, 1.0f), 1);
-				}
-				_presetNumberPanel.setBorder(border);
-				_presetNamePanel.setBorder(border);
+				_setBorder(newValue);
 			}
 		});
+		_setBorder(Configuration.getMatrixModified());
 	}
 	
 	public void hoverChanged(HoverEvent Event)
@@ -302,5 +292,21 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 		m_Strut = Box.createVerticalStrut(StaticConfiguration.getStrutHeight(Configuration.getCurrentMatrixSize()));
 		m_VBox.add(m_Strut, 0);
 		validate();
+	}
+	
+	private void _setBorder(Boolean modified)
+	{
+		Border border = null;
+		
+		if(modified == true)
+		{
+			border = BorderFactory.createLineBorder(new Color(0.8f, 0.2f, 0.2f), 1);
+		}
+		else
+		{
+			border = BorderFactory.createLineBorder(new Color(1.0f, 1.0f, 1.0f), 1);
+		}
+		_presetNumberPanel.setBorder(border);
+		_presetNamePanel.setBorder(border);
 	}
 }
