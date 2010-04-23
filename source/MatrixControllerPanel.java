@@ -65,17 +65,17 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				PresetPanel.setLayout(new BoxLayout(PresetPanel, BoxLayout.LINE_AXIS));
 				PresetPanel.setOpaque(false);
 				_presetNumberPanel = new JPanel(new GridLayout(1, 1));
-				_presetNumberPanel.setBackground(new Color(0.0f, 0.0f, 0.0f));
+				_presetNumberPanel.setBackground(StaticConfiguration.getPresetPanelColor());
 				_presetNumberPanel.setPreferredSize(new Dimension(25, 25));
 				m_PresetNumberLabel = new JLabel("", JLabel.CENTER);
-				m_PresetNumberLabel.setForeground(new Color(0.85f, 0.85f, 0.85f));
+				m_PresetNumberLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
 				_presetNumberPanel.add(m_PresetNumberLabel);
 				
 				_presetNamePanel = new JPanel(new GridLayout(1, 1));
-				_presetNamePanel.setBackground(new Color(0.0f, 0.0f, 0.0f));
+				_presetNamePanel.setBackground(StaticConfiguration.getPresetPanelColor());
 				_presetNamePanel.setPreferredSize(new Dimension(160, 25));
 				m_PresetNameLabel = new JLabel("", JLabel.CENTER);
-				m_PresetNameLabel.setForeground(new Color(0.85f, 0.85f, 0.85f));
+				m_PresetNameLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
 				_presetNamePanel.add(m_PresetNameLabel);
 				
 				PresetPanel.add(_presetNumberPanel);
@@ -103,19 +103,19 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				
 				JPanel SourceNumberPanel = new JPanel();
 				
-				SourceNumberPanel.setBackground(new Color(0.27f, 0.3f, 0.535f));
+				SourceNumberPanel.setBackground(StaticConfiguration.getSourcePanelColor());
 				SourceNumberPanel.setPreferredSize(new Dimension(25, 25));
 				m_SourceNumberLabel = new JLabel();
-				m_SourceNumberLabel.setForeground(new Color(0.85f, 0.85f, 0.85f));
+				m_SourceNumberLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
 				m_SourceNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				SourceNumberPanel.add(m_SourceNumberLabel);
 				
 				JPanel SourceNamePanel = new JPanel();
 				
-				SourceNamePanel.setBackground(new Color(0.27f, 0.3f, 0.535f));
+				SourceNamePanel.setBackground(StaticConfiguration.getSourcePanelColor());
 				SourceNamePanel.setPreferredSize(new Dimension(160, 25));
 				m_SourceNameLabel = new JLabel();
-				m_SourceNameLabel.setForeground(new Color(0.85f, 0.85f, 0.85f));
+				m_SourceNameLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
 				m_SourceNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				SourceNamePanel.add(m_SourceNameLabel);
 				
@@ -144,19 +144,19 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				
 				JPanel DestinationNumberPanel = new JPanel();
 				
-				DestinationNumberPanel.setBackground(new Color(0.5f, 0.14f, 0.145f));
+				DestinationNumberPanel.setBackground(StaticConfiguration.getDestinationPanelColor());
 				DestinationNumberPanel.setPreferredSize(new Dimension(25, 25));
 				m_DestinationNumberLabel = new JLabel();
-				m_DestinationNumberLabel.setForeground(new Color(0.85f, 0.85f, 0.85f));
+				m_DestinationNumberLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
 				m_DestinationNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				DestinationNumberPanel.add(m_DestinationNumberLabel);
 				
 				JPanel DestinationNamePanel = new JPanel();
 				
-				DestinationNamePanel.setBackground(new Color(0.5f, 0.14f, 0.145f));
+				DestinationNamePanel.setBackground(StaticConfiguration.getDestinationPanelColor());
 				DestinationNamePanel.setPreferredSize(new Dimension(160, 25));
 				m_DestinationNameLabel = new JLabel();
-				m_DestinationNameLabel.setForeground(new Color(0.85f, 0.85f, 0.85f));
+				m_DestinationNameLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
 				m_DestinationNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				DestinationNamePanel.add(m_DestinationNameLabel);
 				

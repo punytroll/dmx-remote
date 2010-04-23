@@ -11,6 +11,7 @@ class StaticConfiguration
 	private static final Integer _cellGroupSize = 4;
 	private static final String _configurationApplication = "dmx-remote";
 	private static final String _configurationVersion = "configuration-version-1.0";
+	private static final Color _destinationPanelColor = new Color(0.5f, 0.14f, 0.14f);
 	private static final MatrixConfiguration[] _matrixConfigurations = { 
 		new MatrixConfiguration(12, 23, 145, 8),
 		new MatrixConfiguration(16, 19, 175, 6),
@@ -18,9 +19,12 @@ class StaticConfiguration
 		new MatrixConfiguration(32, 11, 240, 2),
 		new MatrixConfiguration(64, 11, 250, 2)
 	};
+	private static final Color _matrixConnectionDotColor = new Color(0.5f, 0.14f, 0.14f);
 	private static final Integer _nameFieldWidth = 80;
 	private static final Integer _numberFieldWidth = 18;
 	private static final Integer _numberOfPresets = 50;
+	private static final Color _presetPanelColor = new Color(0.0f, 0.0f, 0.0f);
+	private static final Color _sourcePanelColor = new Color(0.27f, 0.3f, 0.535f);
 	private static final Color _windowBackgroundColor = new Color(0.1563f, 0.1563f, 0.3516f);
 	
 	public static Integer getCellBoxPadding()
@@ -56,6 +60,16 @@ class StaticConfiguration
 		return _configurationVersion;
 	}
 	
+	public static Color getDestinationPanelColor()
+	{
+		return _destinationPanelColor;
+	}
+	
+	public static Color getMatrixConnectionDotColor()
+	{
+		return _matrixConnectionDotColor;
+	}
+	
 	public static Vector< Integer > getMatrixSizes()
 	{
 		Vector< Integer > result = new Vector< Integer >();
@@ -81,6 +95,16 @@ class StaticConfiguration
 	public static Integer getNumberOfPresets()
 	{
 		return _numberOfPresets;
+	}
+	
+	public static Color getPresetPanelColor()
+	{
+		return _presetPanelColor;
+	}
+	
+	public static Color getSourcePanelColor()
+	{
+		return _sourcePanelColor;
 	}
 	
 	public static Integer getStrutHeight(Integer matrixSize)

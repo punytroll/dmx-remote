@@ -154,7 +154,7 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 		graphics.drawString("SOURCES", 2, m_Configuration.getIdentifierFieldWidth());
 		graphics.drawString("DESTINATIONS", 2, StaticConfiguration.getCellBoxPadding() + 2);
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		graphics.setPaint(new Color(0.0f, 0.0f, 0.6f));
+		graphics.setPaint(StaticConfiguration.getMatrixConnectionDotColor());
 		for(int Row = 0; Row < Configuration.getCurrentMatrixSize(); ++Row)
 		{
 			for(int Column = 0; Column < Configuration.getCurrentMatrixSize(); ++Column)
