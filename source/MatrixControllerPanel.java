@@ -74,8 +74,9 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				_presetNamePanel = new JPanel(new GridLayout(1, 1));
 				_presetNamePanel.setBackground(StaticConfiguration.getPresetPanelColor());
 				_presetNamePanel.setPreferredSize(new Dimension(160, 25));
-				m_PresetNameLabel = new JLabel("", JLabel.CENTER);
+				m_PresetNameLabel = new JLabel("", JLabel.LEFT);
 				m_PresetNameLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
+				m_PresetNameLabel.setBorder(BorderFactory.createMatteBorder(0, 8, 0, 8, StaticConfiguration.getPresetPanelColor()));
 				_presetNamePanel.add(m_PresetNameLabel);
 				
 				PresetPanel.add(_presetNumberPanel);
@@ -101,24 +102,23 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				SourcePanel.setLayout(new BoxLayout(SourcePanel, BoxLayout.LINE_AXIS));
 				SourcePanel.setOpaque(false);
 				
-				JPanel SourceNumberPanel = new JPanel();
+				JPanel SourceNumberPanel = new JPanel(new GridLayout(1, 1));
 				
 				SourceNumberPanel.setBackground(StaticConfiguration.getSourcePanelColor());
-				SourceNumberPanel.setBorder(BorderFactory.createLineBorder(new Color(1.0f, 1.0f, 1.0f), 1));
+				SourceNumberPanel.setBorder(BorderFactory.createLineBorder(Color.white, 1));
 				SourceNumberPanel.setPreferredSize(new Dimension(25, 25));
-				m_SourceNumberLabel = new JLabel();
-				m_SourceNumberLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
-				m_SourceNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				m_SourceNumberLabel = new JLabel("", JLabel.CENTER);
+				m_SourceNumberLabel.setForeground(Color.white);
 				SourceNumberPanel.add(m_SourceNumberLabel);
 				
-				JPanel SourceNamePanel = new JPanel();
+				JPanel SourceNamePanel = new JPanel(new GridLayout(1, 1));
 				
 				SourceNamePanel.setBackground(StaticConfiguration.getSourcePanelColor());
-				SourceNamePanel.setBorder(BorderFactory.createLineBorder(new Color(1.0f, 1.0f, 1.0f), 1));
+				SourceNamePanel.setBorder(BorderFactory.createLineBorder(Color.white, 1));
 				SourceNamePanel.setPreferredSize(new Dimension(160, 25));
-				m_SourceNameLabel = new JLabel();
-				m_SourceNameLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
-				m_SourceNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				m_SourceNameLabel = new JLabel("", JLabel.LEFT);
+				m_SourceNameLabel.setForeground(Color.white);
+				m_SourceNameLabel.setBorder(BorderFactory.createMatteBorder(0, 8, 0, 8, StaticConfiguration.getSourcePanelColor()));
 				SourceNamePanel.add(m_SourceNameLabel);
 				
 				SourcePanel.add(SourceNumberPanel);
@@ -144,24 +144,23 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				DestinationPanel.setLayout(new BoxLayout(DestinationPanel, BoxLayout.LINE_AXIS));
 				DestinationPanel.setOpaque(false);
 				
-				JPanel DestinationNumberPanel = new JPanel();
+				JPanel DestinationNumberPanel = new JPanel(new GridLayout(1, 1));
 				
 				DestinationNumberPanel.setBackground(StaticConfiguration.getDestinationPanelColor());
-				DestinationNumberPanel.setBorder(BorderFactory.createLineBorder(new Color(1.0f, 1.0f, 1.0f), 1));
+				DestinationNumberPanel.setBorder(BorderFactory.createLineBorder(Color.white, 1));
 				DestinationNumberPanel.setPreferredSize(new Dimension(25, 25));
-				m_DestinationNumberLabel = new JLabel();
-				m_DestinationNumberLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
-				m_DestinationNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				m_DestinationNumberLabel = new JLabel("", JLabel.CENTER);
+				m_DestinationNumberLabel.setForeground(Color.white);
 				DestinationNumberPanel.add(m_DestinationNumberLabel);
 				
-				JPanel DestinationNamePanel = new JPanel();
+				JPanel DestinationNamePanel = new JPanel(new GridLayout(1, 1));
 				
 				DestinationNamePanel.setBackground(StaticConfiguration.getDestinationPanelColor());
-				DestinationNamePanel.setBorder(BorderFactory.createLineBorder(new Color(1.0f, 1.0f, 1.0f), 1));
+				DestinationNamePanel.setBorder(BorderFactory.createLineBorder(Color.white, 1));
 				DestinationNamePanel.setPreferredSize(new Dimension(160, 25));
-				m_DestinationNameLabel = new JLabel();
-				m_DestinationNameLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
-				m_DestinationNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				m_DestinationNameLabel = new JLabel("", JLabel.LEFT);
+				m_DestinationNameLabel.setForeground(Color.white);
+				m_DestinationNameLabel.setBorder(BorderFactory.createMatteBorder(0, 8, 0, 8, StaticConfiguration.getDestinationPanelColor()));
 				DestinationNamePanel.add(m_DestinationNameLabel);
 				
 				DestinationPanel.add(DestinationNumberPanel);
