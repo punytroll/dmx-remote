@@ -188,15 +188,15 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 			graphics.setComposite(Original);
 		}
 		graphics.setPaint(new Color(0.0f, 0.0f, 0.0f));
-		graphics.translate(StaticConfiguration.getNumberFieldWidth(), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding());
-		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth(), (Configuration.getCurrentCellSize() + 1) * Configuration.getCurrentMatrixSize()));
+		graphics.translate(StaticConfiguration.getNumberFieldWidth() + Configuration.getCurrentTextOffset(), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding());
+		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth() - Configuration.getCurrentTextOffset() - Configuration.getCurrentTextOffset(), (Configuration.getCurrentCellSize() + 1) * Configuration.getCurrentMatrixSize()));
 		Drawing.drawListItems(graphics, m_Configuration.getSourceNames(), 0, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
 		graphics.setTransform(saveTransform);
 		graphics.setClip(saveClip);
 		graphics.transform(m_Transform);
 		graphics.rotate(Math.PI / -2.0);
-		graphics.translate(-(StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth()), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding());
-		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth(), (Configuration.getCurrentCellSize() + 1) * Configuration.getCurrentMatrixSize()));
+		graphics.translate(-(StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth()) + Configuration.getCurrentTextOffset(), StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding());
+		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth() - Configuration.getCurrentTextOffset() - Configuration.getCurrentTextOffset(), (Configuration.getCurrentCellSize() + 1) * Configuration.getCurrentMatrixSize()));
 		Drawing.drawListItems(graphics, m_Configuration.getDestinationNames(), 0, Configuration.getCurrentMatrixSize(), Configuration.getCurrentCellSize());
 		graphics.setTransform(saveTransform);
 		graphics.setClip(saveClip);

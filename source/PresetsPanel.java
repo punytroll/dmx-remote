@@ -179,13 +179,13 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 		}
 		graphics.setComposite(saveComposite);
 		graphics.setPaint(new Color(0.0f, 0.0f, 0.0f));
-		graphics.translate(StaticConfiguration.getNumberFieldWidth(), 0);
-		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2 ) * (Configuration.getCurrentCellSize() + 1)));
+		graphics.translate(StaticConfiguration.getNumberFieldWidth() + Configuration.getCurrentTextOffset(), 0);
+		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth() - Configuration.getCurrentTextOffset() - Configuration.getCurrentTextOffset(), (StaticConfiguration.getNumberOfPresets() / 2 ) * (Configuration.getCurrentCellSize() + 1)));
 		Drawing.drawListItems(graphics, m_Configuration.getPresetNames(), 0, StaticConfiguration.getNumberOfPresets() / 2, Configuration.getCurrentCellSize());
 		graphics.setTransform(saveTransform);
 		graphics.setClip(saveClip);
-		graphics.translate(StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding() + StaticConfiguration.getNumberFieldWidth(), 0);
-		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2 ) * (Configuration.getCurrentCellSize() + 1)));
+		graphics.translate(StaticConfiguration.getNumberFieldWidth() + StaticConfiguration.getNameFieldWidth() + StaticConfiguration.getCellBoxPadding() + StaticConfiguration.getNumberFieldWidth() + Configuration.getCurrentTextOffset(), 0);
+		graphics.clip(new Rectangle(0, 1, StaticConfiguration.getNameFieldWidth() - Configuration.getCurrentTextOffset() - Configuration.getCurrentTextOffset(), (StaticConfiguration.getNumberOfPresets() / 2 ) * (Configuration.getCurrentCellSize() + 1)));
 		Drawing.drawListItems(graphics, m_Configuration.getPresetNames(), StaticConfiguration.getNumberOfPresets() / 2, StaticConfiguration.getNumberOfPresets(), Configuration.getCurrentCellSize());
 		graphics.setTransform(saveTransform);
 		graphics.setClip(saveClip);

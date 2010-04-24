@@ -54,7 +54,7 @@ class Drawing
 		graphics.setFont(new Font("SansSerif", Font.PLAIN, 9));
 		for(int itemIndex = 0; itemIndex < (end - begin); ++itemIndex)
 		{
-			graphics.drawString(items.elementAt(itemIndex + begin), Configuration.getCurrentTextOffset(), (itemIndex + 1) * (cellSize + 1) - Configuration.getCurrentTextOffset());
+			graphics.drawString(items.elementAt(itemIndex + begin), 0, (itemIndex + 1) * (cellSize + 1) - Configuration.getCurrentTextOffset());
 		}
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 	}
