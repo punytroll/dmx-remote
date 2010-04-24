@@ -91,13 +91,14 @@ class ProgramsWindow extends JInternalFrame implements PresetListener
 				_presetNumberPanel.setBackground(StaticConfiguration.getPresetPanelColor());
 				_presetNumberPanel.setPreferredSize(new Dimension(25, 25));
 				m_PresetNumberLabel = new JLabel("", JLabel.CENTER);
-				m_PresetNumberLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
+				m_PresetNumberLabel.setForeground(Color.white);
 				_presetNumberPanel.add(m_PresetNumberLabel);
 				_presetNamePanel = new JPanel(new GridLayout(1, 1));
 				_presetNamePanel.setBackground(StaticConfiguration.getPresetPanelColor());
-				_presetNamePanel.setPreferredSize(new Dimension(156, 25));
-				m_PresetNameLabel = new JLabel("", JLabel.CENTER);
-				m_PresetNameLabel.setForeground(new Color(1.0f, 1.0f, 1.0f));
+				_presetNamePanel.setPreferredSize(new Dimension(160, 25));
+				m_PresetNameLabel = new JLabel("", JLabel.LEFT);
+				m_PresetNameLabel.setForeground(Color.white);
+				m_PresetNameLabel.setBorder(BorderFactory.createMatteBorder(0, 8, 0, 8, StaticConfiguration.getPresetPanelColor()));
 				_presetNamePanel.add(m_PresetNameLabel);
 				PresetPanel.add(_presetNumberPanel);
 				PresetPanel.add(Box.createRigidArea(new Dimension(15, 25)));
