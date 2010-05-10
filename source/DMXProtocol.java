@@ -48,6 +48,7 @@ class DMXProtocol implements ConnectionListener, BatchListener
 				byte [] Message = new byte[8 + 3 * Configuration.getCurrentMatrixSize()];
 				int iIndex = 0;
 				
+				System.out.println("Allocated " + Message.length + " bytes of buffer.");
 				Message[iIndex++] = (byte)0xF0;
 				Message[iIndex++] = (byte)0x3F;
 				Message[iIndex++] = (byte)m_Configuration.getIDNumber();
@@ -63,14 +64,15 @@ class DMXProtocol implements ConnectionListener, BatchListener
 				Message[iIndex++] = (byte)0x00;
 				Message[iIndex++] = (byte)0xF7;
 				Command.setMessage(Message, Message.length);
-				System.out.println("Accumulated " + Message.length + " = " + iIndex + " bites.");
+				System.out.println("Wrote " + iIndex + " bytes into the buffer.");
 			}
 			catch(InvalidMidiDataException invalidmididataexception)
 			{
 				System.out.println("Invalid Midi Data Exception!");
 			}
-			System.out.println("Sending Dump (Protocol A).");
+			System.out.println("Sending matrix dump (protocol A).");
 			m_Configuration.sendMIDI(Command);
+			System.out.println();
 		}
 	}
 	
