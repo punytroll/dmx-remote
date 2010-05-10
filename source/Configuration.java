@@ -300,10 +300,20 @@ class Configuration
 		openMIDIDevice(m_MIDIDeviceString);
 	}
 	
-	public void sendMIDI(MidiMessage Message)
+	public void sendMIDI(MidiMessage message)
 	{
-		System.out.println("sending with MIDI.");
-		m_MIDIReceiver.send(Message, -1L);
+		System.out.println("Sending with MIDI ...");
+		
+		StringBuilder messageString = new StringBuilder();
+		
+		for(int index = 0; index < message.getLength(); ++index)
+		{
+			messageString.append(String.format("%02x ", message.getMessage()[index]));
+		}
+		System.out.println("Message: " + messageString.toString());
+		System.out.println("Length: " + message.getLength());
+		m_MIDIReceiver.send(message, -1L);
+		System.out.println("Sent.");
 	}
 	
 	public int getHoverSource()
