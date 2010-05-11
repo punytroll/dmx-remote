@@ -32,8 +32,7 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 			{
 				mouseHover(Event.getX(), Event.getY());
 			}
-		}
-		);
+		});
 		addMouseListener(new MouseAdapter()
 		{
 			public void mouseEntered(MouseEvent Event)
@@ -50,8 +49,7 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 			{
 				setSelectedPresetIndex(m_Hover);
 			}
-		}
-		);
+		});
 		setPreferredSize(new Dimension(StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
 		setMinimumSize(new Dimension(StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
 		for(int presetIndex = 0; presetIndex < StaticConfiguration.getNumberOfPresets(); ++presetIndex)

@@ -46,8 +46,7 @@ class EditDeviceNamesWindow extends JInternalFrame implements SelectionListener
 					Event.consume();
 				}
 			}
-		}
-		);
+		});
 		m_DeviceNameTextField.getDocument().addDocumentListener(new DocumentListener()
 		{
 			public void update(DocumentEvent Event)
@@ -81,8 +80,7 @@ class EditDeviceNamesWindow extends JInternalFrame implements SelectionListener
 			public void changedUpdate(DocumentEvent Event)
 			{
 			}
-		}
-		);
+		});
 		
 		JScrollPane scrollPane = new JScrollPane(m_DevicesPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		

@@ -39,8 +39,7 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 				m_Configuration.setHoverSource((int)Math.floor((EventPoint.getY() - 2 - m_Configuration.getIdentifierFieldWidth() - StaticConfiguration.getCellBoxPadding()) / (Configuration.getCurrentCellSize() + 1)));
 				m_Configuration.setHoverDestination((int)Math.floor((EventPoint.getX() - 2 - m_Configuration.getIdentifierFieldWidth() - StaticConfiguration.getCellBoxPadding()) / (Configuration.getCurrentCellSize() + 1)));
 			}
-		}
-		);
+		});
 		addMouseListener(new MouseAdapter()
 		{
 			public void mouseEntered(MouseEvent Event)
@@ -71,8 +70,7 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 					m_Configuration.setConnected(m_Configuration.getHoverSource(), m_Configuration.getHoverDestination(), !m_Configuration.isConnected(m_Configuration.getHoverSource(), m_Configuration.getHoverDestination()));
 				}
 			}
-		}
-		);
+		});
 	}
 	
 	public void prepareBackground()

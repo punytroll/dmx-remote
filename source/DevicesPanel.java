@@ -75,8 +75,7 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 					setHover(-1);
 				}
 			}
-		}
-		);
+		});
 		addMouseListener(new MouseAdapter()
 		{
 			public void mouseEntered(MouseEvent Event)
@@ -118,8 +117,7 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 					}
 				}
 			}
-		}
-		);
+		});
 		updateDimensions();
 	}
 	

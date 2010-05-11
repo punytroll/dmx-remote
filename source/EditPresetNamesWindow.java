@@ -89,8 +89,7 @@ class EditPresetNamesWindow extends JInternalFrame
 			public void changedUpdate(DocumentEvent Event)
 			{
 			}
-		}
-		);
+		});
 		m_PresetsPanel.addSelectedPresetIndexListener(new IntegerListener()
 		{
 			public void integerSet(Integer newValue)
