@@ -35,7 +35,7 @@ class EditDeviceNamesWindow extends JInternalFrame implements SelectionListener
 			{
 				if(Event.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if(m_DevicesPanel.getSelectedDevice() < Configuration.getCurrentMatrixSize() * 2 - 1)
+					if(m_DevicesPanel.getSelectedDevice() < Configuration.getMatrixSize() * 2 - 1)
 					{
 						m_DevicesPanel.setSelectedDevice(m_DevicesPanel.getSelectedDevice() + 1);
 					}
@@ -55,13 +55,13 @@ class EditDeviceNamesWindow extends JInternalFrame implements SelectionListener
 				{
 					int SelectedDevice = m_DevicesPanel.getSelectedDevice();
 					
-					if(SelectedDevice < Configuration.getCurrentMatrixSize())
+					if(SelectedDevice < Configuration.getMatrixSize())
 					{
 						m_Configuration.setSourceName(SelectedDevice, m_DeviceNameTextField.getText());
 					}
 					else
 					{
-						SelectedDevice -= Configuration.getCurrentMatrixSize();
+						SelectedDevice -= Configuration.getMatrixSize();
 						m_Configuration.setDestinationName(SelectedDevice, m_DeviceNameTextField.getText());
 					}
 				}
@@ -130,13 +130,13 @@ class EditDeviceNamesWindow extends JInternalFrame implements SelectionListener
 		{
 			int SelectedDevice = Event.getSelection();
 			
-			if(SelectedDevice < m_Configuration.getCurrentMatrixSize())
+			if(SelectedDevice < m_Configuration.getMatrixSize())
 			{
 				m_DeviceNameTextField.setText(m_Configuration.getSourceName(SelectedDevice));
 			}
 			else
 			{
-				SelectedDevice -= m_Configuration.getCurrentMatrixSize();
+				SelectedDevice -= m_Configuration.getMatrixSize();
 				m_DeviceNameTextField.setText(m_Configuration.getDestinationName(SelectedDevice));
 			}
 		}
