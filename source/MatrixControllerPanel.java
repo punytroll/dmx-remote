@@ -17,7 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-class MatrixControllerPanel extends JPanel implements HoverListener, PresetListener, ConnectionListener, TransmitModeListener, MetricListener
+class MatrixControllerPanel extends JPanel implements HoverListener, PresetListener, ConnectionListener, TransmitModeListener
 {
 	private JPanel _presetNamePanel;
 	private JPanel _presetNumberPanel;
@@ -40,7 +40,6 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 		m_Configuration.addHoverListener(this);
 		m_Configuration.addConnectionListener(this);
 		m_Configuration.addTransmitModeListener(this);
-		m_Configuration.addMetricListener(this);
 		setOpaque(false);
 		setLayout(new FlowLayout(FlowLayout.LEFT, 30, 10));
 		m_VBox = Box.createVerticalBox();
@@ -48,7 +47,6 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 		Font NameFont = new Font(null, Font.PLAIN, 14);
 		
 		m_Strut = null;
-		metricChanged(MetricListener.ALL_CHANGED);
 		{
 			{
 				JLabel PresetLabel = new JLabel(m_Configuration.getCapitalizedString("Preset"));
@@ -178,8 +176,7 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 				m_Configuration.transmitNow();
 				transmitted();
 			}
-		}
-		);
+		});
 		m_Transmit.setFocusable(false);
 		
 		JLabel TransmitLabel = new JLabel(m_Configuration.getCapitalizedString("Transmit"));
@@ -209,6 +206,23 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 			public void booleanChanged(Boolean oldValue, Boolean newValue)
 			{
 				_setBorder(newValue);
+			}
+		});
+		Configuration.addMatrixSizeListener(new IntegerListener()
+		{
+			public void integerSet(Integer newValue)
+			{
+			}
+			
+			public void integerChanged(Integer oldValue, Integer newValue)
+			{
+				if(m_Strut != null)
+				{
+					m_VBox.remove(m_Strut);
+				}
+				m_Strut = Box.createVerticalStrut(StaticConfiguration.getStrutHeight(Configuration.getMatrixSize()));
+				m_VBox.add(m_Strut, 0);
+				validate();
 			}
 		});
 		_setBorder(Configuration.getMatrixModified());
@@ -284,17 +298,6 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 	public void nameChanged(NameChangedEvent event)
 	{
 		m_PresetNameLabel.setText(event.getName());
-	}
-	
-	public void metricChanged(int WhatChanged)
-	{
-		if(m_Strut != null)
-		{
-			m_VBox.remove(m_Strut);
-		}
-		m_Strut = Box.createVerticalStrut(StaticConfiguration.getStrutHeight(Configuration.getMatrixSize()));
-		m_VBox.add(m_Strut, 0);
-		validate();
 	}
 	
 	private void _setBorder(Boolean modified)

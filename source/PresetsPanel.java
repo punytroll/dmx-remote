@@ -5,7 +5,7 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.event.EventListenerList;
 import javax.swing.JPanel;
 
-class PresetsPanel extends JPanel implements MetricListener, PresetListener
+class PresetsPanel extends JPanel implements PresetListener
 {
 	private Configuration m_Configuration;
 	private Image m_Background;
@@ -13,10 +13,9 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 	private IntegerObject _selectedPresetIndex;
 	private EventListenerList _selectedPresetIndexListeners;
 	
-	public PresetsPanel(Configuration Configuration)
+	public PresetsPanel(Configuration configuration)
 	{
-		m_Configuration = Configuration;
-		m_Configuration.addMetricListener(this);
+		m_Configuration = configuration;
 		setBackground(StaticConfiguration.getWindowBackgroundColor());
 		_selectedPresetIndexListeners = new EventListenerList();
 		_selectedPresetIndex = new IntegerObject(-1);
@@ -48,6 +47,20 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 			public void mouseClicked(MouseEvent Event)
 			{
 				setSelectedPresetIndex(m_Hover);
+			}
+		});
+		Configuration.addMatrixSizeListener(new IntegerListener()
+		{
+			public void integerSet(Integer newValue)
+			{
+			}
+			
+			public void integerChanged(Integer oldValue, Integer newValue)
+			{
+				setPreferredSize(new Dimension(StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), 1 + (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
+				setMinimumSize(new Dimension(StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), 1 + (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
+				getParent().doLayout();
+				prepareBackground();
 			}
 		});
 		setPreferredSize(new Dimension(StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
@@ -213,13 +226,5 @@ class PresetsPanel extends JPanel implements MetricListener, PresetListener
 	public void nameChanged(NameChangedEvent Event)
 	{
 		repaint();
-	}
-	
-	public void metricChanged(int WhatChanged)
-	{
-		setPreferredSize(new Dimension(StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), 1 + (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
-		setMinimumSize(new Dimension(StaticConfiguration.getCellBoxPadding() + 2 * m_Configuration.getIdentifierFieldWidth(), 1 + (StaticConfiguration.getNumberOfPresets() / 2) * (Configuration.getCurrentCellSize() + 1)));
-		getParent().doLayout();
-		prepareBackground();
 	}
 }

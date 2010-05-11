@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.*;
 
-class DevicesPanel extends JPanel implements DeviceListener, MetricListener
+class DevicesPanel extends JPanel implements DeviceListener
 {
 	private Configuration m_Configuration;
 	private Image m_Background;
@@ -26,7 +26,6 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 	{
 		m_Configuration = configuration;
 		m_Configuration.addDeviceListener(this);
-		m_Configuration.addMetricListener(this);
 		m_SelectionListeners = new EventListenerList();
 		setBackground(StaticConfiguration.getWindowBackgroundColor());
 		m_Hover = -1;
@@ -116,6 +115,21 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 						setSelectedDevice(m_Hover);
 					}
 				}
+			}
+		});
+		Configuration.addMatrixSizeListener(new IntegerListener()
+		{
+			public void integerSet(Integer newValue)
+			{
+			}
+			
+			public void integerChanged(Integer oldValue, Integer newValue)
+			{
+				updateDimensions();
+				prepareBackground();
+				repaint();
+				invalidate();
+				getParent().validate();
 			}
 		});
 		updateDimensions();
@@ -233,15 +247,6 @@ class DevicesPanel extends JPanel implements DeviceListener, MetricListener
 	public void deviceNameChanged(DeviceEvent Event)
 	{
 		repaint();
-	}
-	
-	public void metricChanged(int WhatChanged)
-	{
-		updateDimensions();
-		prepareBackground();
-		repaint();
-		invalidate();
-		getParent().validate();
 	}
 	
 	public void addSelectionListener(SelectionListener Listener)
