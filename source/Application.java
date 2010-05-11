@@ -1285,6 +1285,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					return;
 				}
 			}
+			m_Configuration.reopenMIDIDevice();
 		}
 	}
 	
