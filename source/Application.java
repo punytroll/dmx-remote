@@ -13,7 +13,7 @@ import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-public class Application extends JFrame implements ActionListener, MIDIListener, MetricListener
+public class Application extends JFrame implements ActionListener, MIDIListener
 {
 	private Configuration m_Configuration;
 	// the pane that holds all the embedded windows
@@ -53,7 +53,6 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 		m_DMXProtocol = new DMXProtocol(m_Configuration);
 		m_Configuration.addBatchListener(m_DMXProtocol);
 		m_Configuration.addMIDIListener(this);
-		m_Configuration.addMetricListener(this);
 		m_CurrentMatrixFile = "";
 		m_CurrentPresetsFile = "";
 		
@@ -290,9 +289,10 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					{
 						String Action = Event.getActionCommand();
 						
-						m_Configuration.setSize(Integer.valueOf(Action).intValue());
+						m_Configuration.setMatrixSize(Integer.valueOf(Action).intValue());
 					}
 				};
+				
 				for(Integer systemSize : StaticConfiguration.getMatrixSizes())
 				{
 					JRadioButtonMenuItem RadioButton = new JRadioButtonMenuItem(systemSize.toString());
@@ -301,6 +301,31 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					m_SystemSizeButtonGroup.add(RadioButton);
 					SystemSizeMenu.add(RadioButton);
 				}
+				Configuration.addMatrixSizeListener(new IntegerListener()
+				{
+					public void integerSet(Integer newValue)
+					{
+					}
+					
+					public void integerChanged(Integer oldValue, Integer newValue)
+					{
+						Enumeration Buttons = m_SystemSizeButtonGroup.getElements();
+						
+						while(Buttons.hasMoreElements() == true)
+						{
+							AbstractButton Button = (AbstractButton)Buttons.nextElement();
+							
+							if(Button.getText().equals(String.valueOf(m_Configuration.getMatrixSize())) == true)
+							{
+								m_SystemSizeButtonGroup.setSelected(Button.getModel(), true);
+								
+								return;
+							}
+						}
+						System.out.println("Buttons ...");
+					}
+				}
+				);
 			}
 			
 			JMenu WindowsMenu = new JMenu(m_Configuration.getString("Windows"));
@@ -337,6 +362,19 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 		setLocation(PersistentConfiguration.getWindowLeft("main"), PersistentConfiguration.getWindowTop("main"));
 		setSize(PersistentConfiguration.getWindowWidth("main"), PersistentConfiguration.getWindowHeight("main"));
 		setVisible(true);
+		Configuration.addMatrixSizeListener(new IntegerListener()
+		{
+			public void integerSet(Integer newValue)
+			{
+			}
+			
+			public void integerChanged(Integer oldValue, Integer newValue)
+			{
+				System.out.println("Reopening MIDI device.");
+				m_Configuration.reopenMIDIDevice();
+			}
+		}
+		);
 		if(m_Configuration.getCurrentPresetsFile().equals("") == false)
 		{
 			loadPresetsFromFile(m_Configuration.getCurrentPresetsFile(), true);
@@ -1052,7 +1090,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 			IntData = Data.readInt();
 			if(Startup == true)
 			{
-				m_Configuration.setSize(IntData);
+				m_Configuration.setMatrixSize(IntData);
 			}
 			if(IntData != m_Configuration.getMatrixSize())
 			{
@@ -1225,27 +1263,6 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				
 				return;
 			}
-		}
-	}
-	
-	public void metricChanged(int WhatChanged)
-	{
-		if((WhatChanged & MetricListener.SIZE_CHANGED) == MetricListener.SIZE_CHANGED)
-		{
-			Enumeration Buttons = m_SystemSizeButtonGroup.getElements();
-			
-			while(Buttons.hasMoreElements() == true)
-			{
-				AbstractButton Button = (AbstractButton)Buttons.nextElement();
-				
-				if(Button.getText().equals(String.valueOf(m_Configuration.getMatrixSize())) == true)
-				{
-					m_SystemSizeButtonGroup.setSelected(Button.getModel(), true);
-					
-					return;
-				}
-			}
-			m_Configuration.reopenMIDIDevice();
 		}
 	}
 	

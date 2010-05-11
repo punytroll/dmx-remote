@@ -8,10 +8,11 @@ import java.util.prefs.Preferences;
 class Configuration
 {
 	// new variables
-	private static Integer _currentMatrixSize = 32;
+	private static IntegerObject _matrixSize = new IntegerObject(32);
 	private LanguageTable _languageTable;
 	private static BooleanObject _matrixModified = new BooleanObject(false);
 	private static EventListenerList _matrixModifiedListeners = new EventListenerList();
+	private static EventListenerList _matrixSizeListeners = new EventListenerList();
 	private Preset _presets[];
 	private static Integer _selectedPresetIndex = -1;
 	private static EventListenerList _selectedPresetIndexListeners = new EventListenerList();
@@ -32,7 +33,6 @@ class Configuration
 	private String m_MIDIDeviceString;
 	private Device m_Devices[];
 	private EventListenerList m_ConnectionListeners;
-	private EventListenerList m_MetricListeners;
 	private EventListenerList m_DeviceListeners;
 	private EventListenerList m_HoverListeners;
 	private EventListenerList m_BatchListeners;
@@ -52,7 +52,6 @@ class Configuration
 		_languageTable.setLanguage("en");
 		// other initialization
 		m_ConnectionListeners = new EventListenerList();
-		m_MetricListeners = new EventListenerList();
 		m_DeviceListeners = new EventListenerList();
 		m_HoverListeners = new EventListenerList();
 		m_BatchListeners = new EventListenerList();
@@ -168,28 +167,26 @@ class Configuration
 		return (new String(_languageTable.getString(stringIdentifier))).toUpperCase();
 	}
 	
-	public void setSize(int Size)
+	public void setMatrixSize(int matrixSize)
 	{
-		if(Size == getMatrixSize())
+		if(getMatrixSize() != matrixSize)
 		{
-			return;
+			m_Matrix = new int[matrixSize];
+			for(int Column = 0; Column < matrixSize; ++Column)
+			{
+				m_Matrix[Column] = -1;
+			}
+			m_Devices = new Device[2 * matrixSize];
+			for(int Device = 0; Device < 2 * matrixSize; ++Device)
+			{
+				m_Devices[Device] = new Device();
+			}
+			clearPresets();
+			setInteger(_matrixSize, matrixSize, _matrixSizeListeners);
+			setMatrixModified(false);
+			setDevicesChanged();
+			setPresetsChanged();
 		}
-		_currentMatrixSize = Size;
-		m_Matrix = new int[getMatrixSize()];
-		for(int Column = 0; Column < getMatrixSize(); ++Column)
-		{
-			m_Matrix[Column] = -1;
-		}
-		m_Devices = new Device[2 * getMatrixSize()];
-		for(int Device = 0; Device < 2 * getMatrixSize(); ++Device)
-		{
-			m_Devices[Device] = new Device();
-		}
-		clearPresets();
-		fireMetricChanged(MetricListener.SIZE_CHANGED | MetricListener.MATRIX_CELL_SIZE_CHANGED);
-		setMatrixModified(false);
-		setDevicesChanged();
-		setPresetsChanged();
 	}
 	
 	public void closeMIDIDevice()
@@ -297,7 +294,10 @@ class Configuration
 	
 	public void reopenMIDIDevice()
 	{
-		openMIDIDevice(m_MIDIDeviceString);
+		if(m_MIDIDeviceString != null)
+		{
+			openMIDIDevice(m_MIDIDeviceString);
+		}
 	}
 	
 	public void sendMIDI(MidiMessage message)
@@ -373,7 +373,7 @@ class Configuration
 	
 	public static Integer getMatrixSize()
 	{
-		return _currentMatrixSize;
+		return _matrixSize.get();
 	}
 	
 	public static Integer getCurrentCellSize()
@@ -621,10 +621,27 @@ class Configuration
 			Boolean oldValue = destination.get();
 			
 			destination.set(newValue);
-			fireBooleanChanged(listeners, oldValue, newValue);
+			_fireBooleanChanged(listeners, oldValue, newValue);
 			result = true;
 		}
-		fireBooleanSet(listeners, newValue);
+		_fireBooleanSet(listeners, newValue);
+		
+		return result;
+	}
+	
+	private static Boolean setInteger(IntegerObject destination, Integer newValue, EventListenerList listeners)
+	{
+		Boolean result = false;
+		
+		if(destination.get() != newValue)
+		{
+			Integer oldValue = destination.get();
+			
+			destination.set(newValue);
+			_fireIntegerChanged(listeners, oldValue, newValue);
+			result = true;
+		}
+		_fireIntegerSet(listeners, newValue);
 		
 		return result;
 	}
@@ -992,19 +1009,6 @@ class Configuration
 		}
 	}
 	
-	private void fireMetricChanged(int WhatChanged)
-	{
-		Object[] Listeners = m_MetricListeners.getListenerList();
-		
-		for(int Listener = 0; Listener < Listeners.length; Listener += 2)
-		{
-			if(Listeners[Listener] == MetricListener.class)
-			{
-				((MetricListener)Listeners[Listener + 1]).metricChanged(WhatChanged);
-			}
-		}
-	}
-	
 	private void fireTransmitModeChanged()
 	{
 		Object[] Listeners = m_TransmitModeListeners.getListenerList();
@@ -1025,7 +1029,7 @@ class Configuration
 		}
 	}
 	
-	private static void fireBooleanSet(EventListenerList eventListeners, Boolean newValue)
+	private static void _fireBooleanSet(EventListenerList eventListeners, Boolean newValue)
 	{
 		for(BooleanListener booleanListener : eventListeners.getListeners(BooleanListener.class))
 		{
@@ -1033,11 +1037,27 @@ class Configuration
 		}
 	}
 	
-	private static void fireBooleanChanged(EventListenerList eventListeners, Boolean oldValue, Boolean newValue)
+	private static void _fireBooleanChanged(EventListenerList eventListeners, Boolean oldValue, Boolean newValue)
 	{
 		for(BooleanListener booleanListener : eventListeners.getListeners(BooleanListener.class))
 		{
 			booleanListener.booleanChanged(oldValue, newValue);
+		}
+	}
+	
+	private static void _fireIntegerSet(EventListenerList eventListeners, Integer newValue)
+	{
+		for(IntegerListener integerListener : eventListeners.getListeners(IntegerListener.class))
+		{
+			integerListener.integerSet(newValue);
+		}
+	}
+	
+	private static void _fireIntegerChanged(EventListenerList eventListeners, Integer oldValue, Integer newValue)
+	{
+		for(IntegerListener integerListener : eventListeners.getListeners(IntegerListener.class))
+		{
+			integerListener.integerChanged(oldValue, newValue);
 		}
 	}
 	
@@ -1065,11 +1085,6 @@ class Configuration
 		m_ConnectionListeners.add(ConnectionListener.class, Listener);
 	}
 	
-	public void addMetricListener(MetricListener Listener)
-	{
-		m_MetricListeners.add(MetricListener.class, Listener);
-	}
-	
 	public void addHoverListener(HoverListener Listener)
 	{
 		m_HoverListeners.add(HoverListener.class, Listener);
@@ -1093,6 +1108,11 @@ class Configuration
 	public static void addMatrixModifiedListener(BooleanListener listener)
 	{
 		_matrixModifiedListeners.add(BooleanListener.class, listener);
+	}
+	
+	public static void addMatrixSizeListener(IntegerListener listener)
+	{
+		_matrixSizeListeners.add(IntegerListener.class, listener);
 	}
 	
 	public static void addSelectedPresetIndexListener(SelectionListener listener)

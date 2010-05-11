@@ -6,7 +6,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import javax.swing.JPanel;
 
-class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, HoverListener, MetricListener
+class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, HoverListener
 {
 	private Configuration m_Configuration;
 	private Image m_Background;
@@ -18,7 +18,6 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 		m_Configuration.addConnectionListener(this);
 		m_Configuration.addDeviceListener(this);
 		m_Configuration.addHoverListener(this);
-		m_Configuration.addMetricListener(this);
 		setBackground(StaticConfiguration.getWindowBackgroundColor());
 		setPreferredSize(new Dimension(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getMatrixSize() * (Configuration.getCurrentCellSize() + 1) + StaticConfiguration.getCellBoxPadding(), StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getMatrixSize() * (Configuration.getCurrentCellSize() + 1) + StaticConfiguration.getCellBoxPadding()));
 		m_Transform = new AffineTransform();
@@ -69,6 +68,20 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 				{
 					m_Configuration.setConnected(m_Configuration.getHoverSource(), m_Configuration.getHoverDestination(), !m_Configuration.isConnected(m_Configuration.getHoverSource(), m_Configuration.getHoverDestination()));
 				}
+			}
+		});
+		Configuration.addMatrixSizeListener(new IntegerListener()
+		{
+			public void integerSet(Integer newValue)
+			{
+			}
+			
+			public void integerChanged(Integer oldValue, Integer newValue)
+			{
+				setPreferredSize(new Dimension(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getMatrixSize() * (Configuration.getCurrentCellSize() + 1) + StaticConfiguration.getCellBoxPadding(), StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getMatrixSize() * (Configuration.getCurrentCellSize() + 1) + StaticConfiguration.getCellBoxPadding()));
+				prepareBackground();
+				revalidate();
+				repaint();
 			}
 		});
 	}
@@ -248,14 +261,6 @@ class MatrixPanel extends JPanel implements ConnectionListener, DeviceListener, 
 	
 	public void connectionChanged(ConnectionEvent Event)
 	{
-		repaint();
-	}
-	
-	public void metricChanged(int WhatChanged)
-	{
-		setPreferredSize(new Dimension(StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getMatrixSize() * (Configuration.getCurrentCellSize() + 1) + StaticConfiguration.getCellBoxPadding(), StaticConfiguration.getCellBoxPadding() + m_Configuration.getIdentifierFieldWidth() + StaticConfiguration.getCellBoxPadding() + 1 + Configuration.getMatrixSize() * (Configuration.getCurrentCellSize() + 1) + StaticConfiguration.getCellBoxPadding()));
-		prepareBackground();
-		revalidate();
 		repaint();
 	}
 }
