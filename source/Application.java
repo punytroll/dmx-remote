@@ -70,8 +70,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 				PersistentConfiguration.setWindowWidth("main", Event.getComponent().getSize().width);
 				PersistentConfiguration.setWindowHeight("main", Event.getComponent().getSize().height);
 			}
-		}
-		);
+		});
 		
 		JMenuBar MenuBar = new JMenuBar();
 		{
@@ -223,18 +222,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 							m_DMXProtocol.dumpC();
 						}
 					}
-				}
-				);
-				
-				//~ JMenuItem DumpC = new JMenuItem(m_Configuration.getString("Dump Protocol C"));
-				
-				//~ DumpC.addActionListener(new ActionListener()
-				//~ {
-					//~ public void actionPerformed(ActionEvent Event)
-					//~ {
-					//~ }
-				//~ }
-				//~ );
+				});
 				
 				JMenu TransmitMenu = new JMenu(m_Configuration.getString("Transmit"));
 				{
@@ -284,14 +272,12 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 						{
 							TransmitButtonGroup.setSelected(TransmitImmediately.getModel(), true);
 						}
-					}
-					);
+					});
 				}
 				
 				MIDIMenu.add(MIDIDeviceMenu);
 				MIDIMenu.add(IDNumberMenu);
 				MIDIMenu.add(Dump);
-				//~ MIDIMenu.add(DumpC);
 				MIDIMenu.add(TransmitMenu);
 			}
 			
@@ -355,23 +341,6 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 		{
 			loadPresetsFromFile(m_Configuration.getCurrentPresetsFile(), true);
 		}
-		//~ if(m_Configuration.isCurrentMatrixSet() == true)
-		//~ {
-			//~ if(m_Configuration.isCurrentMatrixFile() == true)
-			//~ {
-				//~ matrixLoadFromFile(m_Configuration.getCurrentMatrixFile());
-			//~ }
-			//~ else if(m_Configuration.isCurrentMatrixPreset() == true)
-			//~ {
-				//~ try
-				//~ {
-					//~ m_Configuration.loadProgramToMatrix(m_Configuration.getCurrentMatrixPreset());
-				//~ }
-				//~ catch(MatrixNotSavedException Exception)
-				//~ {
-				//~ }
-			//~ }
-		//~ }
 	}
 	
 	public void actionPerformed(ActionEvent Event)
@@ -515,8 +484,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					{
 						PersistentConfiguration.setWindowVisible("matrix", true);
 					}
-				}
-				);
+				});
 				m_MatrixWindow.addInternalFrameListener(new InternalFrameAdapter()
 				{
 					public void internalFrameActivated(InternalFrameEvent Event)
@@ -528,8 +496,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					{
 						m_Configuration.setActiveWindow("");
 					}
-				}
-				);
+				});
 				m_MatrixWindow.getContentPane().setLayout(new BorderLayout());
 				
 				JScrollPane scrollPane = new JScrollPane(m_MatrixPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -549,8 +516,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 						m_Configuration.transmitNow();
 						_matrixControllerPanel.transmitted();
 					}
-				}
-				);
+				});
 			}
 		}
 		{
@@ -580,8 +546,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					{
 						PersistentConfiguration.setWindowVisible("presets", true);
 					}
-				}
-				);
+				});
 				m_PresetsWindow.addInternalFrameListener(new InternalFrameAdapter()
 				{
 					public void internalFrameActivated(InternalFrameEvent Event)
@@ -593,8 +558,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					{
 						m_Configuration.setActiveWindow("");
 					}
-				}
-				);
+				});
 				m_PresetsWindow.setSize(PersistentConfiguration.getWindowWidth("presets"), PersistentConfiguration.getWindowHeight("presets"));
 				m_PresetsWindow.setLocation(PersistentConfiguration.getWindowLeft("presets"), PersistentConfiguration.getWindowTop("presets"));
 				m_PresetsWindow.setVisible(PersistentConfiguration.getWindowVisible("presets"));
@@ -628,8 +592,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					{
 						PersistentConfiguration.setWindowVisible("edit-preset-names", true);
 					}
-				}
-				);
+				});
 				m_EditPresetNamesWindow.addInternalFrameListener(new InternalFrameAdapter()
 				{
 					public void internalFrameActivated(InternalFrameEvent Event)
@@ -641,8 +604,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					{
 						m_Configuration.setActiveWindow("");
 					}
-				}
-				);
+				});
 				m_EditPresetNamesWindow.setSize(PersistentConfiguration.getWindowWidth("edit-preset-names"), PersistentConfiguration.getWindowHeight("edit-preset-names"));
 				m_EditPresetNamesWindow.setLocation(PersistentConfiguration.getWindowLeft("edit-preset-names"), PersistentConfiguration.getWindowTop("edit-preset-names"));
 				m_EditPresetNamesWindow.setVisible(PersistentConfiguration.getWindowVisible("edit-preset-names"));
@@ -676,8 +638,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					{
 						PersistentConfiguration.setWindowVisible("edit-device-names", true);
 					}
-				}
-				);
+				});
 				_editDeviceNamesWindow.addInternalFrameListener(new InternalFrameAdapter()
 				{
 					public void internalFrameActivated(InternalFrameEvent Event)
@@ -689,8 +650,7 @@ public class Application extends JFrame implements ActionListener, MIDIListener,
 					{
 						m_Configuration.setActiveWindow("");
 					}
-				}
-				);
+				});
 				_editDeviceNamesWindow.setSize(PersistentConfiguration.getWindowWidth("edit-device-names"), PersistentConfiguration.getWindowHeight("edit-device-names"));
 				_editDeviceNamesWindow.setLocation(PersistentConfiguration.getWindowLeft("edit-device-names"), PersistentConfiguration.getWindowTop("edit-device-names"));
 				_editDeviceNamesWindow.setVisible(PersistentConfiguration.getWindowVisible("edit-device-names"));
