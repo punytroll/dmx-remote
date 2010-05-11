@@ -292,7 +292,7 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 		{
 			m_VBox.remove(m_Strut);
 		}
-		m_Strut = Box.createVerticalStrut(StaticConfiguration.getStrutHeight(Configuration.getCurrentMatrixSize()));
+		m_Strut = Box.createVerticalStrut(StaticConfiguration.getStrutHeight(Configuration.getMatrixSize()));
 		m_VBox.add(m_Strut, 0);
 		validate();
 	}
