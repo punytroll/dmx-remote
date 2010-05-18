@@ -1,7 +1,7 @@
-<project name="dmx-remote" default="distribution" basedir=".">
+<project name="dmx-remote" default="debug" basedir=".">
 	<description>This build-file will build the distribution of the dmx-remote application.</description>
 	
-	<property name="version" value="1.10-rc7"/>
+	<property name="version" value="1.10"/>
 	<property name="source" location="source"/>
 	<property name="build" location="build"/>
 	<property name="distribution" location="distribution"/>
@@ -11,14 +11,30 @@
 		<mkdir dir="${build}"/>
 	</target>
 	
-	<target name="compilation" depends="initalization" description="Compile the sources.">
+	<target name="compilation-release" depends="initalization" description="Compile the sources.">
+		<javac srcdir="${source}" destdir="${build}" includeantruntime="false">
+			<compilerarg value="-Xlint:unchecked"/>
+			<compilerarg value="-Xlint:deprecation"/>
+		</javac>
+	</target>
+	
+	<target name="compilation-debug" depends="initalization" description="Compile the sources.">
 		<javac srcdir="${source}" destdir="${build}" debug="true" includeantruntime="false">
 			<compilerarg value="-Xlint:unchecked"/>
 			<compilerarg value="-Xlint:deprecation"/>
 		</javac>
 	</target>
 	
-	<target name="distribution" depends="compilation" description="Generate the distribution.">
+	<target name="debug" depends="compilation-debug" description="Generate the debug distribution.">
+		<mkdir dir="${distribution}"/>
+		<jar jarfile="${distribution}/dmx-remote-${version}.jar" basedir="${build}">
+			<manifest>
+				<attribute name="Main-Class" value="Application"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="distribution" depends="compilation-release" description="Generate the release distribution.">
 		<mkdir dir="${distribution}"/>
 		<jar jarfile="${distribution}/dmx-remote-${version}.jar" basedir="${build}">
 			<manifest>
