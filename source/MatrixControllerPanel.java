@@ -216,16 +216,11 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 			
 			public void integerChanged(Integer oldValue, Integer newValue)
 			{
-				if(m_Strut != null)
-				{
-					m_VBox.remove(m_Strut);
-				}
-				m_Strut = Box.createVerticalStrut(StaticConfiguration.getStrutHeight(Configuration.getMatrixSize()));
-				m_VBox.add(m_Strut, 0);
-				validate();
+				_setStrut(newValue);
 			}
 		});
 		_setBorder(Configuration.getMatrixModified());
+		_setStrut(Configuration.getMatrixSize());
 	}
 	
 	public void hoverChanged(HoverEvent Event)
@@ -314,5 +309,16 @@ class MatrixControllerPanel extends JPanel implements HoverListener, PresetListe
 		}
 		_presetNumberPanel.setBorder(border);
 		_presetNamePanel.setBorder(border);
+	}
+	
+	private void _setStrut(Integer matrixSize)
+	{
+		if(m_Strut != null)
+		{
+			m_VBox.remove(m_Strut);
+		}
+		m_Strut = Box.createVerticalStrut(StaticConfiguration.getStrutHeight(matrixSize));
+		m_VBox.add(m_Strut, 0);
+		validate();
 	}
 }
