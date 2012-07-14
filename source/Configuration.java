@@ -1,15 +1,15 @@
-import javax.swing.event.EventListenerList;
-import java.util.HashMap;
 import java.awt.Color;
+import java.util.HashMap;
 import java.util.Vector;
-import javax.sound.midi.*;
 import java.util.prefs.Preferences;
+import javax.sound.midi.*;
+import javax.swing.event.EventListenerList;
 
 class Configuration
 {
 	// new variables
-	private static IntegerObject _matrixSize = new IntegerObject(32);
 	private LanguageTable _languageTable;
+	private static IntegerObject _matrixSize = new IntegerObject(32);
 	private static BooleanObject _matrixModified = new BooleanObject(false);
 	private static EventListenerList _matrixModifiedListeners = new EventListenerList();
 	private static EventListenerList _matrixSizeListeners = new EventListenerList();
