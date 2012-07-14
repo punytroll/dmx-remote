@@ -1,5 +1,7 @@
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 import java.util.prefs.Preferences;
 import javax.sound.midi.*;
@@ -13,6 +15,7 @@ class Configuration
 	private static BooleanObject _matrixModified = new BooleanObject(false);
 	private static EventListenerList _matrixModifiedListeners = new EventListenerList();
 	private static EventListenerList _matrixSizeListeners = new EventListenerList();
+	private static List<MidiDevice.Info> _MIDIDevices;
 	private Preset _presets[];
 	private static Integer _selectedPresetIndex = -1;
 	private static EventListenerList _selectedPresetIndexListeners = new EventListenerList();
@@ -40,7 +43,6 @@ class Configuration
 	private EventListenerList m_TransmitModeListeners;
 	
 	// MIDI Devices
-	Vector m_MIDIDevices;
 	MidiDevice m_MIDIDevice;
 	Receiver m_MIDIReceiver;
 	
@@ -85,28 +87,14 @@ class Configuration
 		{
 			_presets[presetIndex] = new Preset();
 		}
-		m_MIDIDevices = new Vector();
-		m_MIDIDevices.insertElementAt(getString("None"), 0);
+		_MIDIDevices = new ArrayList<MidiDevice.Info>();
+		_MIDIDevices.add(null);
 		
 		MidiDevice.Info MIDIDeviceInfos[] = MidiSystem.getMidiDeviceInfo();
 		
 		for(int MIDIDeviceNumber = 0; MIDIDeviceNumber < MIDIDeviceInfos.length; ++MIDIDeviceNumber)
 		{
-			MidiDevice MIDIDevice = null;
-			
-			try
-			{
-				MIDIDevice = MidiSystem.getMidiDevice(MIDIDeviceInfos[MIDIDeviceNumber]);
-			}
-			catch(MidiUnavailableException Exception)
-			{
-				System.out.println("WARNING: Unable to retrieve device \"" + MIDIDeviceInfos[MIDIDeviceNumber] + "\"");
-				continue;
-			}
-			if(MIDIDevice.getMaxReceivers() != 0)
-			{
-				m_MIDIDevices.add(MIDIDeviceInfos[MIDIDeviceNumber]);
-			}
+			_MIDIDevices.add(MIDIDeviceInfos[MIDIDeviceNumber]);
 		}
 	}
 	
@@ -221,58 +209,83 @@ class Configuration
 		}
 	}
 	
-	public void openMIDIDevice(String Device)
+	public void openMIDIDevice(String DeviceName)
 	{
-		for(int MIDIDeviceNumber = 1; MIDIDeviceNumber < m_MIDIDevices.size(); ++MIDIDeviceNumber)
+		MidiDevice.Info MIDIDeviceInfo = _getMIDIDeviceInfo(DeviceName);
+		
+		closeMIDIDevice();
+		try
 		{
-			if(Device.equals(m_MIDIDevices.get(MIDIDeviceNumber).toString()) == true)
+			m_MIDIDevice = MidiSystem.getMidiDevice(MIDIDeviceInfo);
+			m_MIDIDevice.open();
+		}
+		catch(MidiUnavailableException Exception)
+		{
+			System.out.println("\"" + MIDIDeviceInfo.getName() + "\" not available for output.");
+			
+			return;
+		}
+		if(m_MIDIReceiver != null)
+		{
+			m_MIDIReceiver.close();
+		}
+		try
+		{
+			m_MIDIReceiver = m_MIDIDevice.getReceiver();
+		}
+		catch(MidiUnavailableException Exception)
+		{
+			System.out.println("No Receiver for output device \"" + MIDIDeviceInfo.getName() + "\"");
+			m_MIDIDevice.close();
+			
+			return;
+		}
+		m_MIDIDeviceString = DeviceName;
+		fireMIDIDeviceChanged();
+	}
+	
+	private MidiDevice.Info _getMIDIDeviceInfo(String DeviceName)
+	{
+		for(int MIDIDeviceNumber = 1; MIDIDeviceNumber < _MIDIDevices.size(); ++MIDIDeviceNumber)
+		{
+			MidiDevice.Info MIDIDeviceInfo = _MIDIDevices.get(MIDIDeviceNumber);
+			
+			if(MIDIDeviceInfo == null)
 			{
-				closeMIDIDevice();
-				
-				MidiDevice.Info MIDIInfo = (MidiDevice.Info)m_MIDIDevices.get(MIDIDeviceNumber);
-				
-				try
+				if(DeviceName.equals(getString("None")) == true)
 				{
-					m_MIDIDevice = MidiSystem.getMidiDevice(MIDIInfo);
-					m_MIDIDevice.open();
+					return null;
 				}
-				catch(MidiUnavailableException Exception)
+			}
+			else
+			{
+				if(DeviceName.equals(MIDIDeviceInfo.getName()) == true)
 				{
-					System.out.println("\"" + MIDIInfo.getName() + "\" not available for output.");
-					
-					return;
+					return MIDIDeviceInfo;
 				}
-				if(m_MIDIReceiver != null)
-				{
-					m_MIDIReceiver.close();
-				}
-				try
-				{
-					m_MIDIReceiver = m_MIDIDevice.getReceiver();
-				}
-				catch(MidiUnavailableException Exception)
-				{
-					System.out.println("No Receiver for output device \"" + MIDIInfo.getName() + "\"");
-					m_MIDIDevice.close();
-					
-					return;
-				}
-				m_MIDIDeviceString = Device;
-				fireMIDIDeviceChanged();
-				
-				break;
 			}
 		}
+		
+		return null;
 	}
 	
 	public int numberOfMIDIDevices()
 	{
-		return m_MIDIDevices.size();
+		return _MIDIDevices.size();
 	}
 	
 	public String getMIDIDeviceName(int DeviceNumber)
 	{
-		return m_MIDIDevices.get(DeviceNumber).toString();
+		MidiDevice.Info MIDIDeviceInfo = _MIDIDevices.get(DeviceNumber);
+		
+		if(MIDIDeviceInfo == null)
+		{
+			return getString("None");
+		}
+		else
+		{
+			return MIDIDeviceInfo.getName();
+		}
 	}
 	
 	public boolean isMIDIDeviceOpen()
